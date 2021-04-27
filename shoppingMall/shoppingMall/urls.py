@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from shoppingApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('signUp/', views.signUp, name="signUp"),
+    path('', views.test, name="test"),
+    path('<str:id>', views.hello, name="hello"),
+    path('createUser/', views.createUser, name="createUser"),
 ]
