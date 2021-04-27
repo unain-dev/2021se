@@ -76,9 +76,9 @@ WSGI_APPLICATION = 'shoppingMall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testdb',
-        'USER': 'admin',
-        'PASSWORD': 'admin123',
+        'NAME': 'admin',
+        'USER': 'root',
+        'PASSWORD': '1',
         'HOST': 'localhost',
         'PORT': '3306',
     }
