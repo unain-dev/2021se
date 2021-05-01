@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('join/', views.join, name="join"),
     path('', views.userMain, name="userMain"),
-    path('<str:id>', views.hello, name="hello"),
+    path('<str:id>', views.login, name="login"),
     path('createUser/', views.createUser, name="createUser"),
 ]
