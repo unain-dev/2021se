@@ -16,14 +16,14 @@ def __str__(self):
 #공지, 이벤트 - 상민
 class Notice(models.Model):
     title = models.CharField(max_length=50)
-    createDate = models.DateTimeField(auto_now_add=True)
+    cdate = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=50)
     contents = models.TextField()
     uniqueNumber = models.IntegerField()
 
 class Event(models.Model):
     title = models.CharField(max_length=50)
-    createDate = models.DateTimeField(auto_now_add=True)
+    cdate = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=50)
     contents = models.TextField()
     on_off = models.TextChoices('on','off')

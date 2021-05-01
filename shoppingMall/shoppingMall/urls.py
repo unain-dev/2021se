@@ -23,4 +23,6 @@ urlpatterns = [
     path('', views.userMain, name="userMain"),
     path('<str:id>', views.login, name="login"),
     path('createUser/', views.createUser, name="createUser"),
+    path('createNotice/',views.createNotice, name="createNotice"),
+    path('createEvent/',views.createEvent, name="createEvent"),
 ]
