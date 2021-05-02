@@ -30,7 +30,7 @@ def createUser(request):
             new_userAccounts.save()
             return redirect('login', new_userAccounts.id)
 
-
+"""
 def createNotice(request):
     new_notice=Notice()
     if request.method =='POST' :
@@ -54,3 +54,4 @@ def createEvent(request):
         new_event.uniqueNumber = request.POST['new_event_uniqueNumber']
         new_event.save()
         return redirect('userMain', new_notice.uniqueNumber) #redirect userMain이 맞나?
+        """

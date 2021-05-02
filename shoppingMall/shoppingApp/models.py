@@ -12,8 +12,6 @@ class UserAccounts(models.Model):
 def __str__(self):
     return self.user_id
 
-
-#공지, 이벤트 - 상민
 class Notice(models.Model):
     title = models.CharField(max_length=50)
     cdate = models.DateTimeField(auto_now_add=True)

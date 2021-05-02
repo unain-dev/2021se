@@ -4,4 +4,4 @@ from .models import UserAccounts, Notice, Event
 # Register your models here.
 admin.site.register(UserAccounts)
 admin.site.register(Notice)
-admin.site.register(Event)\
+admin.site.register(Event)
