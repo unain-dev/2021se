@@ -35,29 +35,3 @@ def createUser(request):
             new_userAccounts.user_phone = request.POST['new_user_phone']
             new_userAccounts.save()
             return redirect('login', new_userAccounts.id)
-
-"""
-def createNotice(request):
-    new_notice=Notice()
-    if request.method =='POST' :
-        new_notice.title = request.POST['new_notice_title']
-        new_notice.cdate = request.POST['new_notice_cdate']
-        new_notice.name = request.POST['new_notice_name']
-        new_notice.contents = request.POST['new_notice_contents']
-        new_notice.uniqueNumber = request.POST['new_notice_uniqueNumber']
-        new_notice.save()
-        return redirect('userMain', new_notice.uniqueNumber)
-
-def createEvent(request):
-    new_event=Event()
-    if request.method =='POST' :
-        new_event.title = request.POST['new_event_title']
-        new_event.cdate = request.POST['new_event_cdate']
-        new_event.name = request.POST['new_event_name']
-        new_event.contents = request.POST['new_event_contents']
-        new_event.activation = request.POST['new_event_activation']
-        new_event.dueDate = request.POST['new_event_dueDate']
-        new_event.uniqueNumber = request.POST['new_event_uniqueNumber']
-        new_event.save()
-        return redirect('userMain', new_notice.uniqueNumber) #redirect userMain이 맞나?
-        """
