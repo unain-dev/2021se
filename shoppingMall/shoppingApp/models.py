@@ -5,7 +5,7 @@ class UserAccounts(models.Model):
     user_id = models.CharField(max_length=100)
     user_pw = models.CharField(max_length=100)
     user_name = models.CharField(max_length=20)
-    user_address = models.TextField()
+    user_address = models.CharField(max_length=100)
     user_email = models.CharField(max_length=100)
     user_phone = models.IntegerField(null=True)
 
@@ -27,4 +27,4 @@ class Event(models.Model):
     on_off = models.TextChoices('on','off')
     activation = models.CharField(choices=on_off.choices, max_length=10)
     dueDate = models.DateTimeField()
-    uniqueNumber = models.IntegerField()    
+    uniqueNumber = models.IntegerField()

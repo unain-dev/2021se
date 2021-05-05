@@ -2,36 +2,36 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import UserAccounts,Notice,Event
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib import auth
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
-def join(request):
-    return render(request, "join.html")
+def login_view(request) :
+    if request.method == 'POST':
+        form = AuthenticationForm(request=request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request=request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+        return redirect("userMain")
+    else :
+        form = AuthenticationForm()
+        return render(request, "userMain.html", {'form': form})
 
-def login(request, id):
-    useraccounts=get_object_or_404(UserAccounts, pk=id)
-    return render(request, "login.html", {'useraccounts':useraccounts})
+def logout_view(request) :
+    logout(request)
+    return redirect("userMain")
 
-def userMain(request):
-    useraccounts=UserAccounts.objects.all()
-    return render(request, "userMain.html", {'useraccounts' : useraccounts})
+def register_view(request) :
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+        return redirect("userMain") 
 
-def createUser(request):
-    new_userAccounts=UserAccounts()
-    if request.method =='POST' :
-        if UserAccounts.objects.filter(user_id=request.POST['new_user_id']).exists() :
-            #messages.warning(request, "권한이 없습니다.")
-            errorMsg = "같은 아이디가 존재합니다. 다른 아이디로 가입해주세요"
-            return render(request, "error.html", {'errorMsg' : errorMsg})
-        if UserAccounts.objects.filter(user_email=request.POST['new_user_email']).exists() :
-            errorMsg = "동일한 이메일로 가입한 또 다른 가입자가 존재합니다. 다른 이메일로 가입해주세요"
-            return render(request, "error.html", {'errorMsg' : errorMsg})
-        else : 
-            new_userAccounts.user_id = request.POST['new_user_id']
-            new_userAccounts.user_pw = request.POST['new_user_pw']
-            new_userAccounts.user_name = request.POST['new_user_name']
-            new_userAccounts.user_address = request.POST['new_user_address']
-            new_userAccounts.user_email = request.POST['new_user_email']
-            new_userAccounts.user_phone = request.POST['new_user_phone']
-            new_userAccounts.save()
-            return redirect('login', new_userAccounts.id)
+    else:
+        form = UserCreationForm()
+    return render(request, 'join.html', {'form':form})

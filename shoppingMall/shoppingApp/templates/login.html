@@ -21,9 +21,10 @@
             </ul>
     </navigator>
     <section>
-        <article>
-            반갑습니다! {{useraccounts.user_id}}님
-        </article>
+        <form class="loginForm" action="" method="post">
+            {%csrf_token%}
+            {{form.as_p}}
+        </form>
     </section>
     <footer id="footer">2021 SE Project Team 2</footer>
 </body>

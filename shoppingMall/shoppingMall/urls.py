@@ -19,8 +19,7 @@ from shoppingApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('join/', views.join, name="join"),
-    path('', views.userMain, name="userMain"),
-    path('<str:id>', views.login, name="login"),
-    path('createUser/', views.createUser, name="createUser"),
+    path('logout/', views.logout_view, name="logout"),
+    path('register/', views.register_view, name="join"),
+    path('', views.login_view, name="userMain"),
 ]

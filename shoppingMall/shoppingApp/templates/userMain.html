@@ -27,15 +27,19 @@
                 </div>
             </div>
         </article>
+        {% if user.is_authenticated %}
+        welcome! {{user.username}}
+        <br><button type="submit"><a href="{% url 'logout'%}">logout</a></button>
+        {% else %}
         <article class="login">
-            <form class="loginForm">
-                <div class="loginID"><input type="text" class="id" placeholder="ID"></div>
-                <div class="loginPW"><input type="text" class="pw" placeholder="PW"></div>
-                <button type="button" class="loginB" onclick="location.href = './login.html'">login</button>
-                <button type="button" class="joinB" onclick="location.href = './join.html'">join</button>
+            <form class="loginForm" action="{% url 'userMain' %}" method="post">
+                {%csrf_token%}
+                {{form.as_p}}
+                <button type="submit" class="loginB">login</button>
+                <br><a href="{%url 'join'%}">go signUp</a>
             </form>
         </article>
-        <a href="{%url 'join'%}">go signUp</a>
+        {% endif %}
     </section>
     <footer id="footer">2021 SE Project Team 2</footer>
 </body>
