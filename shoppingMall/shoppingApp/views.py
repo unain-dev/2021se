@@ -36,7 +36,7 @@ def register_view(request):
     if request.method == 'POST' :
 
         if request.POST['new_user_id']=="" or request.POST['new_user_pw'] =="" or request.POST['new_user_name']=="" or request.POST['new_user_address']=="" or request.POST['new_user_email']=="" or request.POST['new_user_phone']=="":
-            errorMsg = "빈 항목이 있습니다."
+            errorMsg = "빈 항목이 있습니다. 다시 회원가입해주세요"
             return render(request, "error.html", {'errorMsg' : errorMsg})
 
         #아이디 중복체크
