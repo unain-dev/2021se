@@ -28,3 +28,12 @@ class Event(models.Model):
     activation = models.CharField(choices=on_off.choices, max_length=10)
     dueDate = models.DateTimeField()
     uniqueNumber = models.IntegerField()
+
+class iteminfo(models.Model):
+    item_id=models.IntegerField()
+    item_name=models.CharField(max_length=50)
+    item_price=models.IntegerField()
+    item_description=models.TextField()
+    item_amount=models.IntegerField()
+    item_sales=models.IntegerField()
+

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shoppingApp.apps.ShoppingappConfig'
+    'shoppingApp.apps.ShoppingappConfig',
+   
 ]
 
 MIDDLEWARE = [
@@ -78,9 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shop',
-        'USER': 'admin',
+        'USER': 'root',
         #'USER': 'root',
-        'PASSWORD': 'admin123*',
+        'PASSWORD': 'ejrwl35785785',
         #'PASSWORD' : '0000',
         'HOST': 'localhost',
         'PORT': '3306',
