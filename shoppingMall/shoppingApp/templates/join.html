@@ -16,7 +16,7 @@
 </style>
 <body>
     <header>
-        <button type="button" onclick="location.href = './userMain.html'"><img src="./mainIcon.png" height="70" alt="iconIMG"></button>
+        <button type="button" onclick="location.href = '/userMain.html'"><img src="{%static 'images/mainicon.png' %}" height="70" alt="iconIMG"></button>
     </header>
     <navigator>
             <ul id="category">
@@ -39,12 +39,13 @@
                       <input type="text" class="form-control" id="id1" name="new_user_id">
                     </div>
                 </div>
-        
+                
                 <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                     <div class="col-sm-8">
                       <input type="password" class="form-control" id="password1" name="new_user_pw">
                     </div>
+                    <p>* 비밀번호 생성 조건 : 8자 이상, 특수기호 최소 1자 이상 포함</p>
                 </div>
 
                 <div class="mb-3 row" >

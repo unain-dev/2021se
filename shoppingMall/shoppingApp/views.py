@@ -17,11 +17,10 @@ def login_view(request) :
             user = authenticate(request=request, username=username, password=password)
             if user is not None:
                 login(request, user)
-
-            #superuser 체크
-            if User.objects.filter(is_superuser=True):
-                return render(request, "moveToAdmin.html")
                 
+            #superuser 체크
+            #if User.objects.filter(is_superuser=True):
+            #    return render(request, "moveToAdmin.html")
         return redirect("userMain")
     else :
         form = AuthenticationForm()
