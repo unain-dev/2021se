@@ -1,6 +1,5 @@
 
 header{
-    margin-top: 20px;
     position: fixed;
     width: 100%;
     height: 120px;
@@ -43,9 +42,8 @@ section {
     position: absolute;
     top: 220px;
     height: 500px;
-    width: 1300px;
-    margin-left: 65px;
-    background-color: #FAEBD7;
+    width: 100%;
+   
 }
 .banner {
     float: left;
@@ -151,4 +149,3 @@ section {
     padding: 2px 0;
     color: #46301B;
     background-color: #FFF;
-}

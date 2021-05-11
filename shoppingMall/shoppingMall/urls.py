@@ -22,4 +22,11 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('register/', views.register_view, name="join"),
     path('', views.login_view, name="userMain"),
+    #category 경로-이후에 category table이 필요할까요..?
+    path('category/rings', views.rings, name="rings"),
+    path('category/bags', views.bags, name="bags"),
+    path('category/hats', views.hats, name="hats"),
+    path('category/necklace', views.necklace, name="necklace"),
+    path('category/socks', views.socks, name="socks"),
+    path('category/glasses', views.glasses, name="glasses"),
 ]

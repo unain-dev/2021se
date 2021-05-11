@@ -75,3 +75,21 @@ def register_view(request):
     else :
         #form = UserCreateForm()
         return render(request, 'join.html')
+
+def glasses(request) :
+    return render(request, 'glasses.html')
+
+def socks(request) :
+    return render(request, 'socks.html')
+
+def rings(request) :
+    return render(request, 'rings.html')
+
+def hats(request) :
+    return render(request, 'hats.html')
+
+def bags(request) :
+    return render(request, 'bags.html')
+
+def necklace(request) :
+    return render(request, 'necklace.html')
