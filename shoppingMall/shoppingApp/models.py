@@ -29,11 +29,14 @@ class Event(models.Model):
     dueDate = models.DateTimeField()
     uniqueNumber = models.IntegerField()
 
-class iteminfo(models.Model):
-    item_id=models.IntegerField()
-    item_name=models.CharField(max_length=50)
-    item_price=models.IntegerField()
-    item_description=models.TextField()
-    item_amount=models.IntegerField()
-    item_sales=models.IntegerField()
+class product(models.Model):
+    product_id=models.IntegerField()
+    name=models.CharField(max_length=50)
+    price=models.IntegerField()
+    description=models.TextField()
+    stock=models.IntegerField()
+    salesamount=models.IntegerField()
+
+def get_url(self):
+     return reverse('shoppingapp:product_detail',args=[self.id])
 

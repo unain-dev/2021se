@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm#, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserCreateForm
+
 import re
 
 # Create your views here.
@@ -76,8 +77,7 @@ def register_view(request):
         #form = UserCreateForm()
         return render(request, 'join.html')
 
-def glasses(request) :
-    return render(request, 'glasses.html')
+
 
 def socks(request) :
     return render(request, 'socks.html')
@@ -93,3 +93,14 @@ def bags(request) :
 
 def necklace(request) :
     return render(request, 'necklace.html')
+
+def glasses(request) :
+    return render(request, 'glasses.html')
+
+#productlist view
+
+"""
+def product_listview(request):
+   products=get_object_or_404(product,id=product_id)
+   return render(request,'glasses.html',{'products':products})
+"""
