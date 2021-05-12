@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from shoppingApp import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,10 +24,12 @@ urlpatterns = [
     path('register/', views.register_view, name="join"),
     path('', views.login_view, name="userMain"),
     #category 경로-이후에 category table이 필요할까요..?
-    path('category/rings', views.rings, name="rings"),
+    
     path('category/bags', views.bags, name="bags"),
     path('category/hats', views.hats, name="hats"),
     path('category/necklace', views.necklace, name="necklace"),
     path('category/socks', views.socks, name="socks"),
-    path('category/glasses', views.glasses, name="glasses")
+    path('category/glasses', views.glasses, name="glasses"),
+    path('', include('productApp.urls')),
+    
 ]
