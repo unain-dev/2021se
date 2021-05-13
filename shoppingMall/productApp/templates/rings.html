@@ -11,8 +11,8 @@
     <title>rings</title>
 </head>
 <body>
-    <header>
-        <img src="{%static 'images/mainlogo.png' %}" height="100" alt="iconIMG"  onclick="location.href = '{%url 'userMain'%}'">
+    <header><a href="{% url 'userMain' %}">
+        <img src="{%static 'images/mainlogo.png' %}" height="100" alt="iconIMG"></a>
     </header>
     </header>
     <navigator>
@@ -26,10 +26,7 @@
             </ul>
     </navigator>
     <section>
-<!--{%extends 'base.html'%}
-{%block title%}bags page{%end block%}
-{%block content%}-->
-    
+        this is rings.html
             <div class="flex-container">
                 <div id="product_num1">
                     <div class="row">
@@ -50,5 +47,4 @@
                     </div>
                 </div>
             </section>
-<!--{%end block%}-->
             

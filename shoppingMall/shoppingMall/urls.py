@@ -15,21 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from shoppingApp import views
-
+from shoppingApp import views as shoppingView
+from productApp import views as productView
+#from noticeApp import views as noticeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('logout/', views.logout_view, name="logout"),
-    path('register/', views.register_view, name="join"),
-    path('', views.login_view, name="userMain"),
+    path('logout/', shoppingView.logout_view, name="logout"),
+    path('register/', shoppingView.register_view, name="join"),
+    path('', shoppingView.login_view, name="userMain"),
     #category 경로-이후에 category table이 필요할까요..?
     
-    path('category/bags', views.bags, name="bags"),
-    path('category/hats', views.hats, name="hats"),
-    path('category/necklace', views.necklace, name="necklace"),
-    path('category/socks', views.socks, name="socks"),
-    path('category/glasses', views.glasses, name="glasses"),
-    path('', include('productApp.urls')),
+    path('category/bags', shoppingView.bags, name="bags"),
+    path('category/hats', shoppingView.hats, name="hats"),
+    path('category/necklace', shoppingView.necklace, name="necklace"),
+    path('category/socks', shoppingView.socks, name="socks"),
+    path('category/glasses', shoppingView.glasses, name="glasses"),
+    path('products/', include('productApp.urls')),
+    path('rings/', productView.rings, name="rings"),
     
 ]

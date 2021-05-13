@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import UserAccounts,Notice,Event
+from .models import UserAccounts
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm#, UserCreationForm
@@ -19,9 +19,6 @@ def login_view(request) :
             if user is not None:
                 login(request, user)
                 
-            #superuser 체크
-            #if User.objects.filter(is_superuser=True):
-            #    return render(request, "moveToAdmin.html")
         return redirect("userMain")
     else :
         form = AuthenticationForm()

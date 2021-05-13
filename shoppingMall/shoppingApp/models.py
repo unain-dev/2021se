@@ -9,27 +9,6 @@ class UserAccounts(models.Model):
     user_email = models.CharField(max_length=100)
     user_phone = models.IntegerField(null=True)
 
-def __str__(self):
-    return self.user_id
-
-class Notice(models.Model):
-    title = models.CharField(max_length=50)
-    cdate = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=50)
-    contents = models.TextField()
-    uniqueNumber = models.IntegerField()
-
-class Event(models.Model):
-    title = models.CharField(max_length=50)
-    cdate = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=50)
-    contents = models.TextField()
-    on_off = models.TextChoices('on','off')
-    activation = models.CharField(choices=on_off.choices, max_length=10)
-    dueDate = models.DateTimeField()
-    uniqueNumber = models.IntegerField()
-
-
 '''
 def get_url(self):
      return reverse('shoppingapp:product_detail',args=[self.id])

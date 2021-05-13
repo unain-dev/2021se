@@ -6,5 +6,5 @@ def product_list(request):
     
 
 def rings(request) :
-    return render(request, 'prdroductApp/rings.html',{'product':product})
+    return render(request, 'rings.html')
  
