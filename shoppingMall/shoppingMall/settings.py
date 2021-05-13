@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shoppingApp.apps.ShoppingappConfig',
     'productApp',
-    'noticeApp'
+    'noticeApp',
+    'django_admin_multiple_choice_list_filter',
 ]
 
 MIDDLEWARE = [
