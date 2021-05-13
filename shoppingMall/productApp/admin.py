@@ -22,6 +22,7 @@ class StatusListFilter(MultipleChoiceListFilter):
 class productAdmin(admin.ModelAdmin):
     list_display = ['product_id', 'name', 'price', 'stock', 'salesamount']
     search_fields=['product_id', 'name', 'price']
-    list_filter = (StatusListFilter,)
+    list_filter = (StatusListFilter, 'category')
 
+    
 admin.site.register(product, productAdmin)

@@ -31,6 +31,7 @@ CREATE TABLE `productApp_product` (
   `stock` int NOT NULL,
   `salesamount` int NOT NULL,
   `status` int NOT NULL,
+  `category` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,7 +42,7 @@ CREATE TABLE `productApp_product` (
 
 LOCK TABLES `productApp_product` WRITE;
 /*!40000 ALTER TABLE `productApp_product` DISABLE KEYS */;
-INSERT INTO `productApp_product` VALUES (1,1,'레이어드링',19000,'반짝반짝 레이어드링',2,1,1);
+INSERT INTO `productApp_product` VALUES (1,1,'레이어드링',19000,'반짝반짝 레이어드링',2,1,1,'rings');
 /*!40000 ALTER TABLE `productApp_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-13 12:59:01
+-- Dump completed on 2021-05-13 14:33:32

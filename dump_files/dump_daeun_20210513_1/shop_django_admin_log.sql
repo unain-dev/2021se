@@ -37,7 +37,7 @@ CREATE TABLE `django_admin_log` (
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `django_admin_log_chk_1` CHECK ((`action_flag` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2021-05-06 12:04:40.962485','4','daeun2',3,'',4,2),(2,'2021-05-06 12:04:40.963865','10','test123',3,'',4,2),(3,'2021-05-06 12:04:40.964763','11','test123412',3,'',4,2),(4,'2021-05-06 12:04:40.965709','9','test5',3,'',4,2),(5,'2021-05-06 12:04:40.966540','3','testuser',3,'',4,2),(6,'2021-05-06 12:04:40.967123','5','testuser2',3,'',4,2),(7,'2021-05-06 12:04:40.967694','6','testuser3',3,'',4,2),(8,'2021-05-06 12:04:40.968245','8','testuser4',3,'',4,2),(9,'2021-05-06 12:04:48.965094','4','UserAccounts object (4)',3,'',7,2),(10,'2021-05-06 12:04:48.966105','3','UserAccounts object (3)',3,'',7,2),(11,'2021-05-06 12:04:48.966789','2','UserAccounts object (2)',3,'',7,2),(12,'2021-05-06 12:04:48.967358','1','UserAccounts object (1)',3,'',7,2),(13,'2021-05-12 15:18:18.851043','1','product object (1)',1,'[{\"added\": {}}]',13,20),(14,'2021-05-12 17:36:27.541457','1','product object (1)',2,'[]',13,20),(15,'2021-05-13 01:27:23.795832','1','Notice object (1)',1,'[{\"added\": {}}]',15,2),(16,'2021-05-13 01:28:07.363430','1','Event object (1)',1,'[{\"added\": {}}]',14,2),(17,'2021-05-13 01:31:31.004163','1','Event object (1)',2,'[{\"changed\": {\"fields\": [\"On off\"]}}]',14,2),(18,'2021-05-13 02:32:41.744267','1','product object (1)',2,'[{\"changed\": {\"fields\": [\"Price range\"]}}]',13,2),(19,'2021-05-13 03:54:23.284284','1','product object (1)',2,'[{\"changed\": {\"fields\": [\"Status\"]}}]',13,2),(20,'2021-05-13 05:16:26.631894','1','product object (1)',2,'[{\"changed\": {\"fields\": [\"Category\"]}}]',13,2);
+INSERT INTO `django_admin_log` VALUES (1,'2021-05-06 12:04:40.962485','4','daeun2',3,'',4,2),(2,'2021-05-06 12:04:40.963865','10','test123',3,'',4,2),(3,'2021-05-06 12:04:40.964763','11','test123412',3,'',4,2),(4,'2021-05-06 12:04:40.965709','9','test5',3,'',4,2),(5,'2021-05-06 12:04:40.966540','3','testuser',3,'',4,2),(6,'2021-05-06 12:04:40.967123','5','testuser2',3,'',4,2),(7,'2021-05-06 12:04:40.967694','6','testuser3',3,'',4,2),(8,'2021-05-06 12:04:40.968245','8','testuser4',3,'',4,2),(9,'2021-05-06 12:04:48.965094','4','UserAccounts object (4)',3,'',7,2),(10,'2021-05-06 12:04:48.966105','3','UserAccounts object (3)',3,'',7,2),(11,'2021-05-06 12:04:48.966789','2','UserAccounts object (2)',3,'',7,2),(12,'2021-05-06 12:04:48.967358','1','UserAccounts object (1)',3,'',7,2),(13,'2021-05-12 15:18:18.851043','1','product object (1)',1,'[{\"added\": {}}]',13,20),(14,'2021-05-12 17:36:27.541457','1','product object (1)',2,'[]',13,20),(15,'2021-05-13 01:27:23.795832','1','Notice object (1)',1,'[{\"added\": {}}]',15,2),(16,'2021-05-13 01:28:07.363430','1','Event object (1)',1,'[{\"added\": {}}]',14,2),(17,'2021-05-13 01:31:31.004163','1','Event object (1)',2,'[{\"changed\": {\"fields\": [\"On off\"]}}]',14,2),(18,'2021-05-13 02:32:41.744267','1','product object (1)',2,'[{\"changed\": {\"fields\": [\"Price range\"]}}]',13,2),(19,'2021-05-13 03:54:23.284284','1','product object (1)',2,'[{\"changed\": {\"fields\": [\"Status\"]}}]',13,2);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-13 14:33:31
+-- Dump completed on 2021-05-13 12:59:00

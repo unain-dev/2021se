@@ -13,12 +13,19 @@ class P_range(object):
     )
 
 class product(models.Model):
+    CATEGORY_CHOICES=(
+        ('rings', 'rings'),
+        ('sunglasses', 'sunglasses'),
+        ('socks', 'socks')
+    )
+
     product_id=models.IntegerField()
     name=models.CharField(max_length=50)
     price=models.IntegerField()
     description=models.TextField()
     stock=models.IntegerField()
     salesamount=models.IntegerField()
+    category=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
     status = models.IntegerField(
         choices=P_range.CHOICES,
