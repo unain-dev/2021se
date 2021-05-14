@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="{% static 'css/userMain.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>User mainpage</title>
+    <title>rings</title>
 </head>
 <body>
-    <header>
-        <img src="{%static 'images/mainlogo.png' %}" height="100" alt="iconIMG" onclick="location.href = '{%url 'userMain'%}'">
+    <header><a href="{% url 'userMain' %}">
+        <img src="{%static 'images/mainlogo.png' %}" height="100" alt="iconIMG"></a>
     </header>
     </header>
     <navigator>
@@ -25,34 +25,27 @@
                 <li><a href="{%url 'glasses'%}">glasses</a></li>
             </ul>
     </navigator>
-
-
-
     <section>
-        <article>
-          <!--
+        this is necklace.html
             <div class="flex-container">
                 <div id="product_num1">
+                    {%for product in products_necklace %}
                     <div class="row">
-                        {%for product in products %}
+                      
 
                         <div class="col-4">
                             <div class="card">
-                                <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                                <!--<img class="card-img-top" src="{{product.image.url}}" alt="Product Image">-->
                                 <div class="card-body">
                                     <h5 class="card-title">{{product.name}}</h5>
-                                    <p class="card-text">{{product.description}}<span class="badge badge-secondary">${{product.price}}</span></p>
-                                    <a href="{{product.get_url}}"></a>
+                                    <p class="card-text">{{product.description}}<span class="badge badge-secondary">{{product.price}}</span></p>
+                                    <!--<a href="{{product.get_url}}"></a>-->
                                 </div>
                             </div>
                         </div> 
-                        {% endfor %}                      
+                        {% endfor %}      
                     </div>
                     </div>
                 </div>
--->
-    <footer id="footer">2021 SE Project Team 2</footer>
-</article>
-</section>
-</body>
-</html>
+            </section>
+            

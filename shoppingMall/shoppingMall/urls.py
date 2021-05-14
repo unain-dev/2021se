@@ -31,7 +31,11 @@ urlpatterns = [
     path('category/necklace', shoppingView.necklace, name="necklace"),
     path('category/socks', shoppingView.socks, name="socks"),
     path('category/glasses', shoppingView.glasses, name="glasses"),
+    
     path('products/', include('productApp.urls')),
     path('rings/', productView.rings, name="rings"),
-    
+
+    path('socks/', productView.socks, name="socks"),
+    path('necklace/', productView.necklace, name="necklace"),
+   
 ]

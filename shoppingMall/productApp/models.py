@@ -15,8 +15,9 @@ class P_range(object):
 class product(models.Model):
     CATEGORY_CHOICES=(
         ('rings', 'rings'),
-        ('sunglasses', 'sunglasses'),
-        ('socks', 'socks')
+        ('glasses', 'glasses'),
+        ('socks', 'socks'),
+        ('necklace', 'necklace'),
     )
 
     product_id=models.IntegerField()
