@@ -5,11 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm#, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserCreateForm
-
 import re
+from productApp.models import product
 
 # Create your views here.
 def login_view(request) :
+    products_recent = product.objects.filter(published=True).order_by('pubDate')[:3]
+
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -22,10 +24,10 @@ def login_view(request) :
                 if request.user.is_superuser :
                     return redirect('/admin')
 
-        return redirect("userMain")
+        return redirect("userMain", {'products_recent':products_recent})
     else :
         form = AuthenticationForm()
-        return render(request, "userMain.html", {'form': form})
+        return render(request, "userMain.html", {'form': form, 'products_recent':products_recent})
 
 def logout_view(request) :
     logout(request)

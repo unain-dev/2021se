@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class P_range(object):
     OPTION_0, OPTION_1, OPTION_2, OPTION_3, OPTION_4, OPTION_5 = range(0, 6)
@@ -27,6 +28,8 @@ class product(models.Model):
     stock=models.IntegerField()
     salesamount=models.IntegerField()
     category=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    pubDate = models.DateTimeField(default=timezone.now)
+    published=models.BooleanField(default=True)
 
     status = models.IntegerField(
         choices=P_range.CHOICES,

@@ -31,6 +31,17 @@
                     <button type="button" onclick="location.href = './event.html'"><img src="{%static 'images/banner.png' %}" alt="bannerIMG"></button>
                 </div>
             </div>
+            <div>
+                <br>
+                <h3>최근 등록 상품</h3>
+                {% for products_recent in products_recent %}
+                <br>
+                {{products_recent.name}}
+                <br>{{products_recent.price}}
+                <br>
+                {% endfor %}
+            </div>
+            <br><br><br>
         </article>
         {% if user.is_superuser %}
         welcome! {{user.username}}
