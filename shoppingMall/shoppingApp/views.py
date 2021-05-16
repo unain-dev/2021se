@@ -1,3 +1,4 @@
+from django.core import paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UserAccounts
 from django.contrib import messages
@@ -7,10 +8,19 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserCreateForm
 import re
 from productApp.models import product
+from noticeApp.models import Notice_Event as notice
+from django.core.paginator import Paginator
 
 # Create your views here.
 def login_view(request) :
     products_recent = product.objects.filter(published=True).order_by('pubDate')[:3]
+    products_popular = product.objects.filter(published=True).order_by('-salesamount')[:3]
+    #noti_info=notice.objects.filter(on_off=True)
+
+    noti_info_all=notice.objects.all()
+    paginator=Paginator(noti_info_all, 1)
+    page=request.GET.get('page')
+    noti_info=paginator.get_page(page)
 
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
@@ -24,10 +34,10 @@ def login_view(request) :
                 if request.user.is_superuser :
                     return redirect('/admin')
 
-        return redirect("userMain", {'products_recent':products_recent})
+        return redirect("userMain", {'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
     else :
         form = AuthenticationForm()
-        return render(request, "userMain.html", {'form': form, 'products_recent':products_recent})
+        return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
 
 def logout_view(request) :
     logout(request)

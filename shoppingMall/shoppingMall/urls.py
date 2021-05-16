@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from shoppingApp import views as shoppingView
 from productApp import views as productView
+from django.conf import settings
+from django.conf.urls.static import static
 #from noticeApp import views as noticeView
 
 urlpatterns = [
@@ -37,5 +39,6 @@ urlpatterns = [
 
     path('socks/', productView.socks, name="socks"),
     path('necklace/', productView.necklace, name="necklace"),
-   
-]
+
+    #path('notice/', include('noticeApp.urls')),
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

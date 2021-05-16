@@ -8,9 +8,3 @@ class UserAccounts(models.Model):
     user_address = models.CharField(max_length=100)
     user_email = models.CharField(max_length=100)
     user_phone = models.IntegerField(null=True)
-
-'''
-def get_url(self):
-     return reverse('shoppingapp:product_detail',args=[self.id])
-
-'''

@@ -27,10 +27,21 @@
     </navigator>
     <section>
         <article class="banner">
+            {% for noti_info in noti_info %}
                 <div class="imgMax">
-                    <button type="button" onclick="location.href = './event.html'"><img src="{%static 'images/banner.png' %}" alt="bannerIMG"></button>
+                    <img src="{{ noti_info.images.url }}" width="800" alt="{{ noti_info.title }}">
                 </div>
             </div>
+            {% endfor %}
+            {% if noti_info.has_previous %}
+            <a href="?page={{noti_info.previous_page_number}}">previous</a>
+            <a href="?page=1">1</a>
+            {% endif %}
+            <span>{{noti_info.number}}</span>
+            {% if noti_info.has_next %}
+            <a href="?page={{noti_info.paginator.num_pages}}">{{noti_info.paginator.num_pages}}</a>
+            <a href="?page={{noti_info.next_page_number}}">next</a>
+            {% endif %}
             <div>
                 <br>
                 <h3>최근 등록 상품</h3>
@@ -38,6 +49,16 @@
                 <br>
                 {{products_recent.name}}
                 <br>{{products_recent.price}}
+                <br>
+                {% endfor %}
+            </div>
+            <div>
+                <br>
+                <h3>인기 상품</h3>
+                {% for products_popular in products_popular %}
+                <br>
+                {{products_popular.name}}
+                <br>{{products_popular.price}}
                 <br>
                 {% endfor %}
             </div>
