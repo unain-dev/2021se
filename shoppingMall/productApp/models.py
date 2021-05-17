@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django.urls import reverse
 class P_range(object):
     OPTION_0, OPTION_1, OPTION_2, OPTION_3, OPTION_4, OPTION_5 = range(0, 6)
 
@@ -17,12 +17,13 @@ class product(models.Model):
     CATEGORY_CHOICES=(
         ('rings', 'rings'),
         ('glasses', 'glasses'),
-        ('socks', 'socks'),
+        ('hats', 'hats'),
         ('necklace', 'necklace'),
     )
 
     product_id=models.IntegerField()
     name=models.CharField(max_length=50)
+    image=models.ImageField(blank=True,upload_to="image",null=True)
     price=models.IntegerField()
     description=models.TextField()
     stock=models.IntegerField()
@@ -30,6 +31,11 @@ class product(models.Model):
     category=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     pubDate = models.DateTimeField(default=timezone.now)
     published=models.BooleanField(default=True)
+   
+    def get_absolute_url(self):
+        return reverse('products:product_detail',args={'id':self.product_id})
+        
+    
 
     status = models.IntegerField(
         choices=P_range.CHOICES,

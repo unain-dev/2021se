@@ -28,17 +28,20 @@ urlpatterns = [
     path('', shoppingView.login_view, name="userMain"),
     #category 경로-이후에 category table이 필요할까요..?
     
-    path('category/bags', shoppingView.bags, name="bags"),
+   
     path('category/hats', shoppingView.hats, name="hats"),
     path('category/necklace', shoppingView.necklace, name="necklace"),
-    path('category/socks', shoppingView.socks, name="socks"),
+   
     path('category/glasses', shoppingView.glasses, name="glasses"),
     
-    path('products/', include('productApp.urls')),
+    path('products/', include('productApp.urls', namespace='products')),
     path('rings/', productView.rings, name="rings"),
 
-    path('socks/', productView.socks, name="socks"),
+   
     path('necklace/', productView.necklace, name="necklace"),
-
+    path('hats/', productView.hats, name="hats"),
+    path('glasses/', productView.glasses, name="glasses"),
+    path('rings/product_detail/',productView.product_detail,name='product_detail'),
+    
     #path('notice/', include('noticeApp.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

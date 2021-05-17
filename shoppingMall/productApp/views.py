@@ -7,17 +7,28 @@ def rings(request) :
    products_rings =product.objects.all().filter(category='rings')
    return render(request,'rings.html',{'products_rings':products_rings})
 
+def product_detail(request,product_id):
+   product=get_object_or_404(product,id=product_id)
+   return render(request,'productApp/product_detail.html',{'product':product})
+
+
+def results(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+
+
+
 def glasses(request) :
    products_glasses =product.objects.all().filter(category='glasses')
    return render(request,'glasses.html',{'products_glasses':products_glasses})
 
-def socks(request) :
-   products_socks =product.objects.all().filter(category='socks')
-   return render(request,'socks.html',{'products_socks':products_socks})
 
 def necklace(request) :
    products_necklace =product.objects.all().filter(category='necklace')
    return render(request,'necklace.html',{'products_necklace':products_necklace})
+
+def hats(request) :
+   products_hats =product.objects.all().filter(category='hats')
+   return render(request,'hats.html',{'products_hats':products_hats})
 
 def search(request):
    search_name=request.GET['search_name']

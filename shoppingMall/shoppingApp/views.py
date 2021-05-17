@@ -91,8 +91,6 @@ def register_view(request):
 
 
 
-def socks(request) :
-    return render(request, 'socks.html')
 
 def rings(request) :
     return render(request, 'rings.html')
@@ -100,8 +98,6 @@ def rings(request) :
 def hats(request) :
     return render(request, 'hats.html')
 
-def bags(request) :
-    return render(request, 'bags.html')
 
 def necklace(request) :
     return render(request, 'necklace.html')
