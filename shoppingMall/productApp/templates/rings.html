@@ -34,6 +34,7 @@
             <br><button type="submit">submit</button>
         </form>
             <div class="flex-container">
+    
                 <div id="product_num1">
                     {%for product in products_rings %}
                     <div class="row">
@@ -43,14 +44,15 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{product.name}}</h5>
                                     <p class="card-text">{{product.description}}<br>{{product.price}}</p>
-                                   
-                                   <a href="{% url 'products:product_detail' product.product_id %}">view detail</a>
+                                    <a href="{%url 'products:detail' product.product_id%}">view detail</a>
+                               
                                   
                                  
                                 </div>
                             </div>
                         </div> 
-                        {% endfor %}      
+                        {% endfor %}   
+                                 
                     </div>
                     </div>
                 </div>

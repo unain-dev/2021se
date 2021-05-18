@@ -8,12 +8,11 @@ def rings(request) :
    return render(request,'rings.html',{'products_rings':products_rings})
 
 def product_detail(request,product_id):
-   product=get_object_or_404(product,id=product_id)
-   return render(request,'productApp/product_detail.html',{'product':product})
+  
+   product_get=product.objects.filter(product_id=product_id)
+   return render(request, 'detail.html', {'product_get':product_get})
 
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
 
 
 

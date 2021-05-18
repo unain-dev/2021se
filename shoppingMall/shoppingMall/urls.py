@@ -41,7 +41,7 @@ urlpatterns = [
     path('necklace/', productView.necklace, name="necklace"),
     path('hats/', productView.hats, name="hats"),
     path('glasses/', productView.glasses, name="glasses"),
-    path('rings/product_detail/',productView.product_detail,name='product_detail'),
-    
+   
+    path('detail/<int:id>',productView.product_detail, name='detail'),
     #path('notice/', include('noticeApp.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

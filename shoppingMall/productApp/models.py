@@ -32,10 +32,8 @@ class product(models.Model):
     pubDate = models.DateTimeField(default=timezone.now)
     published=models.BooleanField(default=True)
    
-    def get_absolute_url(self):
-        return reverse('products:product_detail',args={'id':self.product_id})
-        
     
+ 
 
     status = models.IntegerField(
         choices=P_range.CHOICES,
