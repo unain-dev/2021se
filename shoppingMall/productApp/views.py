@@ -8,7 +8,6 @@ def rings(request) :
    return render(request,'rings.html',{'products_rings':products_rings})
 
 def product_detail(request,product_id):
-  
    product_get=product.objects.filter(product_id=product_id)
    return render(request, 'detail.html', {'product_get':product_get})
 

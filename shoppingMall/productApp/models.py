@@ -21,7 +21,7 @@ class product(models.Model):
         ('necklace', 'necklace'),
     )
 
-    product_id=models.IntegerField()
+    product_id=models.IntegerField(primary_key=True)
     name=models.CharField(max_length=50)
     image=models.ImageField(blank=True,upload_to="image",null=True)
     price=models.IntegerField()
