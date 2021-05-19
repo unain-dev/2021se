@@ -27,7 +27,31 @@
     </navigator>
     <section>
         this is detail.html
-       
+        <div class="flex-container">
+    
+            <div id="product_num1">
+                {%for product in product_get %}
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            {% for photo in product.photo_set.all %}
+                            <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                            {% endfor %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{product.name}}</h5>
+                                <p class="card-text">{{product.description}}<br>{{product.price}}</p>
+                               
+ 
+          
+                            </div>
+                        </div>
+                    </div> 
+                    {% endfor %}   
+                             
+                </div>
+                </div>
+            </div>
             
+            장바구니 담기 |  바로구매  |  배송지 선택
             </section>
             

@@ -24,11 +24,19 @@
             </ul>
     </navigator>
     <section>
-        <form class="loginForm" action="" method="post">
-            {%csrf_token%}
-            {{form.as_p}}
-        </form>
-    </section>
-    <footer id="footer">2021 SE Project Team 2</footer>
+this is address page.
+
+나의 배송지 목록:
+{%for userAccounts in address_get %}
+<div>
+{% for address in userAccounts.address_set.all %}
+<p>{{userAccounts.title}}</p>
+{% endfor %}
+</div>
+
+{% endfor %}
+
+</section>
 </body>
 </html>
+

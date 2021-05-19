@@ -27,25 +27,27 @@
     </navigator>
     <section>
         this is glasses.html
-            <div class="flex-container">
-                <div id="product_num1">
-                    {%for product in products_glasses %}
-                    <div class="row">
-                      
-
-                        <div class="col-4">
-                            <div class="card">
-                                <!--<img class="card-img-top" src="{{product.image.url}}" alt="Product Image">-->
-                                <div class="card-body">
-                                    <h5 class="card-title">{{product.name}}</h5>
-                                    <p class="card-text">{{product.description}}<span class="badge badge-secondary">{{product.price}}</span></p>
-                                    <!--<a href="{{product.get_url}}"></a>-->
-                                </div>
+        <div class="flex-container">
+    
+            <div id="product_num1">
+                {%for product in products_glasses %}
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">{{product.name}}</h5>
+                                <p class="card-text">{{product.description}}<br>{{product.price}}</p>
+                                <a href="{%url 'products:detail' product.product_id%}">view detail</a>
+                           
+                    
                             </div>
-                        </div> 
-                        {% endfor %}      
-                    </div>
-                    </div>
+                        </div>
+                    </div> 
+                    {% endfor %}   
+                             
                 </div>
+                </div>
+            </div>
             </section>
             

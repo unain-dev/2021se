@@ -33,6 +33,8 @@ urlpatterns = [
     path('category/necklace', shoppingView.necklace, name="necklace"),
    
     path('category/glasses', shoppingView.glasses, name="glasses"),
+  
+    path('address/<str:user_id>', shoppingView.address_view, name="address"),
     
     path('products/', include('productApp.urls', namespace='products')),
     path('rings/', productView.rings, name="rings"),
@@ -42,6 +44,6 @@ urlpatterns = [
     path('hats/', productView.hats, name="hats"),
     path('glasses/', productView.glasses, name="glasses"),
    
-    path('detail/<int:product_id>',productView.product_detail, name='detail'),
+    path('detail/<int:id>',productView.product_detail, name='detail'),
     #path('notice/', include('noticeApp.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

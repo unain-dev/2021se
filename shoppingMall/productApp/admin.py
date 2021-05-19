@@ -10,7 +10,7 @@ admin.site.register(product,productAdmin)
 '''
 from django.contrib import admin
 from django_admin_multiple_choice_list_filter.list_filters import MultipleChoiceListFilter
-from .models import P_range, product
+from .models import P_range, product,Photo
 
 class StatusListFilter(MultipleChoiceListFilter):
     title = 'Price_range'
@@ -18,11 +18,14 @@ class StatusListFilter(MultipleChoiceListFilter):
 
     def lookups(self, request, model_admin):
         return P_range.CHOICES
+class PhotoInline(admin.TabularInline):
+    model = Photo
 
 class productAdmin(admin.ModelAdmin):
     list_display = ['product_id', 'name', 'price', 'stock', 'salesamount']
     search_fields=['product_id', 'name', 'price']
     list_filter = (StatusListFilter, 'category')
+    inlines = [PhotoInline, ]
 
-    
+
 admin.site.register(product, productAdmin)

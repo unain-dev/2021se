@@ -72,7 +72,13 @@
         <br>
         {% elif user.is_authenticated %}
         welcome! {{user.username}}
-        <br><button type="submit"><a href="{% url 'logout'%}">logout</a></button>
+        <div class='mypage'>
+        
+        <a href="{% url 'address' user.username %}">배송지관리</a> | 장바구니 | <a href="{% url 'logout'%}">로그아웃</a>
+
+       
+        
+        </div>
         {% else %}
         <article class="login">
             <form class="loginForm" action="{% url 'userMain' %}" method="post">

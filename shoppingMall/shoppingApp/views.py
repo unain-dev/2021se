@@ -1,6 +1,6 @@
 from django.core import paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import UserAccounts
+from .models import UserAccounts,address
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm#, UserCreationForm
@@ -10,6 +10,7 @@ import re
 from productApp.models import product
 from noticeApp.models import Notice_Event as notice
 from django.core.paginator import Paginator
+
 
 # Create your views here.
 def login_view(request) :
@@ -34,11 +35,10 @@ def login_view(request) :
                 if request.user.is_superuser :
                     return redirect('/admin')
 
-        return redirect("userMain", {'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
+        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
     else :
         form = AuthenticationForm()
         return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
-
 def logout_view(request) :
     logout(request)
     return redirect("userMain")
@@ -105,6 +105,11 @@ def necklace(request) :
 def glasses(request) :
     return render(request, 'glasses.html')
 
+
+
+def address_view(request,user_id):
+   address_get=UserAccounts.objects.filter(user_id=user_id)
+   return render(request, 'address.html', {'address_get':address_get})
 #productlist view
 
 """

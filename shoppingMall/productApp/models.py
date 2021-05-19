@@ -23,7 +23,7 @@ class product(models.Model):
 
     product_id=models.IntegerField(primary_key=True)
     name=models.CharField(max_length=50)
-    image=models.ImageField(blank=True,upload_to="image",null=True)
+   
     price=models.IntegerField()
     description=models.TextField()
     stock=models.IntegerField()
@@ -32,7 +32,9 @@ class product(models.Model):
     pubDate = models.DateTimeField(default=timezone.now)
     published=models.BooleanField(default=True)
    
-    
+class Photo(models.Model):
+    product = models.ForeignKey(product, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='image', blank=True, null=True)
  
 
     status = models.IntegerField(
