@@ -10,7 +10,8 @@ import re
 from productApp.models import product
 from noticeApp.models import Notice_Event as notice
 from django.core.paginator import Paginator
-
+from datetime import datetime
+from django.utils.dateformat import DateFormat
 
 # Create your views here.
 def login_view(request) :
@@ -18,10 +19,20 @@ def login_view(request) :
     products_popular = product.objects.filter(published=True).order_by('-salesamount')[:3]
     #noti_info=notice.objects.filter(on_off=True)
 
-    noti_info_all=notice.objects.all()
+    noti_info_all=notice.objects.filter(on_off=True)
+    for noti in noti_info_all:
+        now=DateFormat(datetime.now()).format('Ymd')
+        dueDate=DateFormat(noti.dueDate).format('Ymd')
+        if int(dueDate)-int(now)>0:
+            pass
+        else:
+            noti.on_off=False
+            noti.save()
+
+    noti_info_all=notice.objects.filter(on_off=True)
     paginator=Paginator(noti_info_all, 1)
     page=request.GET.get('page')
-    noti_info=paginator.get_page(page)
+    noti_info=paginator.get_page(page)    
 
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
@@ -39,6 +50,7 @@ def login_view(request) :
     else :
         form = AuthenticationForm()
         return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
+
 def logout_view(request) :
     logout(request)
     return redirect("userMain")
@@ -67,24 +79,26 @@ def register_view(request):
             return render(request, "error.html", {'errorMsg' : errorMsg})
 
         else: 
-            try :
-                new_userAccounts.user_id = request.POST['new_user_id']
-                new_userAccounts.user_pw = request.POST['new_user_pw']
-                new_userAccounts.user_name = request.POST['new_user_name']
-                new_userAccounts.user_address = request.POST['new_user_address']
-                new_userAccounts.user_email = request.POST['new_user_email']
-                new_userAccounts.user_phone = request.POST['new_user_phone']
-                new_userAccounts.save()
+            #try :
+            new_userAccounts.user_id = request.POST['new_user_id']
+            new_userAccounts.user_pw = request.POST['new_user_pw']
+            new_userAccounts.user_name = request.POST['new_user_name']
+            new_userAccounts.user_address = request.POST['new_user_address']
+            new_userAccounts.user_email = request.POST['new_user_email']
+            new_userAccounts.user_phone = request.POST['new_user_phone']
+            new_userAccounts.save()
 
-                username=request.POST['new_user_id']
-                email = request.POST['new_user_email']
-                password = request.POST['new_user_pw']
-                new_user = User.objects.create_user(username, email, password)
+            username=request.POST['new_user_id']
+            email = request.POST['new_user_email']
+            password = request.POST['new_user_pw']
+            new_user = User.objects.create_user(username, email, password)
 
-                return redirect("userMain")
-            except:
-                errorMsg = "오류가 발생했습니다. 다시 가입해주세요"
-                return render(request, "error.html", {'errorMsg' : errorMsg})
+            user = authenticate(request=request, username=username, password=password)
+            login(request, user)
+            return redirect("userMain")
+            #except:
+            #    errorMsg = "오류가 발생했습니다. 다시 가입해주세요"
+            #    return render(request, "error.html", {'errorMsg' : errorMsg})
     else :
         #form = UserCreateForm()
         return render(request, 'join.html')

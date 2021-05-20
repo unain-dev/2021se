@@ -26,7 +26,7 @@
             </ul>
     </navigator>
     <section>
-        <form action="{% url 'products:search' %}?id=111" method="get">
+        <form action="{% url 'products:search' %}" method="get">
             <input type="text" value="rings" readonly name="search_cateogry">
             <br>상품명으로 검색 : <input type="text" name="search_name">
             <br>최소 가격 : <input type="text" name="search_min">
@@ -45,9 +45,7 @@
                                     <h5 class="card-title">{{product.name}}</h5>
                                     <p class="card-text">{{product.description}}<br>{{product.price}}</p>
                                     <a href="{%url 'products:detail' product.product_id%}">view detail</a>
-                               
-                                  
-                                 
+                                    <br><a href="{%url 'cart:add_cart' product.product_id%}">장바구니 담기</a>
                                 </div>
                             </div>
                         </div> 

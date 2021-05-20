@@ -29,7 +29,7 @@
         <article class="banner">
             {% for noti_info in noti_info %}
                 <div class="imgMax">
-                    <img src="{{ noti_info.images.url }}" width="800" alt="{{ noti_info.title }}">
+                    <a href="{% url 'notice:show_notice' noti_info.noti_event_id %}"><img src="{{ noti_info.images.url }}" width="800" alt="{{ noti_info.title }}"></a>
                 </div>
             </div>
             {% endfor %}
@@ -74,7 +74,7 @@
         welcome! {{user.username}}
         <div class='mypage'>
         
-        <a href="{% url 'address' user.username %}">배송지관리</a> | 장바구니 | <a href="{% url 'logout'%}">로그아웃</a>
+        <a href="{% url 'address' user.username %}">배송지관리</a> | <a href="{% url 'cart:cart_detail'%}">장바구니</a> | <a href="{% url 'logout'%}">로그아웃</a>
 
        
         

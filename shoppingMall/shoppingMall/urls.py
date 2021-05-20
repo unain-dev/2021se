@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path,include
 from shoppingApp import views as shoppingView
 from productApp import views as productView
+#from noticeApp import views as noticeView
 from django.conf import settings
 from django.conf.urls.static import static
 #from noticeApp import views as noticeView
@@ -46,4 +47,7 @@ urlpatterns = [
    
     path('detail/<int:id>',productView.product_detail, name='detail'),
     #path('notice/', include('noticeApp.urls')),
+
+    path('notice/', include('noticeApp.urls', namespace='notice')),
+    path('cart/', include('cartApp.urls', namespace='cart')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
