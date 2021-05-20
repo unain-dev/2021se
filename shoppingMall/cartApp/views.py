@@ -56,7 +56,7 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
 
 def minus_cart_product(request, product_id):
     id=product_id
-    Product=product.objects.get(product_id=id)
+    Product=product.objects.get(product_id=product_id)
     try:
         cart= Cart.objects.get(cart_id=request.session.get('user_id'))
     except Cart.DoesNotExist:
