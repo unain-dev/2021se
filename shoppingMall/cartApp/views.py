@@ -15,14 +15,14 @@ def _cart_id(request):
 @csrf_exempt
 def add_cart(request, product_id):
     id=product_id
-    Product=product.objects.get(product_id=id)
+    Product=product.objects.get(product_id=product_id)
 #def add_cart(request):
 #    Product=product.objects.get(id=request.POST['product_id'])
     try:
-        cart= Cart.objects.get(cart_id=_cart_id(request))
+        cart= Cart.objects.get(cart_id=request.session.get('user_id'))
     except Cart.DoesNotExist:
         cart= Cart.objects.create(
-            cart_id=_cart_id(request)
+            cart_id=request.session.get('user_id')
         )
         cart.save()
     
@@ -42,7 +42,9 @@ def add_cart(request, product_id):
 
 def cart_detail(request, total=0, counter=0, cart_items=None):
     try:
-        cart=Cart.objects.get(cart_id=_cart_id(request))
+        user_id=request.session.get('user_id')
+
+        cart=Cart.objects.get(cart_id=user_id)
         cart_items=CartItem.objects.filter(cart=cart)
         for cart_item in cart_items:
             total+=(cart_item.product.price * cart_item.quantity)
@@ -56,10 +58,10 @@ def minus_cart_product(request, product_id):
     id=product_id
     Product=product.objects.get(product_id=id)
     try:
-        cart= Cart.objects.get(cart_id=_cart_id(request))
+        cart= Cart.objects.get(cart_id=request.session.get('user_id'))
     except Cart.DoesNotExist:
         cart= Cart.objects.create(
-            cart_id=_cart_id(request)
+            cart_id=request.session.get('user_id')
         )
         cart.save()
 

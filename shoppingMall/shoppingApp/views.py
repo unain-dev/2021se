@@ -42,6 +42,7 @@ def login_view(request) :
             user = authenticate(request=request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                request.session['user_id']=request.POST.get('new_user_id', '')
                 
                 if request.user.is_superuser :
                     return redirect('/admin')

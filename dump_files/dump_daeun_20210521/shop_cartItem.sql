@@ -32,7 +32,7 @@ CREATE TABLE `cartItem` (
   KEY `cartItem_product_id_c2bec730_fk_productApp_product_product_id` (`product_id`),
   CONSTRAINT `cartItem_cart_id_ee9df702_fk_Cart_id` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`id`),
   CONSTRAINT `cartItem_product_id_c2bec730_fk_productApp_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `productApp_product` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `cartItem` (
 
 LOCK TABLES `cartItem` WRITE;
 /*!40000 ALTER TABLE `cartItem` DISABLE KEYS */;
-INSERT INTO `cartItem` VALUES (1,1,1,1);
+INSERT INTO `cartItem` VALUES (1,1,1,1),(2,1,2,1),(3,2,2,2);
 /*!40000 ALTER TABLE `cartItem` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-21  1:56:23
+-- Dump completed on 2021-05-21  3:41:28
