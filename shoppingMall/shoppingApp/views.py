@@ -127,6 +127,8 @@ def address_view(request,user_id):
    return render(request, 'address.html', {'address_get':address_get})
 #productlist view
 
+
+
 """
 def product_listview(request):
    products=get_object_or_404(product,id=product_id)

@@ -24,17 +24,45 @@
             </ul>
     </navigator>
     <section>
+
 this is address page.
 
 나의 배송지 목록:
-{%for userAccounts in address_get %}
-<div>
-{% for address in userAccounts.address_set.all %}
-<p>{{userAccounts.title}}</p>
+
+{% if user.is_authenticated %}
+
+
+  {% for userAccounts in address_get %} 
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>{{UserAccounts.title}}</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-primary">추가하기</button>
+    </div>
+  </div>
 {% endfor %}
-</div>
 
 {% endfor %}
+
+{% endif %}
 
 </section>
 </body>
