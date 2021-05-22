@@ -18,11 +18,11 @@
     <navigator>
             <ul id="category">
                
-                <li><a href="{%url 'necklace'%}">necklace</a></li>
-                <li><a href="{%url 'rings'%}">rings</a></li>
+                <li><a href="{%url 'products:necklace'%}">necklace</a></li>
+                <li><a href="{%url 'products:rings'%}">rings</a></li>
                 
-                <li><a href="{%url 'hats'%}">hats</a></li>
-                <li><a href="{%url 'glasses'%}">glasses</a></li>
+                <li><a href="{%url 'products:hats'%}">hats</a></li>
+                <li><a href="{%url 'products:glasses'%}">glasses</a></li>
             </ul>
     </navigator>
     <section>
@@ -33,22 +33,22 @@
             <br>최대 가격 : <input type="text" name="search_max">
             <br><button type="submit">submit</button>
         </form>
-            <div class="flex-container">
-                <div id="product_num1">
-                    {%for product in products %}
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="card">
-                                <!--<img class="card-img-top" src="{{product.image.url}}" alt="Product Image">-->
-                                <div class="card-body">
-                                    <h5 class="card-title">{{product.name}}</h5>
-                                    <p class="card-text">{{product.description}}<span class="badge badge-secondary">{{product.price}}</span></p>
-                                    <!--<a href="{{product.get_url}}"></a>-->
-                                </div>
-                            </div>
-                        </div> 
-                        {% endfor %}      
+        <div id="product_num1">
+            {%for product in products %}
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text">{{product.description}}<br>{{product.price}}</p>
+                            <a href="{%url 'products:detail' product.product_id%}">view detail</a>
+                        </div>
                     </div>
-                    </div>
-                </div>
+                </div> 
+                {% endfor %}   
+                         
+            </div>
+            </div>
+        </div>
             </section>

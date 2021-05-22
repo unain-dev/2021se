@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from shoppingApp import views as shoppingView
-from productApp import views as productView
 #from noticeApp import views as noticeView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,23 +28,9 @@ urlpatterns = [
     path('', shoppingView.login_view, name="userMain"),
     #category 경로-이후에 category table이 필요할까요..?
     
-   
-    path('category/hats', shoppingView.hats, name="hats"),
-    path('category/necklace', shoppingView.necklace, name="necklace"),
-   
-    path('category/glasses', shoppingView.glasses, name="glasses"),
-  
     path('address/<str:user_id>', shoppingView.address_view, name="address"),
     
-    path('products/', include('productApp.urls', namespace='products')),
-    path('rings/', productView.rings, name="rings"),
-
-   
-    path('necklace/', productView.necklace, name="necklace"),
-    path('hats/', productView.hats, name="hats"),
-    path('glasses/', productView.glasses, name="glasses"),
-   
-    path('detail/<int:id>',productView.product_detail, name='detail'),
+    path('products', include('productApp.urls', namespace='products')),
     #path('notice/', include('noticeApp.urls')),
 
     path('notice/', include('noticeApp.urls', namespace='notice')),

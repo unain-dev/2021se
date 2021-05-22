@@ -18,11 +18,11 @@
     <navigator>
             <ul id="category">
                
-                <li><a href="{%url 'necklace'%}">necklace</a></li>
-                <li><a href="{%url 'rings'%}">rings</a></li>
+                <li><a href="{%url 'products:necklace'%}">necklace</a></li>
+                <li><a href="{%url 'products:rings'%}">rings</a></li>
               
-                <li><a href="{%url 'hats'%}">hats</a></li>
-                <li><a href="{%url 'glasses'%}">glasses</a></li>
+                <li><a href="{%url 'products:hats'%}">hats</a></li>
+                <li><a href="{%url 'products:glasses'%}">glasses</a></li>
             </ul>
     </navigator>
     <section>
@@ -45,7 +45,6 @@
                                     <h5 class="card-title">{{product.name}}</h5>
                                     <p class="card-text">{{product.description}}<br>{{product.price}}</p>
                                     <a href="{%url 'products:detail' product.product_id%}">view detail</a>
-                                    <br><a href="{%url 'cart:add_cart' product.product_id%}">장바구니 담기</a>
                                 </div>
                             </div>
                         </div> 

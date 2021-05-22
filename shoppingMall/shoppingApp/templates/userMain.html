@@ -18,11 +18,11 @@
     <navigator>
             <ul id="category">
                
-                <li><a href="{%url 'necklace'%}">necklace</a></li>
-                <li><a href="{%url 'rings'%}">rings</a></li>
+                <li><a href="{%url 'products:necklace'%}">necklace</a></li>
+                <li><a href="{%url 'products:rings'%}">rings</a></li>
                
-                <li><a href="{%url 'hats'%}">hats</a></li>
-                <li><a href="{%url 'glasses'%}">glasses</a></li>
+                <li><a href="{%url 'products:hats'%}">hats</a></li>
+                <li><a href="{%url 'products:glasses'%}">glasses</a></li>
             </ul>
     </navigator>
     <section>
@@ -47,7 +47,7 @@
                 <h3>최근 등록 상품</h3>
                 {% for products_recent in products_recent %}
                 <br>
-                {{products_recent.name}}
+                <a href="{% url 'products:detail' products_recent.product_id %}">{{products_recent.name}}</a>
                 <br>{{products_recent.price}}
                 <br>
                 {% endfor %}
@@ -57,7 +57,7 @@
                 <h3>인기 상품</h3>
                 {% for products_popular in products_popular %}
                 <br>
-                {{products_popular.name}}
+                <a href="{% url 'products:detail' products_popular.product_id %}">{{products_popular.name}}</a>
                 <br>{{products_popular.price}}
                 <br>
                 {% endfor %}

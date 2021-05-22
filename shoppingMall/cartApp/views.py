@@ -15,9 +15,13 @@ def _cart_id(request):
 @csrf_exempt
 def add_cart(request, product_id):
     id=product_id
-    Product=product.objects.get(product_id=product_id)
+    Product=product.objects.get(product_id=id)
 #def add_cart(request):
 #    Product=product.objects.get(id=request.POST['product_id'])
+    if request.session.get('user_id') is None:
+        errorMsg = "로그인 해주세요"
+        return render(request, "error.html", {'errorMsg' : errorMsg})
+
     try:
         cart= Cart.objects.get(cart_id=request.session.get('user_id'))
     except Cart.DoesNotExist:
@@ -41,6 +45,9 @@ def add_cart(request, product_id):
     return redirect('cart:cart_detail')
 
 def cart_detail(request, total=0, counter=0, cart_items=None):
+    if request.session.get('user_id') is None:
+        errorMsg = "로그인 해주세요"
+        return render(request, "error.html", {'errorMsg' : errorMsg})
     try:
         user_id=request.session.get('user_id')
 
