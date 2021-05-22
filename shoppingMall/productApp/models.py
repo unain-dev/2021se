@@ -31,13 +31,13 @@ class product(models.Model):
     category=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     pubDate = models.DateTimeField(default=timezone.now)
     published=models.BooleanField(default=True)
-   
+
+status = models.IntegerField(
+        choices=P_range.CHOICES,
+        default=P_range.OPTION_0
+    )
+    
 class Photo(models.Model):
     product = models.ForeignKey(product, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='image', blank=True, null=True)
  
-
-    status = models.IntegerField(
-        choices=P_range.CHOICES,
-        default=P_range.OPTION_0
-    )

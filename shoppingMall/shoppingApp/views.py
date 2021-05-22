@@ -12,6 +12,7 @@ from noticeApp.models import Notice_Event as notice
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.utils.dateformat import DateFormat
+from django.utils import timezone
 
 # Create your views here.
 def login_view(request) :
@@ -43,14 +44,45 @@ def login_view(request) :
             if user is not None:
                 login(request, user)
                 request.session['user_id']=request.POST.get('new_user_id', '')
-                
+           
                 if request.user.is_superuser :
                     return redirect('/admin')
 
-        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
+        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info })
+    
     else :
         form = AuthenticationForm()
         return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
+'''
+def address_view(request):
+   user_id=request.session.get('user_id')
+   ad=accounts.objects.get(user_id=user_id)
+   address_get=address.objects.filter(accounts=ad)
+   return render(request, 'address.html', {'address_get':address_get} )
+'''
+
+
+def create_view(request):
+    shippings = address.objects
+    return render(request, 'create.html', {'shippings':  shippings })
+
+def postaddress(request):
+    if request.method == 'POST':
+         new_address=address()
+         new_address.title= request.POST['title']
+         new_address.body=request.POST['body']
+         new_address.pub_date= timezone.datetime.now()
+         new_address.save()
+         new_address.delete()
+         return redirect("create")
+    else:
+        new_address = address.objects.all()
+        return render(request, 'create.html', {'new_address':new_address})
+
+def delete(request, address_id):
+    new_address = address.objects.get(id=address_id)
+    new_address.delete()
+    return redirect('/')
 
 def logout_view(request) :
     logout(request)
@@ -94,8 +126,6 @@ def register_view(request):
             password = request.POST['new_user_pw']
             new_user = User.objects.create_user(username, email, password)
 
-            request.session['user_id']=request.POST.get('new_user_id', '')
-
             user = authenticate(request=request, username=username, password=password)
             login(request, user)
             return redirect("userMain")
@@ -124,9 +154,8 @@ def glasses(request) :
 
 
 
-def address_view(request,user_id):
-   address_get=UserAccounts.objects.filter(user_id=user_id)
-   return render(request, 'address.html', {'address_get':address_get})
+
+   
 #productlist view
 
 

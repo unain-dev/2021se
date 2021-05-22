@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 class UserAccounts(models.Model):
     user_id = models.CharField(max_length=100)
@@ -11,11 +11,11 @@ class UserAccounts(models.Model):
 
 
 class address(models.Model):
-    UserAccounts = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, null=True)
+    accounts = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, null=True)
     
     title = models.CharField(max_length=200)
     body=models.TextField()
-
+    pub_date = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.title
 

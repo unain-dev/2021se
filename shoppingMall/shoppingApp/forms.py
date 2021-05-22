@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User # Django내장모델인 'User'를 import
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from .models import UserAccounts,address
  # Django 내장 form인 UserCreationForm 을 import 
 # Django의 내장 form인 UserCreationForm를 상속하여 UserCreateForm 클래스를 작성
 
@@ -24,3 +25,10 @@ class UserCreateForm(UserCreationForm):
 
 		for fieldname in ['username', 'password1', 'password2']:
 			self.fields[fieldname].help_text = None
+
+class addressForm(forms.ModelForm):
+    class Meta:
+        model = address
+        fields = ['title', 'body',]
+
+

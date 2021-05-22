@@ -28,7 +28,9 @@ urlpatterns = [
     path('', shoppingView.login_view, name="userMain"),
     #category 경로-이후에 category table이 필요할까요..?
     
-    path('address/<str:user_id>', shoppingView.address_view, name="address"),
+  
+    path('create/', shoppingView.create_view, name='create'),
+    path('postaddress/',shoppingView.postaddress, name='postaddress'),
     
     path('products', include('productApp.urls', namespace='products')),
     #path('notice/', include('noticeApp.urls')),
@@ -36,3 +38,5 @@ urlpatterns = [
     path('notice/', include('noticeApp.urls', namespace='notice')),
     path('cart/', include('cartApp.urls', namespace='cart')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+''' path('address/', shoppingView.address_view, name="address"),'''
