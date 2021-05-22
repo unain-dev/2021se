@@ -94,6 +94,8 @@ def register_view(request):
             password = request.POST['new_user_pw']
             new_user = User.objects.create_user(username, email, password)
 
+            request.session['user_id']=request.POST.get('new_user_id', '')
+
             user = authenticate(request=request, username=username, password=password)
             login(request, user)
             return redirect("userMain")

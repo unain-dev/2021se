@@ -16,12 +16,12 @@
     </header>
     </header>
     <navigator>
-            <ul id="category">
-                <li><a href="{%url 'necklace'%}">necklace</a></li>
-                <li><a href="{%url 'rings'%}">rings</a></li>
-                <li><a href="{%url 'hats'%}">hats</a></li>
-                <li><a href="{%url 'glasses'%}">glasses</a></li>
-            </ul>
+        <ul id="category">
+            <li><a href="{% url 'products:necklace' %}">necklace</a></li>
+            <li><a href="{% url 'products:rings' %}">rings</a></li>
+            <li><a href="{% url 'products:hats' %}">hats</a></li>
+            <li><a href="{% url 'products:glasses' %}">glasses</a></li>
+        </ul>
     </navigator>
     <section>
         <div>제목 : {{noti_info.title}}</div>

@@ -9,10 +9,13 @@ def rings(request) :
 
 def product_detail(request,product_id):
    product_get=product.objects.filter(product_id=product_id)
-   return render(request, 'detail.html', {'product_get':product_get})
+   tempTotal=0
+   tempCount=0
+   return render(request, 'detail.html', dict(product_get=product_get, tempTotal=tempTotal, tempCount=tempCount))
 
-
-
+def tempCart(request, product_id):
+   product_get=product.objects.filter(product_id=product_id)
+   return render(request, 'detail.html', dict(product_get=product_get))
 
 
 def glasses(request) :
