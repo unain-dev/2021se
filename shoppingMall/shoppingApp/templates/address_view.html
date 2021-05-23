@@ -30,22 +30,20 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">title</th>
-        <th scope="col">body</th>
-        <th scope="col">date</th>
+        <th scope="col">주소 별칭</th>
+        <th scope="col">전체 주소</th>
+        <th scope="col">등록일자</th>
         <th scope="col">#</th>
       </tr>
     </thead>
-    {%for address in shippings %}
     <tbody>
       <tr>
-        <th scope="row">{{address.title}}</th>
-        <td>{{address.body}}</td>
-        
+        <th scope="row">{{address.sum_ad}}</th>
+        <td>{{address.full_ad}}</td>
+        <td>{{address.pubdate}}</td>
         <td><input class="btn btn-dark" type="submit" value="수정하기"></td>
       </tr>
     </tbody>
-    {%  endfor %}
 </table>
 
 
@@ -55,18 +53,18 @@
 
 
 <div class="container">
-	<form action="{% url 'postaddress' %}" method="POST">
+	<form action="{% url 'add_address' %}" method="POST">
         {%csrf_token%}
         
-	  <h4>제목: </h4>
-	  <input type="text" name="title">
+	  <h4>주소 별칭 : </h4>
+	  <input type="text" name="sum_address">
 	  <br>
 	  <br>
-	  <h4>본문: </h4>
-	  <textarea cols=40 rows=10 name="body"></textarea>
+	  <h4>상세 주소: </h4>
+	  <input type="text" name="full_address">
 	  <br>
 	  <br>
-	  <input class="btn btn-dark" type="submit" value="글쓰기">
+	  <input class="btn btn-dark" type="submit" value="주소 등록">
   </form>
 </div>
 

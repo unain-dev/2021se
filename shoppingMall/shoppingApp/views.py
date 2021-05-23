@@ -40,6 +40,9 @@ def login_view(request) :
     products_recent = product.objects.filter(published=True).order_by('pubDate')[:3]
     products_popular = product.objects.filter(published=True).order_by('-salesamount')[:3]
     #noti_info=notice.objects.filter(on_off=True)
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
 
     noti_info_all=notice.objects.filter(on_off=True)
     for noti in noti_info_all:
@@ -64,7 +67,7 @@ def login_view(request) :
             user = authenticate(request=request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                request.session['user_id']=request.POST.get('new_user_id', '')
+                request.session['user_id']=form.cleaned_data.get("username")
            
                 if request.user.is_superuser :
                     return redirect('/admin')
@@ -72,45 +75,15 @@ def login_view(request) :
             errorMsg = "아이디/비밀번호가 틀렸습니다."
             return render(request, "error.html", {'errorMsg' : errorMsg})
 
-        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
-    
-    else :
-        form = AuthenticationForm()
         cart_count=context_processors.counter(request)
         cart_count=int(cart_count)
         count={'cart_count':cart_count}
+        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info, 'count':count})
+    
+    else :
+        form = AuthenticationForm()
         return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info, 'count':count})
         #return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
-'''
-def address_view(request):
-   user_id=request.session.get('user_id')
-   ad=accounts.objects.get(user_id=user_id)
-   address_get=address.objects.filter(accounts=ad)
-   return render(request, 'address.html', {'address_get':address_get} )
-'''
-
-
-def create_view(request):
-    shippings = address.objects
-    return render(request, 'create.html', {'shippings':  shippings })
-
-def postaddress(request):
-    if request.method == 'POST':
-         new_address=address()
-         new_address.title= request.POST['title']
-         new_address.body=request.POST['body']
-         new_address.pub_date= timezone.datetime.now()
-         new_address.save()
-         new_address.delete()
-         return redirect("create")
-    else:
-        new_address = address.objects.all()
-        return render(request, 'create.html', {'new_address':new_address})
-
-def delete(request, address_id):
-    new_address = address.objects.get(id=address_id)
-    new_address.delete()
-    return redirect('/')
 
 def logout_view(request) :
     logout(request)
@@ -156,6 +129,8 @@ def register_view(request):
 
             user = authenticate(request=request, username=username, password=password)
             login(request, user)
+            request.session['user_id']=request.POST.get('new_user_id', '')
+
             return redirect("userMain")
             #except:
             #    errorMsg = "오류가 발생했습니다. 다시 가입해주세요"
@@ -164,24 +139,43 @@ def register_view(request):
         #form = UserCreateForm()
         return render(request, 'join.html')
 
+'''
+def address_view(request):
+   user_id=request.session.get('user_id')
+   ad=accounts.objects.get(user_id=user_id)
+   address_get=address.objects.filter(accounts=ad)
+   return render(request, 'address.html', {'address_get':address_get} )
+'''
 
 
+def create_view(request):
+    uid=request.session.get('user_id')
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    shippings = address.objects.filter(accounts__in=get_user)
+    return render(request, 'create.html', {'shippings':  shippings })
 
-def rings(request) :
-    return render(request, 'rings.html')
+def postaddress(request):
+    uid=request.session.get('user_id')
 
-def hats(request) :
-    return render(request, 'hats.html')
-
-
-def necklace(request) :
-    return render(request, 'necklace.html')
-
-def glasses(request) :
-    return render(request, 'glasses.html')
+    if uid=='':
+        errorMsg = "uid에 아무것도 들어가있지 않습니다."
+        return render(request, "error.html", {'errorMsg' : errorMsg})
 
 
+    new_address=address()
+    new_address.accounts=UserAccounts.objects.get(user_id=uid)
+    new_address.title= request.POST['title']
+    new_address.body=request.POST['body']
+    new_address.pub_date= timezone.datetime.now()
+    new_address.save()
+    return redirect("create")
+    
 
+def delete(request, address_id):
+    new_address = address.objects.get(id=address_id)
+    new_address.delete()
+    return redirect('/')
 
    
 #productlist view
