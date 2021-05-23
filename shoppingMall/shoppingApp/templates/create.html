@@ -36,7 +36,10 @@
         <th scope="col">#</th>
       </tr>
     </thead>
-    {%for address in shippings %}
+    {% if not shippings %}
+    
+    {% else %}
+    {% for address in shippings %}
     <tbody>
       <tr>
         <th scope="row">{{address.title}}</th>
@@ -46,6 +49,7 @@
       </tr>
     </tbody>
     {%  endfor %}
+    {% endif %}
 </table>
 
 

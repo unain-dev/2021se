@@ -153,15 +153,13 @@ def create_view(request):
     get_all=UserAccounts.objects.all()
     get_user=get_all.filter(user_id=uid)
     shippings = address.objects.filter(accounts__in=get_user)
+    if shippings is None:
+        return render(request, 'create.html')
+
     return render(request, 'create.html', {'shippings':  shippings })
 
 def postaddress(request):
     uid=request.session.get('user_id')
-
-    if uid=='':
-        errorMsg = "uid에 아무것도 들어가있지 않습니다."
-        return render(request, "error.html", {'errorMsg' : errorMsg})
-
 
     new_address=address()
     new_address.accounts=UserAccounts.objects.get(user_id=uid)
