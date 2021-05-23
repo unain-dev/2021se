@@ -23,6 +23,9 @@
               
                 <li><a href="{%url 'products:hats'%}">hats</a></li>
                 <li><a href="{%url 'products:glasses'%}">glasses</a></li>
+                <li id="cartMenu">
+                    <a href="{% url 'cart:cart_detail' %}" style="font-size: 12px;">cart({{cart_count}})</a>
+                </li>
             </ul>
     </navigator>
     <section>
@@ -41,14 +44,10 @@
                                 <h5 class="card-title">{{product.name}}</h5>
                                 <p class="card-text">{{product.description}}<br>{{product.price}}</p>
 
-                                <form action="{% url 'products:tempCart' product.product_id %}" method="POST">
-                                    <br>수량 : {{tempCount}}
-                                    <br>총액 : {{tempTotal}}
-                                    <br><button><a href="">plus</a></button>
-                                    <button><a href="">minus</a></button>
-                                    <br><button type="submit">장바구니 담기</button>
+                                <form action="{% url 'cart:detail_add_cart' product.product_id%}" method="POST">
+                                    수량 : <input type="text" name="detail_quantity">
+                                    <button>장바구니 담기</button>
                                 </form>
-
                                 <br> 바로구매
                                 <br> 배송지 선택
                             </div>

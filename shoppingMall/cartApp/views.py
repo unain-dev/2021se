@@ -1,23 +1,24 @@
 from django.contrib.auth import authenticate
-from django.shortcuts import redirect, render
-from productApp.models import product
+from django.shortcuts import redirect, render, get_object_or_404
+from productApp.models import product as Product
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
+from . import context_processors
 
 # Create your views here.
-def _cart_id(request):
-    cart=request.session.session_key
-    if not cart:
-        cart = request.session.create()
-    return cart
+def cart_remove(request, product_id):
+    cart=Cart.objects.get(cart_id = request.session.get('user_id'))
+    product = get_object_or_404(Product, product_id=product_id)
+    cart_item=CartItem.objects.get(product=product, cart=cart)
+    cart_item.delete()
+    return redirect('cart:cart_detail')
 
 @csrf_exempt
-def add_cart(request, product_id):
-    id=product_id
-    Product=product.objects.get(product_id=id)
-#def add_cart(request):
-#    Product=product.objects.get(id=request.POST['product_id'])
+def detail_add_cart(request, product_id):
+    product=Product.objects.get(product_id=product_id)
+    add_quantity=request.POST.get('detail_quantity')
+    add_quantity=int(add_quantity)
     if request.session.get('user_id') is None:
         errorMsg = "로그인 해주세요"
         return render(request, "error.html", {'errorMsg' : errorMsg})
@@ -31,13 +32,46 @@ def add_cart(request, product_id):
         cart.save()
     
     try:
-        cart_item = CartItem.objects.get(product=Product, cart=cart)
+        cart_item = CartItem.objects.get(product=product, cart=cart)
+        if cart_item.quantity < cart_item.product.stock:
+            cart_item.quantity+=add_quantity
+        cart_item.save()
+    except CartItem.DoesNotExist:
+        cart_item=CartItem.objects.create(
+            product=product,
+            quantity=add_quantity,
+            cart=cart
+        )
+        cart_item.save()
+
+    return redirect('cart:cart_detail')
+
+
+
+
+@csrf_exempt
+def add_cart(request, product_id):
+    product=Product.objects.get(product_id=product_id)
+    if request.session.get('user_id') is None:
+        errorMsg = "로그인 해주세요"
+        return render(request, "error.html", {'errorMsg' : errorMsg})
+
+    try:
+        cart= Cart.objects.get(cart_id=request.session.get('user_id'))
+    except Cart.DoesNotExist:
+        cart= Cart.objects.create(
+            cart_id=request.session.get('user_id')
+        )
+        cart.save()
+    
+    try:
+        cart_item = CartItem.objects.get(product=product, cart=cart)
         if cart_item.quantity < cart_item.product.stock:
             cart_item.quantity+=1
         cart_item.save()
     except CartItem.DoesNotExist:
         cart_item=CartItem.objects.create(
-            product=Product,
+            product=product,
             quantity=1,
             cart=cart
         )
@@ -58,12 +92,13 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
             counter += cart_item.quantity
     except ObjectDoesNotExist:
         pass
-
-    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter))
+    
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter, cart_count=cart_count))
 
 def minus_cart_product(request, product_id):
-    id=product_id
-    Product=product.objects.get(product_id=id)
+    product=Product.objects.get(product_id=product_id)
     try:
         cart= Cart.objects.get(cart_id=request.session.get('user_id'))
     except Cart.DoesNotExist:
@@ -73,14 +108,14 @@ def minus_cart_product(request, product_id):
         cart.save()
 
     try:
-        cart_item = CartItem.objects.get(product=Product, cart=cart)
+        cart_item = CartItem.objects.get(product=product, cart=cart)
         if cart_item.quantity<1:
             cart_item.quantity=1
         cart_item.quantity-=1
         cart_item.save()
     except CartItem.DoesNotExist:
         cart_item=CartItem.objects.create(
-            product=Product,
+            product=product,
             quantity=1,
             cart=cart
         )

@@ -1,22 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import product
+from cartApp import context_processors
 # Create your views here.
 
 
 def rings(request) :
    products_rings =product.objects.all().filter(category='rings')
-   return render(request,'rings.html',{'products_rings':products_rings})
+   cart_count=context_processors.counter(request)
+   cart_count=int(cart_count)
+   count={'cart_count':cart_count}
+   return render(request,'rings.html',{'products_rings':products_rings, 'count':count})
 
 def product_detail(request,product_id):
    product_get=product.objects.filter(product_id=product_id)
-   tempTotal=0
-   tempCount=0
-   return render(request, 'detail.html', dict(product_get=product_get, tempTotal=tempTotal, tempCount=tempCount))
-
-def tempCart(request, product_id):
-   product_get=product.objects.filter(product_id=product_id)
-   return render(request, 'detail.html', dict(product_get=product_get))
-
+   cart_count=context_processors.counter(request)
+   cart_count=int(cart_count)
+   return render(request, 'detail.html', dict(product_get=product_get, cart_count=cart_count))
 
 def glasses(request) :
    products_glasses =product.objects.all().filter(category='glasses')

@@ -25,6 +25,9 @@
            
             <li><a href="{%url 'products:hats'%}">hats</a></li>
             <li><a href="{%url 'products:glasses'%}">glasses</a></li>
+            <li id="cartMenu">
+                <a href="{% url 'cart:cart_detail' %}" style="font-size: 12px;">cart({{count.cart_count}})</a>
+            </li>
         </ul>
 </navigator>
     <section>

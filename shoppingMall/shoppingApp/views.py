@@ -13,6 +13,27 @@ from django.core.paginator import Paginator
 from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
+from cartApp import context_processors
+
+from cartApp.models import Cart, CartItem
+
+"""
+def counter(request):
+    item_count=0
+    if 'admin' in request.path:
+        return {}
+    else:
+        try:
+            cart= Cart.objects.filter(cart_id=request.session.get('user_id'))
+            cart_items = CartItem.objects.all().filter(cart=cart[:1])
+            for cart_item in cart_items:
+                item_count+=cart_item.quantity
+        except Cart.DoesNotExist:
+            item_count=0
+        
+    return item_count
+"""
+
 
 # Create your views here.
 def login_view(request) :
@@ -47,12 +68,19 @@ def login_view(request) :
            
                 if request.user.is_superuser :
                     return redirect('/admin')
+        else:
+            errorMsg = "아이디/비밀번호가 틀렸습니다."
+            return render(request, "error.html", {'errorMsg' : errorMsg})
 
-        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info })
+        return render(request, "userMain.html", { 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
     
     else :
         form = AuthenticationForm()
-        return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
+        cart_count=context_processors.counter(request)
+        cart_count=int(cart_count)
+        count={'cart_count':cart_count}
+        return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info, 'count':count})
+        #return render(request, "userMain.html", {'form': form, 'products_recent':products_recent, 'products_popular':products_popular, 'noti_info':noti_info})
 '''
 def address_view(request):
    user_id=request.session.get('user_id')

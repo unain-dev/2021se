@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'productApp',
     'noticeApp',
     'django_admin_multiple_choice_list_filter',
-    'cartApp'
+    'cartApp',
+#    'cartApp.context_processors.counter',
 ]
 
 MIDDLEWARE = [

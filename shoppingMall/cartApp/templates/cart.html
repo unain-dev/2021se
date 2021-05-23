@@ -21,6 +21,9 @@
                 <li><a href="{%url 'products:rings'%}">rings</a></li>
                 <li><a href="{%url 'products:hats'%}">hats</a></li>
                 <li><a href="{%url 'products:glasses'%}">glasses</a></li>
+                <li id="cartMenu">
+                    <a href="{% url 'cart:cart_detail' %}" style="font-size: 12px;">cart({{cart_count}})</a>
+                </li>
             </ul>
     </navigator>
     <section>
@@ -65,6 +68,7 @@
                         <td>
                             <a href="{% url 'cart:add_cart' cart_item.product.product_id %}">plus</a>
                             <br><a href="{% url 'cart:minus_cart_product' cart_item.product.product_id %}">minus</a>
+                            <br><a href="{% url 'cart:cart_remove' cart_item.product.product_id %}">remove</a>
                             <br>
                         </td>
                     </tr>
