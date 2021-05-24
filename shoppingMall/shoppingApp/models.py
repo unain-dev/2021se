@@ -14,8 +14,12 @@ class address(models.Model):
     accounts = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, null=True)
     
     title = models.CharField(max_length=200)
-    body=models.TextField()
-    pub_date = models.DateTimeField(default=timezone.now)
+
+    post_num= models.CharField(max_length=200,null=True)
+    road_address=models.CharField(max_length=200,null=True)
+    detail_address=models.TextField()
+
+  
     def __str__(self):
         return self.title
 

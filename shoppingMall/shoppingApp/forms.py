@@ -29,6 +29,6 @@ class UserCreateForm(UserCreationForm):
 class addressForm(forms.ModelForm):
     class Meta:
         model = address
-        fields = ['title', 'body',]
+        fields = ['title', 'post_num','road_address','detail_address']
 
 

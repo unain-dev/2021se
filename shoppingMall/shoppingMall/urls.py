@@ -31,6 +31,8 @@ urlpatterns = [
   
     path('create/', shoppingView.create_view, name='create'),
     path('postaddress/',shoppingView.postaddress, name='postaddress'),
+    path('delete/<int:pk>/delete', shoppingView.delete, name='delete'),
+   
     
     path('products', include('productApp.urls', namespace='products')),
     #path('notice/', include('noticeApp.urls')),
