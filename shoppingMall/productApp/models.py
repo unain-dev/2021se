@@ -40,4 +40,3 @@ status = models.IntegerField(
 class Photo(models.Model):
     product = models.ForeignKey(product, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='image', blank=True, null=True)
- 

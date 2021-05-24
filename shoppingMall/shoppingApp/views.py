@@ -160,20 +160,26 @@ def create_view(request):
 
 def postaddress(request):
     uid=request.session.get('user_id')
-
+  
     new_address=address()
     new_address.accounts=UserAccounts.objects.get(user_id=uid)
     new_address.title= request.POST['title']
-    new_address.body=request.POST['body']
-    new_address.pub_date= timezone.datetime.now()
+    new_address.post_num=request.POST['post_num']
+    new_address.road_address=request.POST['road_address']
+    new_address.detail_address=request.POST['road_address']
+
+  
     new_address.save()
     return redirect("create")
     
 
-def delete(request, address_id):
-    new_address = address.objects.get(id=address_id)
-    new_address.delete()
-    return redirect('/')
+def delete(request,pk):
+    if request.method == 'POST':
+     new_address = address.objects.get(pk=pk)
+     new_address.delete()
+    return redirect('create')
+
+
 
    
 #productlist view
