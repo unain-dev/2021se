@@ -32,8 +32,10 @@ urlpatterns = [
     path('create/', shoppingView.create_view, name='create'),
     path('postaddress/',shoppingView.postaddress, name='postaddress'),
     path('delete/<int:pk>/delete', shoppingView.delete, name='delete'),
+    path('edit/<int:pk>', shoppingView.edit, name='edit'),
+    path('editsave/', shoppingView.editsave, name='editsave'),
    
-    
+    path('newpost/', shoppingView.newpost, name='newpost'),
     path('products', include('productApp.urls', namespace='products')),
     #path('notice/', include('noticeApp.urls')),
 

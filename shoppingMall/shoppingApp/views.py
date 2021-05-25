@@ -166,7 +166,7 @@ def postaddress(request):
     new_address.title= request.POST['title']
     new_address.post_num=request.POST['post_num']
     new_address.road_address=request.POST['road_address']
-    new_address.detail_address=request.POST['road_address']
+    new_address.detail_address=request.POST['detail_address']
 
   
     new_address.save()
@@ -178,6 +178,34 @@ def delete(request,pk):
      new_address = address.objects.get(pk=pk)
      new_address.delete()
     return redirect('create')
+
+
+def editsave(request):
+    
+     u_pk=request.session.get('pk')
+     u_address = address.objects.filter(pk=u_pk)
+     
+     
+     u_title= request.POST['title']
+     u_post_num=request.POST['post_num']
+     u_road_address=request.POST['road_address']
+     u_detail_address=request.POST['detail_address']
+     u_address.title= u_title
+     u_address.post_num=u_post_num
+     u_address.road_address= u_road_address
+     u_address.detail_address= u_detail_address
+   
+     u_address.save()
+     return redirect("create")
+
+
+
+def newpost(request):
+    return render(request,'newpost.html')
+
+def edit(request,pk):
+    u_address = address.objects.filter(pk=pk)
+    return render(request,'edit.html' ,{'u_address':u_address})
 
 
 
