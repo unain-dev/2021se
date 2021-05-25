@@ -22,20 +22,4 @@ class address(models.Model):
   
     def __str__(self):
         return self.title
-
-'''
-class address(models.Model):
-    title       = models.CharField(max_length=200, verbose_name="제목")
-    contents    = models.TextField(verbose_name="내용")
-
-    created_at  = models.DateTimeField(auto_now_add=True, verbose_name="작성일")
-    updated_at  = models.DateTimeField(auto_now=True, verbose_name="최종수정일")
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        db_table            = 'address'
-        verbose_name        = '주소'
-        verbose_name_plural = '주소'
-        '''
+    

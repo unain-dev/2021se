@@ -17,22 +17,6 @@ from cartApp import context_processors
 
 from cartApp.models import Cart, CartItem
 
-"""
-def counter(request):
-    item_count=0
-    if 'admin' in request.path:
-        return {}
-    else:
-        try:
-            cart= Cart.objects.filter(cart_id=request.session.get('user_id'))
-            cart_items = CartItem.objects.all().filter(cart=cart[:1])
-            for cart_item in cart_items:
-                item_count+=cart_item.quantity
-        except Cart.DoesNotExist:
-            item_count=0
-        
-    return item_count
-"""
 
 
 # Create your views here.
@@ -139,16 +123,13 @@ def register_view(request):
         #form = UserCreateForm()
         return render(request, 'join.html')
 
-'''
-def address_view(request):
-   user_id=request.session.get('user_id')
-   ad=accounts.objects.get(user_id=user_id)
-   address_get=address.objects.filter(accounts=ad)
-   return render(request, 'address.html', {'address_get':address_get} )
-'''
 
 
 def create_view(request):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
     uid=request.session.get('user_id')
     get_all=UserAccounts.objects.all()
     get_user=get_all.filter(user_id=uid)
@@ -156,7 +137,7 @@ def create_view(request):
     if shippings is None:
         return render(request, 'create.html')
 
-    return render(request, 'create.html', {'shippings':  shippings })
+    return render(request, 'create.html', {'shippings':  shippings, 'count':count})
 
 def postaddress(request):
     uid=request.session.get('user_id')
@@ -182,40 +163,45 @@ def delete(request,pk):
 
 def editsave(request):
     
-     u_pk=request.session.get('pk')
-     u_address = address.objects.filter(pk=u_pk)
-     
-     
-     u_title= request.POST['title']
-     u_post_num=request.POST['post_num']
-     u_road_address=request.POST['road_address']
-     u_detail_address=request.POST['detail_address']
-     u_address.title= u_title
-     u_address.post_num=u_post_num
-     u_address.road_address= u_road_address
-     u_address.detail_address= u_detail_address
-   
-     u_address.save()
-     return redirect("create")
+    if request.method == 'POST' :
+        pk=request.session.get('edit_ad')
+
+        uid=request.session.get('user_id')
+        get_all=UserAccounts.objects.all()
+        get_user=get_all.filter(user_id=uid)
+        u_address = address.objects.get(accounts__in=get_user, pk=pk)
+
+        u_title= request.POST['title']
+        u_post_num=request.POST['post_num']
+        u_road_address=request.POST['road_address']
+        u_detail_address=request.POST['detail_address']
+        u_address.title= u_title
+        u_address.post_num=u_post_num
+        u_address.road_address= u_road_address
+        u_address.detail_address= u_detail_address
+
+        u_address.save()
+    return redirect("create")
 
 
 
 def newpost(request):
-    return render(request,'newpost.html')
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    return render(request,'newpost.html', {'count':count})
 
 def edit(request,pk):
-    u_address = address.objects.filter(pk=pk)
-    return render(request,'edit.html' ,{'u_address':u_address})
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
 
+    uid=request.session.get('user_id')
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    u_address = address.objects.get(accounts__in=get_user, pk=pk)
 
+    request.session['edit_ad']=pk
 
-   
-#productlist view
-
-
-
-"""
-def product_listview(request):
-   products=get_object_or_404(product,id=product_id)
-   return render(request,'glasses.html',{'products':products})
-"""
+    return render(request,'edit.html' ,{'u_address':u_address, 'count':count})

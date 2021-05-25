@@ -52,6 +52,11 @@
              
               <li><a href="{%url 'products:hats'%}">hats</a></li>
               <li><a href="{%url 'products:glasses'%}">glasses</a></li>
+              {% if user.is_authenticated %}
+                <li id="cartMenu">
+                    <a href="{% url 'cart:cart_detail' %}" style="font-size: 12px;">cart({{count.cart_count}})</a>
+                </li>
+                {% endif %}
             </ul>
     </navigator>
     <section>
@@ -83,7 +88,7 @@
     />
     </div>
     <div class="col-md-3 postcode-btn">
-        <input class="btn btn-dark" type="submit"  value="우편번호찾기" onclick="execDaumPostcode()">
+        <input class="btn btn-dark" type="button"  value="우편번호찾기" onclick="execDaumPostcode()">
         
       </div>
     <div class="col-md-6">
@@ -98,7 +103,7 @@
     />
     </div>
     <div class="col-12">
-      <label for="inputAddress" class="form-label">Address</label>
+      <label for="inputAddress" class="form-label">상세주소</label>
       <input
       type="text"
       class="form-control"
@@ -121,8 +126,8 @@
    
    
 
-  <input class="btn btn-dark" type="submit" value="save">
-</form>
+    <input class="btn btn-dark" type="submit" value="save">
+  </form>
 </div>
 </section>
 </body>

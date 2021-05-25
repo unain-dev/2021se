@@ -52,6 +52,11 @@
              
               <li><a href="{%url 'products:hats'%}">hats</a></li>
               <li><a href="{%url 'products:glasses'%}">glasses</a></li>
+              {% if user.is_authenticated %}
+                <li id="cartMenu">
+                    <a href="{% url 'cart:cart_detail' %}" style="font-size: 12px;">cart({{count.cart_count}})</a>
+                </li>
+                {% endif %}
             </ul>
     </navigator>
     <section>
@@ -84,8 +89,7 @@
           {%csrf_token%}
         <td><input class="btn btn-dark" type="submit" value="삭제하기" ></td>
         </form>
-        <td>
-        <a href="{%url 'edit' address.pk%}">수정하기</a></td>
+        <td><button type="button"><a href="{%url 'edit' address.pk%}">수정하기</a></button></td>
     </tbody>
     {%  endfor %}
 
