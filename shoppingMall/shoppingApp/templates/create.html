@@ -10,7 +10,8 @@
         <th scope="col">title</th>
         <th scope="col">우편번호</th>
         <th scope="col">도로명주소</th>
-        <th scope="col">상세주소</th>
+        <th scope="col">받으시는 분</th>
+        <th scope="col">연락처</th>
         <th scope="col"></th>
         <th scope="col"></th>
 
@@ -23,7 +24,8 @@
         <th scope="row">{{address.title}}</th>
         <td>{{address.post_num}}</td>
         <td>{{address.road_address}}</td>
-        <td>{{address.detail_address}}</td>
+        <td>{{address.post_name}}</td>
+        <td>{{address.post_phonenum}}</td>
         
         <form action="{% url 'delete' address.pk%}" method="POST">
           {%csrf_token%}

@@ -148,6 +148,8 @@ def postaddress(request):
     new_address.post_num=request.POST['post_num']
     new_address.road_address=request.POST['road_address']
     new_address.detail_address=request.POST['detail_address']
+    new_address.post_name=request.POST['post_name']
+    new_address.post_phonenum=request.POST['post_phonenum']
 
   
     new_address.save()
@@ -175,10 +177,14 @@ def editsave(request):
         u_post_num=request.POST['post_num']
         u_road_address=request.POST['road_address']
         u_detail_address=request.POST['detail_address']
+        u_post_name=request.POST['post_name']
+        u_post_phonenum=request.POST['post_phonenum']
         u_address.title= u_title
         u_address.post_num=u_post_num
         u_address.road_address= u_road_address
         u_address.detail_address= u_detail_address
+        u_address.post_name= u_post_name
+        u_address.post_phonenum= u_post_phonenum
 
         u_address.save()
     return redirect("create")

@@ -22,7 +22,7 @@ class PhotoInline(admin.TabularInline):
     model = Photo
 
 class productAdmin(admin.ModelAdmin):
-    list_display = ['product_id', 'name', 'price', 'stock', 'salesamount']
+    list_display = ['product_id', 'name', 'price', 'stock', 'salesamount','thumbnail']
     search_fields=['product_id', 'name', 'price']
     list_filter = (StatusListFilter, 'category')
     inlines = [PhotoInline, ]

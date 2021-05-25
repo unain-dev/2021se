@@ -1,6 +1,7 @@
 from django.urls import path
 from productApp import views
-
+from django.conf.urls.static import static
+from django.conf import settings
 app_name='products'
 urlpatterns = [
     path('rings/',views.rings, name='rings'),
@@ -13,4 +14,4 @@ urlpatterns = [
     #path('tempAdd/<int:product_id>', views.tempAdd, name="tempAdd"),
     #path('tempMinus/<int:product_id>', views.tempMinus, name="tempMinus"),
 
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -14,10 +14,12 @@ class address(models.Model):
     accounts = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, null=True)
     
     title = models.CharField(max_length=200)
-
     post_num= models.CharField(max_length=200,null=True)
     road_address=models.CharField(max_length=200,null=True)
     detail_address=models.TextField()
+    post_name=models.CharField(max_length=20,null=True)
+    post_phonenum=models.IntegerField(null=True)
+
 
   
     def __str__(self):

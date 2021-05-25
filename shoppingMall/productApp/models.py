@@ -23,6 +23,7 @@ class product(models.Model):
 
     product_id=models.IntegerField(primary_key=True)
     name=models.CharField(max_length=50)
+    thumbnail=models.ImageField(upload_to='thumbnail/', blank=True, null=True)
    
     price=models.IntegerField()
     description=models.TextField()
@@ -32,11 +33,15 @@ class product(models.Model):
     pubDate = models.DateTimeField(default=timezone.now)
     published=models.BooleanField(default=True)
 
-status = models.IntegerField(
+    status = models.IntegerField(
         choices=P_range.CHOICES,
         default=P_range.OPTION_0
     )
+    def __str__(self):
+      return str(product.name)
+
+
     
 class Photo(models.Model):
     product = models.ForeignKey(product, on_delete=models.CASCADE, null=True)
-    image = models.ImageField(upload_to='image', blank=True, null=True)
+    image = models.ImageField(upload_to='image/', blank=True, null=True)
