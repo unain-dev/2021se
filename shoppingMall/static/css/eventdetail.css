@@ -1,0 +1,136 @@
+
+header{
+    margin-top: 20px;
+    position: fixed;
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    z-index: 2;
+    background-color: #fff;
+}
+
+#category{
+    position: fixed;
+    top: 110px;
+    list-style: none;
+    height: 90px;
+    width: 100%;
+    padding: 5px 1px;
+    margin: 0;
+    background: #46301B;
+    text-align: center;
+    z-index: 2;
+}
+#category2{
+    position: fixed;
+    top: 200px;
+    list-style: none;
+    height: 90px;
+    width: 200px;
+    height:100%;
+    padding: 5px 1px;
+    margin: 0;
+    background:#ECDFC6;
+    text-align: center;
+    z-index: 2;
+}
+
+#category li {
+    position: relative;
+    display: inline-block;
+    margin: 5px 30px;
+    padding: 0;
+}
+#category li a{
+    display: block;
+    position: relative;
+    width: 50%;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 7px 8px;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+#category2 li {
+    position: relative;
+    display: inline-block;
+    margin: 5px 10px;
+    padding: 0px;
+}
+#category2 li a{
+    display: block;
+    position: relative;
+    width: 100%;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 7px 8px;
+    color: #46301B;
+    text-decoration: none;
+    cursor: pointer;
+}
+#v-pills-home{
+color:#f0c98e;
+
+}
+#eventlist{
+border:1px;
+padding:20px;
+width:100%;
+}
+
+section {
+   position:absolute;
+    top: 100px;
+    height: 500px;
+padding-top:150px;
+padding-left:100px;
+padding-right:50px ;
+padding-bottom:100px;
+    width: 90%;
+    margin-left: 200px;
+    background-color: #FAEBD7;
+
+}
+#eventform{
+    background-color: #ECDFC6;
+    position:absolute;
+    width:90%;
+}
+form{
+    padding:10px;
+    width:90%%;
+}
+#dateinput{
+margin-top:20px;
+background-color:#E9ECEF;
+}
+.banner {
+    float: left;
+    position: relative;
+    margin-left: 30px;
+    top: 25px;
+    height: 400px;
+    width: 870px;
+    background-color: #FFF;
+}
+.imgMax {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 870px;
+    height: 400px;
+}
+
+
+#footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 2px 0;
+    color: #46301B;
+    background-color: #FFF;
+}
+

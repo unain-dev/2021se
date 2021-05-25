@@ -95,7 +95,8 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
     
     cart_count=context_processors.counter(request)
     cart_count=int(cart_count)
-    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter, cart_count=cart_count))
+    count={'cart_count':cart_count}
+    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, count=count, cart_count=cart_count))
 
 def minus_cart_product(request, product_id):
     product=Product.objects.get(product_id=product_id)
