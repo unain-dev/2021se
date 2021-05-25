@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+
 class P_range(object):
     OPTION_0, OPTION_1, OPTION_2, OPTION_3, OPTION_4, OPTION_5 = range(0, 6)
 
@@ -37,11 +38,13 @@ class product(models.Model):
         choices=P_range.CHOICES,
         default=P_range.OPTION_0
     )
-    def __str__(self):
-      return str(product.name)
+
 
 
     
 class Photo(models.Model):
     product = models.ForeignKey(product, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='image/', blank=True, null=True)
+    
+    def __str__(self):
+      return str(self.product.name)

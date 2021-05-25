@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import product
+from .models import product, Photo
 from cartApp import context_processors
 # Create your views here.
 
@@ -10,42 +10,17 @@ def move_category(request, category):
    count={'cart_count':cart_count}
    return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category })
 
-def rings(request) :
-   products_rings =product.objects.all().filter(category='rings')
-   cart_count=context_processors.counter(request)
-   cart_count=int(cart_count)
-   count={'cart_count':cart_count}
-   return render(request,'rings.html',{'products_rings':products_rings, 'count':count})
-
 def product_detail(request,product_id):
    product_get=product.objects.filter(product_id=product_id)
    cart_count=context_processors.counter(request)
    cart_count=int(cart_count)
    count={'cart_count':cart_count}
 
-   return render(request, 'detail.html',{'product_get':product_get, 'count':count})
+   photo_all=product.objects.all()
+   photo_set=photo_all.filter(product_id=product_id)
+   photo_get=Photo.objects.filter(product__in=photo_set)
 
-def glasses(request) :
-   cart_count=context_processors.counter(request)
-   cart_count=int(cart_count)
-   count={'cart_count':cart_count}
-   products_glasses =product.objects.all().filter(category='glasses')
-   return render(request,'glasses.html',{'products_glasses':products_glasses, 'count':count})
-
-
-def necklace(request) :
-   cart_count=context_processors.counter(request)
-   cart_count=int(cart_count)
-   count={'cart_count':cart_count}
-   products_necklace =product.objects.all().filter(category='necklace')
-   return render(request,'necklace.html',{'products_necklace':products_necklace, 'count':count})
-
-def hats(request) :
-   cart_count=context_processors.counter(request)
-   cart_count=int(cart_count)
-   count={'cart_count':cart_count}
-   products_hats =product.objects.all().filter(category='hats')
-   return render(request,'hats.html',{'products_hats':products_hats, 'count':count})
+   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
 
 def search(request):
    cart_count=context_processors.counter(request)

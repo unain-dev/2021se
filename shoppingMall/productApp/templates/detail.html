@@ -9,8 +9,8 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="card">
-                            {% for photo in product.photo_set.all %}
-                            <img class="card-img-top" src="{{product.image.url}}" alt="Product Image">
+                            {% for photo in photo_get %}
+                            <img class="card-img-top" src="{{photo.image.url}}" alt="Product Image">
                             {% endfor %}
                             <div class="card-body">
                                 <h5 class="card-title">{{product.name}}</h5>
