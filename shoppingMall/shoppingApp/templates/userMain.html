@@ -22,6 +22,7 @@
                 <h3>최근 등록 상품</h3>
                 {% for products_recent in products_recent %}
                 <br>
+                <img class="card-img-top" src="{{products_recent.thumbnail.url}}" alt="Product Image" sytle="width:100;">
                 <a href="{% url 'products:detail' products_recent.product_id %}">{{products_recent.name}}</a>
                 <br>{{products_recent.price}}
                 <br>
@@ -32,6 +33,7 @@
                 <h3>인기 상품</h3>
                 {% for products_popular in products_popular %}
                 <br>
+                <img class="card-img-top" src="{{products_popular.thumbnail.url}}" alt="Product Image" sytle="width:50px;">
                 <a href="{% url 'products:detail' products_popular.product_id %}">{{products_popular.name}}</a>
                 <br>{{products_popular.price}}
                 <br>

@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'shoppingMall.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -98,6 +98,7 @@ DATABASES = {
        'PORT': '',
    }
 }
+'''
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -142,7 +143,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
+'''
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -152,3 +153,4 @@ AWS_SECRET_ACCESS_KEY='z6LRI2GsL+nPJbVMXiRiAToLMRCBBEzCigCnSmMP'
 AWS_STORAGE_BUCKET_NAME='se-realease-bucket'
 AWS_S3_SIGNATURE_VERSION='s3v4'
 AWS_S3_REGION_NAME='ap-northeast-2'
+'''
