@@ -19,6 +19,7 @@ class address(models.Model):
     detail_address=models.TextField()
     post_name=models.CharField(max_length=20,null=True)
     post_phonenum=models.IntegerField(null=True)
+    is_default = models.BooleanField(default=False,null=True)
 
 
   

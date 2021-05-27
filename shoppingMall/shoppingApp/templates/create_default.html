@@ -2,18 +2,20 @@
 {% block content %}
 <section>
 <div>
-<h3>나의 배송지 목록</h3><br> 
-<a href="{%url 'newpost' %}">배송지 추가</a>
+<h3>기본배송지 선택</h3><br> 
+<form action="{% url 'create_default' %}" method="POST">
+    {%csrf_token%}
 <table class="table">
     <thead>
       <tr>
+        <th scope="col"></th>
         <th scope="col">title</th>
         <th scope="col">우편번호</th>
         <th scope="col">도로명주소</th>
         <th scope="col">받으시는 분</th>
         <th scope="col">연락처</th>
         <th scope="col"></th>
-        <th scope="col"></th>
+       
 
       </tr>
     </thead>
@@ -21,21 +23,22 @@
     {% for address in shippings %}
     <tbody>
       <tr>
+        <td> <input type = "checkbox" name ="is_default" value={{address.title}} ></td>
+        
         <th scope="row">{{address.title}}</th>
         <td>{{address.post_num}}</td>
         <td>{{address.road_address}}</td>
         <td>{{address.post_name}}</td>
         <td>{{address.post_phonenum}}</td>
         
-        <form action="{% url 'delete' address.pk%}" method="POST">
-          {%csrf_token%}
-        <td><input class="btn btn-dark" type="submit" value="삭제하기" ></td>
-        </form>
-        <td><button type="button"><a href="{%url 'edit' address.pk%}">수정하기</a></button></td>
+        
     </tbody>
     {%  endfor %}
+ 
 
 </table>
+<input class="btn btn-dark" type="submit" value="save">
+</form>
 </div>
 
 </section>

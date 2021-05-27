@@ -30,6 +30,7 @@ urlpatterns = [
     
   
     path('create/', shoppingView.create_view, name='create'),
+    path('detail/create_default/', shoppingView.create_default, name='create_default'),
     path('postaddress/',shoppingView.postaddress, name='postaddress'),
     path('delete/<int:pk>/delete', shoppingView.delete, name='delete'),
     path('edit/<int:pk>', shoppingView.edit, name='edit'),
