@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'noticeApp',
     'django_admin_multiple_choice_list_filter',
     'cartApp',
+    'orderApp',
 #    'cartApp.context_processors.counter',
 ]
 
