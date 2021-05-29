@@ -6,6 +6,21 @@ from django.core.exceptions import ObjectDoesNotExist
 import requests
 
 # Create your views here.
+def get_items(request, total=0, counter=0):
+    uid=request.session.get('user_id')
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    shippings = address.objects.filter(accounts__in=get_user)
+
+    user_id=request.session.get('user_id')
+    cart=Cart.objects.get(cart_id=user_id)
+    cart_items=CartItem.objects.filter(cart=cart)
+    for cart_item in cart_items:
+        total+=(cart_item.product.price * cart_item.quantity)
+        counter += cart_item.quantity
+
+    return shippings, total, counter
+
 def order_check(request, total=0, counter=0, cart_items=None):
     if request.session.get('user_id') is None:
         errorMsg = "로그인 해주세요"
