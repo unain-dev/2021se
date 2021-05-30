@@ -3,8 +3,7 @@
 <section>
 <div>
 <h3>기본배송지 선택</h3><br> 
-<form action="{% url 'create_default' %}" method="POST">
-    {%csrf_token%}
+
 <table class="table">
     <thead>
       <tr>
@@ -19,11 +18,12 @@
 
       </tr>
     </thead>
- 
+    <form action="{% url 'create_defaultsave' %}" method="POST">
+      {%csrf_token%}
     {% for address in shippings %}
     <tbody>
       <tr>
-        <td> <input type = "checkbox" name ="is_default" value={{address.title}} ></td>
+        <td> <label for="is_default"><input type = "radio" name ="is_default" value="{{address.pk}}"></label></td>
         
         <th scope="row">{{address.title}}</th>
         <td>{{address.post_num}}</td>

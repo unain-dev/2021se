@@ -139,25 +139,36 @@ def create_view(request):
 
     return render(request, 'create.html', {'shippings':  shippings, 'count':count})
     
-def create_default(request):
-    if request.method == 'POST':
-     
-     
+def create_defaultsave(request):
+    
+    if request.method == 'POST' :
      uid=request.session.get('user_id')
      get_all=UserAccounts.objects.all()
      get_user=get_all.filter(user_id=uid)
      shippings = address.objects.filter(accounts__in=get_user)
     
-    
-     selected_title = request.POST.get('is_default')
-     n_address=address.objects.get(title=selected_title)
+     old_address=shippings.get(is_default='True')
+     if old_address is not None:
+        old_address.is_default='False'
+        old_address.save()
+
+     n_pk = request.POST.get('is_default') 
+     n_address=shippings.get(pk=n_pk)
      n_address.is_default=True
      n_address.save()
-
-    return render(request,'create_default.html')
-  
     
+      
+    return render(request,'create.html',{'shippings':  shippings})
 
+def create_default(request):
+    uid=request.session.get('user_id')
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    shippings = address.objects.filter(accounts__in=get_user)
+
+    return render(request,'create_default.html',{'shippings':  shippings} )
+    
+ 
 
 def postaddress(request):
     uid=request.session.get('user_id')

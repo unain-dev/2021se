@@ -4,6 +4,7 @@
 <div>
 <h3>나의 배송지 목록</h3><br> 
 <a href="{%url 'newpost' %}">배송지 추가</a>
+<a href="{%url 'create_default' %}">기본배송지 선택</a>
 <table class="table">
     <thead>
       <tr>
@@ -26,6 +27,7 @@
         <td>{{address.road_address}}</td>
         <td>{{address.post_name}}</td>
         <td>{{address.post_phonenum}}</td>
+        <td>{{address.is_default}}</td>
         
         <form action="{% url 'delete' address.pk%}" method="POST">
           {%csrf_token%}
