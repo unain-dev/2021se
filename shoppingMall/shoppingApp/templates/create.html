@@ -13,6 +13,7 @@
         <th scope="col">도로명주소</th>
         <th scope="col">받으시는 분</th>
         <th scope="col">연락처</th>
+        <th scope="col">기본배송지</th>
         <th scope="col"></th>
         <th scope="col"></th>
 
@@ -27,8 +28,11 @@
         <td>{{address.road_address}}</td>
         <td>{{address.post_name}}</td>
         <td>{{address.post_phonenum}}</td>
-        <td>{{address.is_default}}</td>
-        
+        {%if address.is_default%}
+        <td>  O</td>
+        {% else %}
+        <td></td>
+        {%endif %}
         <form action="{% url 'delete' address.pk%}" method="POST">
           {%csrf_token%}
         <td><input class="btn btn-dark" type="submit" value="삭제하기" ></td>

@@ -41,6 +41,7 @@ urlpatterns = [
     path('newpost/', shoppingView.newpost, name='newpost'),
     path('products', include('productApp.urls', namespace='products')),
     #path('notice/', include('noticeApp.urls')),
+    path('question', include('questionApp.urls', namespace='question')),
 
     path('notice/', include('noticeApp.urls', namespace='notice')),
     path('cart/', include('cartApp.urls', namespace='cart')),

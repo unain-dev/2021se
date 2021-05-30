@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content%}
+<section>
+    this is question_list.html
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">type</th>
+            <th scope="col">title</th>
+            <th scope="col">content</th>
+           
+    
+          </tr>
+        </thead>
+     
+        {% for question in get_questions %}
+        <tbody>
+          <tr>
+            <th scope="row">{{question.CATEGORY_CHOICES}}</th>
+            <td>{{question.title}}</td>
+            <td>{{question.content}}</td>
+        {%endfor%}
+          </table>
+          
+</section>
+{% endblock %}

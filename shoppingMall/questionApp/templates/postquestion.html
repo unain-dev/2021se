@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content%}
+<section>
+    this is question.html
+    <br>
+<div class="container">
+    <form action="{% url 'question:postquestion_save' %}" method="POST">
+        {%csrf_token%}
+  
+	<h4>고객문의</h4>
+	<br><br>
+
+    type
+    <div>
+    <label for="q_category"><input type = "radio" name ="q_category" value="상품">상품</label>
+    <label for="q_category"><input type = "radio" name ="q_category" value="배송">배송</label>
+    <label for="q_category"><input type = "radio" name ="q_category" value="반품/취소">반품/취소<label>
+    <label for="q_category"><input type = "radio" name ="q_category" value="기타">기타</label>
+    </div>
+    <div class="col-md-3">
+      <label for="inputEmail4" class="form-label">title</label>
+      <input
+      type="text"
+      class="form-control"
+      name="title"
+      id="title"
+      placeholder="제목"
+    
+    />
+    </div>
+    
+  <br>
+
+     Contents
+    <div class="form-floating">
+        <label for="content">Comments</label>
+        <textarea class="form-control" placeholder="Leave a comment here" id="content" name="content" style="height: 100px "></textarea>
+      
+      </div>
+ 
+   
+
+
+    <input class="btn btn-dark" type="submit" value="save">
+  </form>
+</div>
+<br><br><br><br>
+</section>
+{% endblock %}
