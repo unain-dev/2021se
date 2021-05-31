@@ -46,6 +46,8 @@ urlpatterns = [
     path('notice/', include('noticeApp.urls', namespace='notice')),
     path('cart/', include('cartApp.urls', namespace='cart')),
     path('order/', include('orderApp.urls', namespace='order')),
+    path('chart/', include('chartApp.urls', namespace='chart')),
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 ''' path('address/', shoppingView.address_view, name="address"),'''

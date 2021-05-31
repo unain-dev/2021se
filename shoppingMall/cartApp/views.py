@@ -43,7 +43,7 @@ def detail_add_cart(request, product_id):
             cart=cart
         )
         cart_item.save()
-
+    
     return redirect('cart:cart_detail')
 
 
