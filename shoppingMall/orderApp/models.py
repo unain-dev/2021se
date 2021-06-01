@@ -20,7 +20,6 @@ class Order(models.Model):
     order_state=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     total_shipping_fee=models.IntegerField()
     shipping_address=models.CharField(max_length=1000)
-    pub_date=models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table='Order'

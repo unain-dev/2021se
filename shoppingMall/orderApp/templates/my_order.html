@@ -3,6 +3,17 @@
     <section>
         <h2>나의 주문내역</h2>
         <div>
+            <br>
+            <h5>날짜별 주문내역 조회</h3>
+            <p>일/월/연도 순으로 조회해주세요.</p>
+            <form action="{% url 'order:search_order' %}" method="POST">
+                {% csrf_token %}
+                시작 날짜 : <input type="date" value="2021-01-01" name="minDate">
+                <br>마지막 날짜 : <input type="date" value="2021-12-31" name="maxDate">
+                <input type="submit" value="검색">
+            </form>
+        </div>
+        <div>
             {% for order in orders %}
             <br>
             <div sytle="margin:30px; border:solid">
@@ -10,8 +21,8 @@
                 <p>수량 : {{order.total_quantity}}</p>
                 <p>총액 : {{order.total_price}}</p>
                 <p>배송비 : {{order.total_shipping_fee}}</p>
-                <p>주문 날짜 : {{order.pub_date}}</p>
-                <p>배송지 : </p>
+                <p>주문 날짜 : {{order.date_added}}</p>
+                <p>배송지 : {{order.shipping_address}}</p>
                 <p>주문 상태 : {{order.order_state}}</p>
                 {% if order.order_state == 'pay_complete' %}
                     <button>문의하기</button>

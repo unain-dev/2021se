@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from requests.models import get_cookie_header
 from cartApp import context_processors
 from cartApp.models import Cart, CartItem
 from shoppingApp.models import UserAccounts,address
@@ -6,6 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import requests
 from .models import OrderItem, Order
 from django.db.models import Max
+from django.views.decorators.csrf import csrf_exempt
+from productApp.models import product
 
 # Create your views here.
 def get_items(request, total=0, counter=0):
@@ -78,11 +81,16 @@ def cancle_order(request):
     return render(request, '')
 
 def pay(request):
-    
     order_id=request.session.get('order_id')
     order=Order.objects.get(id=order_id)
     request.session['order_id']=order_id
     item_name=''
+
+    select_address=request.POST.get('address_select')
+    shipping_address=address.objects.get(id=select_address)
+    get_address=shipping_address.road_address+shipping_address.detail_address
+    order.shipping_address=get_address
+    order.save()
     
     order_items=OrderItem.objects.filter(order=order)
     for item in order_items:
@@ -142,6 +150,15 @@ def paySuccess(request):
         'res': res,
         'amount': amount,
     }
+
+    order_items=OrderItem.objects.filter(order=order)
+    for item in order_items:
+        product_id=item.product_id
+        get_product=product.objects.get(product_id=product_id)
+        get_product.salesamount+=item.quantity
+        get_product.stock-=item.quantity
+        get_product.save()
+
     return render(request, 'paySuccess.html', context)
 
 def payFail(request):
@@ -159,8 +176,7 @@ def payCancel(request):
 def view_myOrder(request):
     user_id=request.session.get('user_id')
     orders=Order.objects.filter(order_user=user_id)
-    order_items=OrderItem.objects.filter(order=orders)
-
+    
     for order in orders:
         if order.order_state == 'order_continue':
             order.order_state='order_cancle'
@@ -173,7 +189,12 @@ def order_detail(request, order_id):
     order_items=OrderItem.objects.filter(order=orders)
     return render(request, 'order_detail.html', {'orders':orders, 'order_items':order_items})
 
+@csrf_exempt
 def search_order(request):
     user_id=request.session.get('user_id')
-    orders=Order.objects.filter(order_user=user_id)
+    if request.method == 'POST':
+        minDate=request.POST['minDate']
+        maxDate=request.POST['maxDate']
+        orders=Order.objects.filter(order_user=user_id)&Order.objects.filter(date_added__range=[minDate, maxDate])
+
     return render(request, 'my_order.html', {'orders':orders})

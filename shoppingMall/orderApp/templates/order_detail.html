@@ -12,7 +12,8 @@
                     <br>상품 총액 : {{order_item.sub_total}}
                     <br><br><br>
                 {% endfor %}
-                    전체 배송비 : {{orders.total_shipping_fee}}
+                <br> 배송지 : {{orders.shipping_address}}
+                    <br>전체 배송비 : {{orders.total_shipping_fee}}
                     <br>총 결제금액 : <strong>{{orders.total_price}}</strong>
             <br><br><br>
             </div>

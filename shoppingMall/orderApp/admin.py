@@ -1,14 +1,14 @@
 from django.contrib import admin
 from .models import Order, OrderItem
 
-class OrderAdmin(admin.ModelAdmin):
-    model=Order
+class ItemAdmin(admin.TabularInline):
+    model=OrderItem
 
-class ItemAdmin(admin.ModelAdmin):
+class OrderAdmin(admin.ModelAdmin):
+    readonly_fields = ('date_added',)
     inlines=[
-        OrderAdmin
+        ItemAdmin
     ]
 
 # Register your models here.
 admin.site.register(Order, OrderAdmin)
-admin.site.register(OrderItem)
