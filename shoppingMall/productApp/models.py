@@ -33,6 +33,7 @@ class product(models.Model):
     category=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     pubDate = models.DateTimeField(default=timezone.now)
     published=models.BooleanField(default=True)
+    shipping_fee=models.IntegerField()
 
     status = models.IntegerField(
         choices=P_range.CHOICES,

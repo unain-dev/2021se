@@ -21,7 +21,7 @@ from cartApp.models import Cart, CartItem
 
 # Create your views here.
 def login_view(request) :
-    products_recent = product.objects.filter(published=True).order_by('pubDate')[:3]
+    products_recent = product.objects.filter(published=True).order_by('-pubDate')[:3]
     products_popular = product.objects.filter(published=True).order_by('-salesamount')[:3]
     #noti_info=notice.objects.filter(on_off=True)
     cart_count=context_processors.counter(request)
@@ -242,3 +242,6 @@ def edit(request,pk):
     request.session['edit_ad']=pk
 
     return render(request,'edit.html' ,{'u_address':u_address, 'count':count})
+
+def view_myPage(request):
+    return render(request, 'myPage.html')

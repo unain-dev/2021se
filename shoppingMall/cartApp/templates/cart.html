@@ -34,6 +34,7 @@
                             {{cart_item.product.name}}
                             <br>가격 : {{cart_item.product.price}}
                             <br>수량 : {{cart_item.quantity}}
+                            <br>배송비 : {{cart_item.shipping_fee}}
                             <br>상품 총액 : {{cart_item.product.price}} * {{cart_item.quantity}} : {{cart_item.sub_total}}
                         </td>
                     </tr>
@@ -47,13 +48,18 @@
                     </tr>
                     {% endfor %}
                     <tr>
+                        전체 배송비 : {{cart.total_shipping_fee}}
+                        <br>
                         your total is : <strong>{{total}}</strong>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <br><br><br><br>
+        <a href="{% url 'order:order_check'%}">결제하기</a>
+        <br><br><br><br>
+
     {% endif %}
-    <br><br><br><br>
-    <a href="{% url 'order:order_check'%}">결제하기</a>
+    
     </section>
 {% endblock %}

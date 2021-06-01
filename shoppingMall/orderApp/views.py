@@ -5,6 +5,7 @@ from shoppingApp.models import UserAccounts,address
 from django.core.exceptions import ObjectDoesNotExist
 import requests
 from .models import OrderItem, Order
+from django.db.models import Max
 
 # Create your views here.
 def get_items(request, total=0, counter=0):
@@ -29,50 +30,63 @@ def order_check(request, total=0, counter=0, cart_items=None):
     else :
         user_id=request.session.get('user_id')
         cart=Cart.objects.get(cart_id=user_id)
-        cart.save()
+        #cart.save()
         cart_items=CartItem.objects.filter(cart=cart)
         for cart_item in cart_items:
             total+=(cart_item.product.price * cart_item.quantity)
             counter += cart_item.quantity
-
+        max_shipping=CartItem.objects.filter(cart=cart)
+        max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
+        max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
+        total+=int(max_shipping)
+    
     uid=request.session.get('user_id')
     get_all=UserAccounts.objects.all()
     get_user=get_all.filter(user_id=uid)
     shippings = address.objects.filter(accounts__in=get_user)
 
-    if Order.DoesNotExist:
-        order=Order.objects.create(
-            order_user=request.session.get('user_id'),
-            total_price=total,
-            total_quantity=counter,
-            order_state='order_continue'
-        )
-        order.save()
+    order=Order.objects.create(
+        order_user=request.session.get('user_id'),
+        total_price=total,
+        total_quantity=counter,
+        order_state='order_continue',
+        total_shipping_fee=cart.total_shipping_fee
+    )
+    order.save()
 
-    try:
-        order_items=OrderItem.objects.get(order=order)
-    except OrderItem.DoesNotExist :
-        for cart_item in cart_items:
-            order_items=OrderItem.objects.create(
-                order=order,
-                order_id=cart_item.product.product_id,
-                product_id=cart_item.product.product_id,
-                quantity=cart_item.quantity,
-                price=cart_item.product.price
-            )
-            order_items.save()
+    order_set=Order.objects.get(id=order.id)
+    for cart_item in cart_items:
+        order_items=OrderItem.objects.create(
+            order=order_set,
+            product_id=cart_item.product.product_id,
+            product_title=cart_item.product.name,
+            quantity=cart_item.quantity,
+            price=cart_item.product.price,
+            shipping_fee=cart_item.shipping_fee
+        )
+        order_items.save()
 
     cart_count=context_processors.counter(request)
     cart_count=int(cart_count)
     count={'cart_count':cart_count}
 
     order_items=OrderItem.objects.filter(order=order)
-    return render(request, 'order.html', dict(order_items=order_items, total=total, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
+    return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
 
 def cancle_order(request):
     return render(request, '')
 
 def pay(request):
+    print(request.POST.get('order_id'))
+    order_id=request.POST.get('order_id')
+    order=Order.objects.get(id=order_id)
+    request.session['order_id']=order_id
+    item_name=''
+    
+    order_items=OrderItem.objects.filter(order=order)
+    for item in order_items:
+        item_name+=str(item.product_title)
+
     if request.method == "POST":
         URL = 'https://kapi.kakao.com/v1/payment/ready'
         headers = {
@@ -81,11 +95,11 @@ def pay(request):
         }
         params = {
             "cid": "TC0ONETIME",    # 테스트용 코드
-            "partner_order_id": "1001",     # 주문번호
-            "partner_user_id": "german",    # 유저 아이디
-            "item_name": "연어초밥",        # 구매 물품 이름
-            "quantity": "1",                # 구매 물품 수량
-            "total_amount": "12000",        # 구매 물품 가격
+            "partner_order_id": order_id,     # 주문번호
+            "partner_user_id": request.session.get('user_id'),    # 유저 아이디
+            "item_name": item_name,        # 구매 물품 이름
+            "quantity": order.total_quantity,                # 구매 물품 수량
+            "total_amount": order.total_price,        # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세
             "approval_url": "http://127.0.0.1:8000/order/paySuccess",
             "cancel_url": "http://127.0.0.1:8000/order/payCancel",
@@ -98,6 +112,15 @@ def pay(request):
         return redirect(next_url)
 
 def paySuccess(request):
+    order_id=request.session.get('order_id')
+    user_id=request.session.get('user_id')
+    order=Order.objects.get(id=order_id)
+    order.order_state='pay_complete'
+    order.save()
+
+    cart=Cart.objects.get(cart_id = request.session.get('user_id'))
+    cart.delete()
+
     URL = 'https://kapi.kakao.com/v1/payment/approve'
     headers = {
             "Authorization": "KakaoAK " + "432f6f7ce279b9adf9723cf13773d0b4",   # 변경불가
@@ -106,8 +129,8 @@ def paySuccess(request):
     params = {
         "cid": "TC0ONETIME",    # 테스트용 코드
         "tid": request.session['tid'],  # 결제 요청시 세션에 저장한 tid
-        "partner_order_id": "1001",     # 주문번호
-        "partner_user_id": "german",    # 유저 아이디
+        "partner_order_id": order_id,     # 주문번호
+        "partner_user_id": user_id,    # 유저 아이디
         "pg_token": request.GET.get("pg_token"),     # 쿼리 스트링으로 받은 pg토큰
     }
 
@@ -125,3 +148,6 @@ def payFail(request):
 
 def payCancel(request):
     return render(request, 'payCancel.html')
+
+def view_myOrder(request):
+    return render(request, 'my_order.html')

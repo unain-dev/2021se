@@ -26,7 +26,7 @@ urlpatterns = [
     path('logout/', shoppingView.logout_view, name="logout"),
     path('register/', shoppingView.register_view, name="join"),
     path('', shoppingView.login_view, name="userMain"),
-    #category 경로-이후에 category table이 필요할까요..?
+    path('myPage', shoppingView.view_myPage, name="myPage"),
     
   
     path('create/', shoppingView.create_view, name='create'),

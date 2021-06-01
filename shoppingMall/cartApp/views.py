@@ -5,6 +5,7 @@ from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from . import context_processors
+from django.db.models import Max
 
 # Create your views here.
 def cart_remove(request, product_id):
@@ -40,7 +41,8 @@ def detail_add_cart(request, product_id):
         cart_item=CartItem.objects.create(
             product=product,
             quantity=add_quantity,
-            cart=cart
+            cart=cart,
+            shipping_fee=product.shipping_fee
         )
         cart_item.save()
     
@@ -73,7 +75,8 @@ def add_cart(request, product_id):
         cart_item=CartItem.objects.create(
             product=product,
             quantity=1,
-            cart=cart
+            cart=cart,
+            shipping_fee=product.shipping_fee
         )
         cart_item.save()
     return redirect('cart:cart_detail')
@@ -90,13 +93,21 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
         for cart_item in cart_items:
             total+=(cart_item.product.price * cart_item.quantity)
             counter += cart_item.quantity
+
+        max_shipping=CartItem.objects.filter(cart=cart)
+        max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
+        max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
+        total+=int(max_shipping)
+        cart.total_shipping_fee=max_shipping
+        cart.save()
+
     except ObjectDoesNotExist:
         pass
     
     cart_count=context_processors.counter(request)
     cart_count=int(cart_count)
     count={'cart_count':cart_count}
-    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, count=count, cart_count=cart_count))
+    return render(request, 'cart.html', dict(cart=cart, cart_items=cart_items, total=total, count=count, cart_count=cart_count))
 
 def minus_cart_product(request, product_id):
     product=Product.objects.get(product_id=product_id)

@@ -34,15 +34,16 @@
                     <tr>
                         <td>
                             <br>
-                            {{order_item.product.name}}
-                            <br>가격 : {{order_item.product.price}}
+                            {{order_item.product_title}}
+                            <br>가격 : {{order_item.price}}
                             <br>수량 : {{order_item.quantity}}
-                            <br>상품 총액 : {{order_item.product.price}} * {{order_item.quantity}} : {{order_item.sub_total}}
+                            <br>상품 총액 : {{order_item.sub_total}}
                         </td>
                     </tr>
                     {% endfor %}
                     <tr>
-                        your total is : <strong>{{total}}</strong>
+                        전체 배송비 : {{order.total_shipping_fee}}
+                        <br>your total is : <strong>{{order.total_price}}</strong>
                     </tr>
                 </tbody>
             </table>
@@ -51,7 +52,7 @@
             <form action="{% url 'order:pay' %}" method="POST">
                 {%csrf_token%}
                 <label>배송지 선택 : </label>
-                <select name="address_selec">
+                <select name="address_select">
                     {% for address in shippings %}
                         <option value={{address.id}}>{{address.title}} : {{address.road_address}}</option>
                     {% endfor %}
@@ -62,6 +63,7 @@
 
             <form action="{% url 'order:pay' %}" method="POST">
                 {%csrf_token%}
+                <input type="hidden" value={{order_id}} name="order_id">
                 <button type="submit">테스트 결제하기</button>
             </form>
             

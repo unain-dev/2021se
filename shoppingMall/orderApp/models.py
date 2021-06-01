@@ -17,6 +17,7 @@ class Order(models.Model):
     total_price = models.IntegerField()
     total_quantity = models.IntegerField()
     order_state=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    total_shipping_fee=models.IntegerField()
 
     class Meta:
         db_table='Order'
@@ -27,13 +28,15 @@ class OrderItem(models.Model):
     quantity = models.IntegerField()
     price=models.IntegerField()
     product_id = models.IntegerField()
+    product_title=models.CharField(max_length=500)
+    shipping_fee=models.IntegerField()
 
     class Meta:
         db_table='OrderItem'
 
     def sub_total(self):
-        return self.product.price * self.quantity
-
+        return self.price * self.quantity
+'''
     def __str__(self):
         return self.product.name    
-    
+    '''

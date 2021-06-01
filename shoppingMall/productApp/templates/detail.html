@@ -14,8 +14,9 @@
                             {% endfor %}
                             <div class="card-body">
                                 <h5 class="card-title">{{product.name}}</h5>
-                                <p class="card-text">{{product.description}}<br>{{product.price}}</p>
-
+                                <p class="card-text">{{product.description}}
+                                    <br>가격 : {{product.price}}</p>
+                                <p>배송비 : {{product.shipping_fee}}</p>
                                 <form action="{% url 'cart:detail_add_cart' product.product_id%}" method="POST">
                                     수량 : <input type="text" name="detail_quantity">
                                     <button>장바구니 담기</button>
@@ -28,9 +29,10 @@
                         </div>
                     </div> 
                     {% endfor %}   
-                             
+                
                 </div>
                 </div>
+                <br><br><br><br><br>
             </div>
             
             </section>
