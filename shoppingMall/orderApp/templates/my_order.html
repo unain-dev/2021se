@@ -2,5 +2,29 @@
 {% block content %}
     <section>
         <h2>나의 주문내역</h2>
+        <div>
+            {% for order in orders %}
+            <br>
+            <div sytle="margin:30px; border:solid">
+                <p><strong><a href="{% url 'order:order_detail' order.id %}">주문 번호 : {{order.id}}</a></strong></p>
+                <p>수량 : {{order.total_quantity}}</p>
+                <p>총액 : {{order.total_price}}</p>
+                <p>배송비 : {{order.total_shipping_fee}}</p>
+                <p>주문 날짜 : {{order.pub_date}}</p>
+                <p>배송지 : </p>
+                <p>주문 상태 : {{order.order_state}}</p>
+                {% if order.order_state == 'pay_complete' %}
+                    <button>문의하기</button>
+                {% elif order.order_state == 'shipping' %}
+                    <button>문의하기</button>
+                {% elif order.order_state == 'shipping_complete' %}
+                    <button>구매확정</button>
+                {% elif order.order_state == 'order_complete' %}
+                    <button>상품평</button>
+                {% endif %}
+            </div>
+            <br>
+            {% endfor %}
+        </div>
     </section>
 {% endblock %}

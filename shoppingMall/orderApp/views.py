@@ -53,6 +53,7 @@ def order_check(request, total=0, counter=0, cart_items=None):
         total_shipping_fee=cart.total_shipping_fee
     )
     order.save()
+    request.session['order_id']=order.id
 
     order_set=Order.objects.get(id=order.id)
     for cart_item in cart_items:
@@ -77,8 +78,8 @@ def cancle_order(request):
     return render(request, '')
 
 def pay(request):
-    print(request.POST.get('order_id'))
-    order_id=request.POST.get('order_id')
+    
+    order_id=request.session.get('order_id')
     order=Order.objects.get(id=order_id)
     request.session['order_id']=order_id
     item_name=''
@@ -144,10 +145,35 @@ def paySuccess(request):
     return render(request, 'paySuccess.html', context)
 
 def payFail(request):
+    order=Order.objects.filter(order_user=request.session.get('user_id'))
+    order.order_state='pay_cancle'
+    order.save()
     return render(request, 'payFail.html')
 
 def payCancel(request):
+    order=Order.objects.filter(order_user=request.session.get('user_id'))
+    order.order_state='pay_cancle'
+    order.save()
     return render(request, 'payCancel.html')
 
 def view_myOrder(request):
-    return render(request, 'my_order.html')
+    user_id=request.session.get('user_id')
+    orders=Order.objects.filter(order_user=user_id)
+    order_items=OrderItem.objects.filter(order=orders)
+
+    for order in orders:
+        if order.order_state == 'order_continue':
+            order.order_state='order_cancle'
+            order.save()
+
+    return render(request, 'my_order.html', {'orders':orders})
+
+def order_detail(request, order_id):
+    orders=Order.objects.get(id=order_id)
+    order_items=OrderItem.objects.filter(order=orders)
+    return render(request, 'order_detail.html', {'orders':orders, 'order_items':order_items})
+
+def search_order(request):
+    user_id=request.session.get('user_id')
+    orders=Order.objects.filter(order_user=user_id)
+    return render(request, 'my_order.html', {'orders':orders})

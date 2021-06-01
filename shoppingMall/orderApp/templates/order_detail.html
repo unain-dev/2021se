@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section>
+        <h2>나의 주문내역</h2>
+        <div>
+
+            <div sytle="margin:30px; border:solid">
+                {% for order_item in order_items %}
+                    {{order_item.product_title}}
+                    <br>가격 : {{order_item.price}}
+                    <br>수량 : {{order_item.quantity}}
+                    <br>상품 총액 : {{order_item.sub_total}}
+                    <br><br><br>
+                {% endfor %}
+                    전체 배송비 : {{orders.total_shipping_fee}}
+                    <br>총 결제금액 : <strong>{{orders.total_price}}</strong>
+            <br><br><br>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
