@@ -24,7 +24,10 @@
                                 <br><a>바로구매</a>
                                 
                                 <br><a href="{% url 'create_default' %}">배송지선택</a>
-                                <br>review
+                                <br><a href="{% url 'products:review' %}">review</a>
+                                {% for review in review_get.all %}
+                                 {{review.r_stage}} 
+                                {% endfor %} 
                             </div>
                         </div>
                     </div> 

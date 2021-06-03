@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import product, Photo
+from .models import product, Photo,review
 from cartApp import context_processors
 # Create your views here.
 
@@ -19,8 +19,14 @@ def product_detail(request,product_id):
    photo_all=product.objects.all()
    photo_set=photo_all.filter(product_id=product_id)
    photo_get=Photo.objects.filter(product__in=photo_set)
+   
+   review_all=product.objects.all()
+   review_set=review_all.filter(product_id=product_id)
+   review_get=review.objects.filter(product__in=review_set)
+   
+   
 
-   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
+   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get,'review_get':review_get})
 
 def search(request):
    cart_count=context_processors.counter(request)
@@ -64,3 +70,7 @@ def search(request):
       else: #아무것도 없을 때
          msg="아무것도 입력하지 않았습니다."
          return render(request, 'search_rings.html', {'msg':msg, 'count':count, 'category':search_cateogry})
+
+
+def review(request):
+     return render(request, 'review.html')

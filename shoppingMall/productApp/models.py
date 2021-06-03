@@ -49,3 +49,32 @@ class Photo(models.Model):
     
     def __str__(self):
       return str(self.product.name)
+
+class review(models.Model):
+    CATEGORY_CHOICES1=(
+        ('적극추천', '적극추천'),
+        ('추천','추천'),
+        ('비추천', '비추천'),
+    )
+    CATEGORY_CHOICES2=(
+        ('빠름', '빠름'),
+        ('보통','보통'),
+        ('느림', '느림'),
+    )
+    CATEGORY_CHOICES3=(
+        ('5', '5'),
+        ('4','4'),
+        ('3', '3'),
+        ('2', '2'),
+        ('1', '1'),
+
+    )
+
+    r_product= models.ForeignKey(product, on_delete=models.CASCADE, null=True,default='')
+    r_stage=models.CharField(max_length=20, choices=CATEGORY_CHOICES1, default='')
+    shipping_score=models.CharField(max_length=20, choices=CATEGORY_CHOICES2, default='')
+    r_content=models.TextField(null=True)
+    total_score=models.CharField( max_length=5,choices=CATEGORY_CHOICES3)
+    r_user_id=models.CharField(max_length=50,null=True)
+    
+

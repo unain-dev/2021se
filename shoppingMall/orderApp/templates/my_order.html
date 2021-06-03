@@ -27,7 +27,7 @@
                 <p>배송지 : {{order.shipping_address}}</p>
                 <p>주문 상태 : {{order.order_state}}</p>
                 {% if order.order_state == 'pay_complete' %}
-                    <button>문의하기</button>
+                <a href="{% url 'question:postquestion_view' %}">문의하기</a>
                 {% elif order.order_state == 'shipping' %}
                     <button>문의하기</button>
                 {% elif order.order_state == 'shipping_complete' %}

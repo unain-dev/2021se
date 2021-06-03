@@ -10,7 +10,11 @@ class question(models.Model):
         ('기타', '기타'),
     )
 
+
     title=models.CharField(max_length=50)
     content=models.TextField(null=True)
+    q_category=models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='')
     pubDate = models.DateTimeField(default=timezone.now)
     is_checked=models.BooleanField(default=False,null=True)
+    q_user_id=models.CharField(max_length=50)
+    

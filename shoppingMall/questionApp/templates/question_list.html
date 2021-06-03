@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content%}
 <section>
-    this is question_list.html
-    <table class="table">
+    this is question_list.htm ldd
+    <table class="table">dd
         <thead>
           <tr>
             <th scope="col">type</th>
@@ -16,10 +16,12 @@
         {% for question in get_questions %}
         <tbody>
           <tr>
-            <th scope="row">{{question.CATEGORY_CHOICES}}</th>
+            <th scope="col">{{question.q_category}}</th>
             <td>{{question.title}}</td>
             <td>{{question.content}}</td>
-        {%endfor%}
+            </tr>
+        </tbody>
+        {% endfor %}
           </table>
           
 </section>
