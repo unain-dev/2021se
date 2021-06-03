@@ -31,7 +31,7 @@ def question_list_view(request):
     count={'cart_count':cart_count}
 
     uid=request.session.get('user_id')
-    get_questions = question.objects.filter(q_user_id=uid)
+    get_questions = question.objects.get(q_user_id=uid)
     
 
     return render(request,"question_list.html",{'get_questions':get_questions, 'count':count})
