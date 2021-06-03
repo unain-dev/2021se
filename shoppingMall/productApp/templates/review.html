@@ -1,15 +1,51 @@
 {% extends 'base.html' %}
-{% block content %}
-    <section>
-           this is review.html
-            <div class="flex-container">
-    
-                <div id="product_num1">
-                  
-                    </div>
-                </div> 
-                <br><br><br>
-            <br><br><br>
+{% block content%}
+<section>
+    this is review.html
+    <br>
+<div class="container">
+    <form action="{% url 'products:review_save' %}" method="POST">
+        {%csrf_token%}
+  
+	<h4>상품평등록</h4>
+	<br><br>
 
-            </section>
+    product
+    <div>
+    <label for="r_stage"><input type = "radio" name ="r_stage" value="적극추천">적극추천</label>
+    <label for="r_stage"><input type = "radio" name ="r_stage" value="추천">추천</label>
+    <label for="r_stage"><input type = "radio" name ="r_stage" value="비추천">비추천<label>
+    </div>
+    <div>
+        shipping
+        <br>
+        <label for="r_stage"><input type = "radio" name ="shipping_score" value="빠름">빠름</label>
+        <label for="r_stage"><input type = "radio" name ="shipping_score" value="보통">보통</label>
+        <label for="r_stage"><input type = "radio" name ="shipping_score" value="느림">느림<label>
+        </div>
+   
+    
+  <br>
+
+     Contents
+    <div class="form-floating">
+        <label for="content"></label>
+        <textarea class="form-control" placeholder="Leave a review here" id="content" name="content" style="height: 100px "></textarea>
+
+      </div>
+      <div>
+          총점
+        <label for="total_score"><input type = "radio" name ="total_score" value="1">1</label>
+        <label for="total_score"><input type = "radio" name ="total_score" value="2">2</label>
+        <label for="total_score"><input type = "radio" name ="total_score" value="3">3<label>
+        <label for="total_score"><input type = "radio" name ="total_score" value="4">4<label>
+        <label for="total_score"><input type = "radio" name ="total_score" value="5">5<label>
+            
+
+        </div>
+    <input class="btn btn-dark" type="submit" value="save">
+  </form>
+</div>
+<br><br><br><br>
+</section>
 {% endblock %}

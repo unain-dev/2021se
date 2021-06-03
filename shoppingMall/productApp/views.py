@@ -73,4 +73,29 @@ def search(request):
 
 
 def review(request):
-     return render(request, 'review.html')
+
+
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+    return render(request,"review.html", {'count':count})
+
+def review_save(request):
+
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    if request.method == 'POST' :
+     uid=request.session.get('user_id')
+     p_id=request.session.get('product_id')
+     new_review=review()
+     new_review.r_product=product.objects.get(product_id=p_id)
+     new_review.r_stage=request.POST.get("r_stage")
+     new_review.shipping_score=request.POST.get("shipping_score")
+     new_review.r_content=request.POST['content']
+     new_review.total_score=request.POST.get("total_score")
+     new_review.r_user_id=uid
+     new_review.save()
+    return redirect('detail')
+

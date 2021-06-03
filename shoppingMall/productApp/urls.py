@@ -9,5 +9,9 @@ urlpatterns = [
    
     path('search/', views.search, name="search"),
     path('review/', views.review, name="review"),
+    path('review_save/', views.review_save, name="review_save"),
    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
