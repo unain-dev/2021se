@@ -142,31 +142,35 @@ def create_view(request):
 def create_defaultsave(request):
     
     if request.method == 'POST' :
-     uid=request.session.get('user_id')
-     get_all=UserAccounts.objects.all()
-     get_user=get_all.filter(user_id=uid)
-     shippings = address.objects.filter(accounts__in=get_user)
-    
-     old_address=shippings.get(is_default='True')
-     if old_address is not None:
-        old_address.is_default='False'
-        old_address.save()
+        uid=request.session.get('user_id')
+        get_all=UserAccounts.objects.all()
+        get_user=get_all.filter(user_id=uid)
+        shippings = address.objects.filter(accounts__in=get_user)
+        
+        old_address=shippings.get(is_default='True')
+        if old_address is not None:
+            old_address.is_default='False'
+            old_address.save()
 
-     n_pk = request.POST.get('is_default') 
-     n_address=shippings.get(pk=n_pk)
-     n_address.is_default=True
-     n_address.save()
+        n_pk = request.POST.get('is_default') 
+        n_address=shippings.get(pk=n_pk)
+        n_address.is_default=True
+        n_address.save()
     
       
     return render(request,'create.html',{'shippings':  shippings})
 
 def create_default(request):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+    
     uid=request.session.get('user_id')
     get_all=UserAccounts.objects.all()
     get_user=get_all.filter(user_id=uid)
     shippings = address.objects.filter(accounts__in=get_user)
 
-    return render(request,'create_default.html',{'shippings':  shippings} )
+    return render(request,'create_default.html',{'shippings':  shippings, 'count':count} )
     
  
 
@@ -244,4 +248,8 @@ def edit(request,pk):
     return render(request,'edit.html' ,{'u_address':u_address, 'count':count})
 
 def view_myPage(request):
-    return render(request, 'myPage.html')
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    return render(request, 'myPage.html', {'count':count})

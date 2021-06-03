@@ -175,6 +175,10 @@ def payCancel(request):
     return render(request, 'payCancel.html')
 
 def view_myOrder(request):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
     user_id=request.session.get('user_id')
     orders=Order.objects.filter(order_user=user_id)
     
@@ -183,19 +187,27 @@ def view_myOrder(request):
             order.order_state='order_cancle'
             order.save()
 
-    return render(request, 'my_order.html', {'orders':orders})
+    return render(request, 'my_order.html', {'orders':orders, 'count':count})
 
 def order_detail(request, order_id):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
     orders=Order.objects.get(id=order_id)
     order_items=OrderItem.objects.filter(order=orders)
-    return render(request, 'order_detail.html', {'orders':orders, 'order_items':order_items})
+    return render(request, 'order_detail.html', {'orders':orders, 'order_items':order_items, 'count':count})
 
 @csrf_exempt
 def search_order(request):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
     user_id=request.session.get('user_id')
     if request.method == 'POST':
         minDate=request.POST['minDate']
         maxDate=request.POST['maxDate']
         orders=Order.objects.filter(order_user=user_id)&Order.objects.filter(date_added__range=[minDate, maxDate])
 
-    return render(request, 'my_order.html', {'orders':orders, 'minDate':minDate, 'maxDate':maxDate})
+    return render(request, 'my_order.html', {'orders':orders, 'minDate':minDate, 'maxDate':maxDate, 'count':count})

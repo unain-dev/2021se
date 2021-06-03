@@ -36,28 +36,31 @@ def search(request):
    if search_name:
       if min=="" and max=="" : # 상품명으로 검색
          products=product.objects.filter(name__contains=search_name)&product.objects.all().filter(category=search_cateogry)
-         return render(request, 'search_rings.html', {'products':products, 'count':count})
+         return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
 
       elif min is not None and max=="": #상품명, 최소값
          products=product.objects.filter(name__contains=search_name)&product.objects.filter(price__range=(min, 1000000))&product.objects.all().filter(category=search_cateogry)
-         return render(request, 'search_rings.html', {'products':products, 'count':count})
+         return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
       elif min=="" and max is not None: # 상품명, 최대값
          products=product.objects.filter(name__contains=search_name)&product.objects.filter(price__range=(0, max))&product.objects.all().filter(category=search_cateogry)
-         return render(request, 'search_rings.html', {'products':products, 'count':count})
+         return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
       elif min is not None and max is not None: #상품명, 최소값, 최대값
          products=product.objects.filter(name__contains=search_name)&product.objects.filter(price__range=(min, max))&product.objects.all().filter(category=search_cateogry)
-         return render(request, 'search_rings.html', {'products':products, 'count':count})
+         return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
 
     #상품명 제외하고 검색
    else:
       if min: #min 입력이 있을 때
          if max=="": #min만 가지고 검색
             products=product.objects.filter(price__range=(min, 1000000))&product.objects.all().filter(category=search_cateogry)
-            return render(request, 'search_rings.html', {'products':products, 'count':count})
+            return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
          elif max: #min, max 가지고 검색
-            products=product.objects.filter(price__range=(min, max))
-            return render(request, 'search_rings.html', {'products':products, 'count':count})&product.objects.all().filter(category=search_cateogry)
+            products=product.objects.filter(price__range=(min, max))&product.objects.all().filter(category=search_cateogry)
+            return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
 
-      else: #min입력이 없을 때 = max만 입력 있을 때
-         products=product.objects.filter(price__range=(0, max))
-         return render(request, 'search_rings.html', {'products':products, 'count':count})&product.objects.all().filter(category=search_cateogry)
+      elif max: #max만 입력 있을 때
+         products=product.objects.filter(price__range=(0, max))&product.objects.all().filter(category=search_cateogry)
+         return render(request, 'search_rings.html', {'products':products, 'count':count, 'search_name':search_name, 'min':min, 'max':max, 'category':search_cateogry})
+      else: #아무것도 없을 때
+         msg="아무것도 입력하지 않았습니다."
+         return render(request, 'search_rings.html', {'msg':msg, 'count':count, 'category':search_cateogry})
