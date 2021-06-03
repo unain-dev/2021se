@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 from . import views as cart_views
+from productApp import views as product_views
+
 app_name='cart'
 
 urlpatterns=[

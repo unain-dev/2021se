@@ -60,12 +60,6 @@
                 <br><br>
                 <button type="submit">결제하기</button>
             </form>
-
-            <form action="{% url 'order:pay' %}" method="POST">
-                {%csrf_token%}
-                <input type="hidden" value={{order_id}} name="order_id">
-                <button type="submit">테스트 결제하기</button>
-            </form>
             
             {% endif %}
         <br><br><br><br>

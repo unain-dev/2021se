@@ -26,9 +26,17 @@ class Order(models.Model):
         ordering=['date_added']
 
 class OrderItem(models.Model):
+    CATEGORY_CHOICES=(
+        ('rings', 'rings'),
+        ('glasses', 'glasses'),
+        ('hats', 'hats'),
+        ('necklace', 'necklace'),
+    )
+
     order=models.ForeignKey(Order, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price=models.IntegerField()
+    category=models.CharField(max_length=20, choices=CATEGORY_CHOICES, null=True)
     product_id = models.IntegerField()
     product_title=models.CharField(max_length=500)
     shipping_fee=models.IntegerField()

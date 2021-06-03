@@ -46,7 +46,7 @@ def detail_add_cart(request, product_id):
         )
         cart_item.save()
     
-    return redirect('cart:cart_detail')
+    return redirect('products:detail', product_id)
 
 
 
@@ -90,16 +90,18 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
 
         cart=Cart.objects.get(cart_id=user_id)
         cart_items=CartItem.objects.filter(cart=cart)
+        #cart_get=CartItem.objects.get(cart=cart)
+        cart_get=cart_items
         for cart_item in cart_items:
             total+=(cart_item.product.price * cart_item.quantity)
             counter += cart_item.quantity
-
-        max_shipping=CartItem.objects.filter(cart=cart)
-        max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
-        max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
-        total+=int(max_shipping)
-        cart.total_shipping_fee=max_shipping
-        cart.save()
+        if cart_get is not None:
+            max_shipping=CartItem.objects.filter(cart=cart)
+            max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
+            max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
+            total+=int(max_shipping)
+            cart.total_shipping_fee=max_shipping
+            cart.save()
 
     except ObjectDoesNotExist:
         pass

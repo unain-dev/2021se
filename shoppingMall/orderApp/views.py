@@ -66,7 +66,8 @@ def order_check(request, total=0, counter=0, cart_items=None):
             product_title=cart_item.product.name,
             quantity=cart_item.quantity,
             price=cart_item.product.price,
-            shipping_fee=cart_item.shipping_fee
+            shipping_fee=cart_item.shipping_fee,
+            category=cart_item.product.category
         )
         order_items.save()
 
@@ -197,4 +198,4 @@ def search_order(request):
         maxDate=request.POST['maxDate']
         orders=Order.objects.filter(order_user=user_id)&Order.objects.filter(date_added__range=[minDate, maxDate])
 
-    return render(request, 'my_order.html', {'orders':orders})
+    return render(request, 'my_order.html', {'orders':orders, 'minDate':minDate, 'maxDate':maxDate})

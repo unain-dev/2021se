@@ -19,9 +19,9 @@
                                 <p>배송비 : {{product.shipping_fee}}</p>
                                 <form action="{% url 'cart:detail_add_cart' product.product_id%}" method="POST">
                                     수량 : <input type="text" name="detail_quantity">
-                                    <button>장바구니 담기</button>
+                                    <button onclick="button1_click();">장바구니 담기</button>
                                 </form>
-                                <br> 바로구매
+                                <br><a>바로구매</a>
                                 
                                 <br><a href="{% url 'create_default' %}">배송지선택</a>
                                 <br>review
@@ -29,7 +29,11 @@
                         </div>
                     </div> 
                     {% endfor %}   
-                
+                <script>
+                    function button1_click() {
+                        alert('장바구니에 담겼습니다.')
+                    }
+                </script>
                 </div>
                 </div>
                 <br><br><br><br><br>

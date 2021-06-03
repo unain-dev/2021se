@@ -5,11 +5,13 @@
         <div>
             <br>
             <h5>날짜별 주문내역 조회</h3>
-            <p>일/월/연도 순으로 조회해주세요.</p>
+                <p>하이픈 '-'을 포함해 연도-월-일 순으로 조회해주세요.
+                    <br>ex) 2021-01-01
+                </p>
             <form action="{% url 'order:search_order' %}" method="POST">
                 {% csrf_token %}
-                시작 날짜 : <input type="date" value="2021-01-01" name="minDate">
-                <br>마지막 날짜 : <input type="date" value="2021-12-31" name="maxDate">
+                시작 날짜 : <input type="date" value="{{minDate|default:'2021-01-01'}}" name="minDate" required>
+                <br>마지막 날짜 : <input type="date" value="{{maxDate|default:'2021-12-31'}}" name="maxDate" required>
                 <input type="submit" value="검색">
             </form>
         </div>

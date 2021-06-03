@@ -1,6 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
     <section>
-        this is chart page
+        <h1>주문 통계</h1>
+            <p>하이픈 '-'을 포함해 연도-월-일 순으로 조회해주세요.
+                <br>ex) 2021-01-01
+            </p>
+            <form action="{% url 'chart:view_chart'%}" method="POST" name="date">
+                {% csrf_token %}
+                시작 날짜 : <input type="date" value="{{minDate|default:'2021-01-01'}}" name="minDate" required>
+                <br>마지막 날짜 : <input type="date" value="{{maxDate|default:'2021-12-31'}}" name="maxDate" required>
+                <input type="submit" value="검색">
+            </form>
+            <br>
+            <p>선택한 기간 동안 총 판매량 : {{total_sales_price.total_price__sum|default_if_none:"0"}}원</p>
+            <div>
+                선택한 기간 동안 가장 많이 팔린(수량기준) 상품 best 3
+                <div>
+                    {% for k, v in best_item.items %}
+                        {{k}} : {{v}}개<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div>
+                선택한 기간 동안 가장 많이 팔린(수량기준) 카테고리 best 3
+                <div>
+                    {% for k, v in best_category.items %}
+                        {{k}} : {{v}}개<br>
+                    {% endfor %}
+                </div>
+            </div>
     </section>
 {% endblock %}
