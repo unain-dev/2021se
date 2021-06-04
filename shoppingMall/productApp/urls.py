@@ -8,8 +8,9 @@ urlpatterns = [
     path('detail/<int:product_id>',views.product_detail, name='detail'),
    
     path('search/', views.search, name="search"),
-    path('review/', views.review, name="review"),
+    path('review_post/<int:order_id>', views.review_post, name="review_post"),
     path('review_save/', views.review_save, name="review_save"),
+    path('review_board/<int:product_id>', views.review_view, name="review_board"),
    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

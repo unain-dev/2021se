@@ -76,5 +76,6 @@ class review(models.Model):
     r_content=models.TextField(null=True)
     total_score=models.CharField( max_length=5,choices=CATEGORY_CHOICES3)
     r_user_id=models.CharField(max_length=50,null=True)
+   
     
 

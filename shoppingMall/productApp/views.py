@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import product, Photo,review
+from .models import product,Photo,review
 from cartApp import context_processors
+from orderApp.models import Order,OrderItem
 # Create your views here.
 
 def move_category(request, category):
@@ -20,13 +21,13 @@ def product_detail(request,product_id):
    photo_set=photo_all.filter(product_id=product_id)
    photo_get=Photo.objects.filter(product__in=photo_set)
    
-   review_all=product.objects.all()
-   review_set=review_all.filter(product_id=product_id)
-   review_get=review.objects.filter(product__in=review_set)
+
+   
+   
    
    
 
-   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get,'review_get':review_get})
+   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
 
 def search(request):
    cart_count=context_processors.counter(request)
@@ -72,23 +73,32 @@ def search(request):
          return render(request, 'search_rings.html', {'msg':msg, 'count':count, 'category':search_cateogry})
 
 
-def review(request):
+def review_post(request,order_id):
 
 
     cart_count=context_processors.counter(request)
     cart_count=int(cart_count)
     count={'cart_count':cart_count}
-    return render(request,"review.html", {'count':count})
+    orders=Order.objects.get(id=order_id)
+    order_items=OrderItem.objects.filter(order=orders)
+    return render(request,"review_post.html", {'orders':orders,'count':count,'order_items':order_items})
+
 
 def review_save(request):
+    
+ 
+     cart_count=context_processors.counter(request)
+     cart_count=int(cart_count)
+     count={'cart_count':cart_count}
+     
 
-    cart_count=context_processors.counter(request)
-    cart_count=int(cart_count)
-    count={'cart_count':cart_count}
+     
 
-    if request.method == 'POST' :
      uid=request.session.get('user_id')
-     p_id=request.session.get('product_id')
+     p_id=request.POST['p_id']
+     product_get=product.objects.filter(product_id=p_id)
+    
+     
      new_review=review()
      new_review.r_product=product.objects.get(product_id=p_id)
      new_review.r_stage=request.POST.get("r_stage")
@@ -97,5 +107,17 @@ def review_save(request):
      new_review.total_score=request.POST.get("total_score")
      new_review.r_user_id=uid
      new_review.save()
-    return redirect('detail')
+     return render(request,"review_board.html", {'count':count})
+
+def review_view(request,product_id):
+    product_get=product.objects.filter(product_id=product_id)
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    review_all=product.objects.all()
+    review_set=review_all.filter(product_id=product_id)
+    review_get=review.objects.filter(r_product__in=review_set)
+   
+    return render(request,"review_board.html", {'product_get':product_get,'count':count,'review_get':review_get})
 

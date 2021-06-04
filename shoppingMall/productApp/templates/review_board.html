@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content%}
+<section>
+  
+
+    <table class="table">
+    {%for product in product_get %}
+    상품명:
+     
+    {{product.name}}
+        <thead>
+            
+          <tr>
+            <th scope="col">평가</th>
+            <th scope="col">shipping</th>
+            <th scope="col">content</th>
+            <th scope="col">r_user_id</th>
+            <th scope="col">총점</th>
+            <th scope="col">update</th>
+          </tr>
+        </thead>
+       
+        {% for review in review_get %}
+         
+        <tbody>
+          <tr>
+            <th scope="row">{{review.r_stage}}</th>
+            <td>{{review.shipping_score}}</td>
+            <td>{{review.r_content}}</td>
+            <td>{{review.r_user_id}}</td>
+            <td>{{review.total_score}}</td>
+            <td>{{review.pub}}</td>
+            {%  endfor %}
+           
+          
+        
+            
+        </tbody>
+       
+        {%  endfor %}
+    </table>
+</div>
+<br><br><br><br>
+</section>
+{% endblock %}

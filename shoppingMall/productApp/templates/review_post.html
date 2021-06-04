@@ -8,8 +8,14 @@
         {%csrf_token%}
   
 	<h4>상품평등록</h4>
-	<br><br>
-
+    <br><br>
+    {% for Orderitem in order_items %}
+    {{Orderitem.product_title}}
+    <input type = "text" name ="p_id" value=" {{Orderitem.product_id}}"></label>
+    
+    <br>가격 : {{Orderitem.price}}
+     {% endfor %}
+     
     product
     <div>
     <label for="r_stage"><input type = "radio" name ="r_stage" value="적극추천">적극추천</label>
