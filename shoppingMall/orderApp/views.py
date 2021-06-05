@@ -11,6 +11,9 @@ from django.views.decorators.csrf import csrf_exempt
 from productApp.models import product
 from django.contrib import messages
 from django.core.paginator import Paginator
+from couponApp.models import Coupon
+from django.utils.dateformat import DateFormat
+from datetime import datetime
 
 # Create your views here.
 def get_items(request, total=0, counter=0):
@@ -172,14 +175,13 @@ def paySuccess(request):
     return render(request, 'paySuccess.html', context)
 
 def payFail(request):
-    cart_count=context_processors.counter(request)
-    cart_count=int(cart_count)
-    count={'cart_count':cart_count}
-
-    order=Order.objects.get(order_user=request.session.get('user_id'))
+    order=Order.objects.get(id=request.session.get('order_id'))
     order.order_state='pay_cancle'
     order.save()
-    return render(request, 'payFail.html', {'count':count})
+
+    request.session['pay_state']='pay_cancle'
+
+    return redirect('order:order_check')
 
 def payCancel(request):
     order=Order.objects.get(id=request.session.get('order_id'))
@@ -232,3 +234,62 @@ def search_order(request):
         orders=Order.objects.filter(order_user=user_id)&Order.objects.filter(date_added__range=[minDate, maxDate])
 
     return render(request, 'my_order.html', {'orders':orders, 'minDate':minDate, 'maxDate':maxDate, 'count':count})
+
+def coupon_check(request):
+    coupon_get=Coupon.objects.filter(activation=True)
+    for coupon in coupon_get :
+        now=DateFormat(datetime.now()).format('Ymd')
+        dueDate=DateFormat(coupon.dueDate).format('Ymd')
+        if int(dueDate)-int(now)>0:
+            pass
+        else:
+            coupon.activation=False
+            coupon.save()
+
+    coupon_id=request.POST['coupon']
+    coupon_list=Coupon.objects.get(activation=True, coupon_id=coupon_id)
+
+    order_id=request.session.get('order_id')
+    order=Order.objects.get(id=order_id)
+    order_items=OrderItem.objects.filter(order=order)
+
+    uid=request.session.get('user_id')
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    shippings = address.objects.filter(accounts__in=get_user)
+
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+    real_price=order.total_price
+
+    if coupon_list :
+        #if order.coupon_id is None : 
+        if order.coupon_id=='':
+            if coupon_list.type == 'price' and order.total_price>=coupon_list.min_price:
+                order.coupon_id=coupon_id
+                order.total_price-=coupon_list.discount_price
+                order.save()
+                return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_price=coupon_list.discount_price, coupon_per=coupon_list.discount_percentage, real_price=real_price))
+
+            elif order.coupon_id=='' and coupon_list.type == 'percentage':
+                for item in order_items:
+                    if item.category == coupon_list.discount_category:
+                        order.coupon_id=coupon_id
+                        cal_dis=order.total/coupon_list.discount_percentage
+                        order.total-=cal_dis
+                        order.save()
+                        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
+            else :
+                msg='쿠폰 조건 미달'
+                return render(request, 'payFail.html', {'msg':msg})
+        else:
+            msg='쿠폰 중복 적용 금지'
+            return render(request, 'payFail.html', {'msg':msg})
+    else :
+        msg='coupon 번호가 다름'
+        return render(request, 'payFail.html', {'msg':msg})
+    return render(request, 'payFail.html')
+
+def view_after_coupon(request):
+    return render(request, 'payFail.html')

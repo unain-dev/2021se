@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block content%}
+<script>
+    function showAlert(){
+        alert('결제가 취소되었습니다. 다시 결제해주세요.')
+    }
+</script>
 <section>
     {% if not order_items %}
         <div>
@@ -24,6 +29,13 @@
         </div>
         <div>
             <h3>주문번호 : {{order_id}}</h3>
+            {% if coupon_price %}
+            <br>원래 가격 : {{real_price}}
+            <br>쿠폰 할인 가격 : {{coupon_price}}
+            {% elif coupon_per %}
+            <br>원래 가격 : {{real_price}}
+            <br>쿠폰 할인 가격 : {{coupon_per}}
+            {% endif %}
         </div>
         <div>
             <table>
@@ -53,7 +65,11 @@
                 </tbody>
             </table>
             <br><br><br>
-            
+            <form action="{% url 'order:coupon_check' %}" method="POST">
+                {%csrf_token%}
+                쿠폰 번호 :<input type="text" name="coupon">
+                <button type="submit">쿠폰 적용</button>
+            </form>
             <form action="{% url 'order:pay' %}" method="POST">
                 {%csrf_token%}
                 <label>배송지 선택 : </label>
@@ -69,9 +85,5 @@
             {% endif %}
         <br><br><br><br>
     </section>
-    <script>
-        function showAlert(){
-            alert('결제가 취소되었습니다. 다시 결제해주세요.')
-        }
-    </script>
+    
 {% endblock %}

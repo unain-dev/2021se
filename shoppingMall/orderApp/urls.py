@@ -11,4 +11,6 @@ urlpatterns=[
     path('myOrder/', order_views.view_myOrder, name="view_myOrder"),
     path('detailOrder/<int:order_id>', order_views.order_detail, name="order_detail"),
     path('searchOrder/', order_views.search_order, name="search_order"),
+    path('couponCheck/', order_views.coupon_check, name="coupon_check"),
+    path('viewOrderCheck/', order_views.view_after_coupon, name="view_after_coupon"),
 ]
