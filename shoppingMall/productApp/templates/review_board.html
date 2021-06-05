@@ -27,7 +27,7 @@
             <th scope="row">{{review.r_stage}}</th>
             <td>{{review.shipping_score}}</td>
             <td>{{review.r_content}}</td>
-            <td>{{review.r_user_id}}</td>
+            <td>{{review.r_user_id|truncatechars:3}}</td>
             <td>{{review.total_score}}</td>
             <td>{{review.pub}}</td>
             {%  endfor %}
