@@ -9,6 +9,8 @@ from .models import OrderItem, Order
 from django.db.models import Max
 from django.views.decorators.csrf import csrf_exempt
 from productApp.models import product
+from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
 def get_items(request, total=0, counter=0):
@@ -76,6 +78,13 @@ def order_check(request, total=0, counter=0, cart_items=None):
     count={'cart_count':cart_count}
 
     order_items=OrderItem.objects.filter(order=order)
+    
+
+    if request.session.get('pay_state')=='pay_cancle':
+        request.session['pay_state']=''
+        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=True))
+
+
     return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
 
 def cancle_order(request):
@@ -163,16 +172,23 @@ def paySuccess(request):
     return render(request, 'paySuccess.html', context)
 
 def payFail(request):
-    order=Order.objects.filter(order_user=request.session.get('user_id'))
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    order=Order.objects.get(order_user=request.session.get('user_id'))
     order.order_state='pay_cancle'
     order.save()
-    return render(request, 'payFail.html')
+    return render(request, 'payFail.html', {'count':count})
 
 def payCancel(request):
-    order=Order.objects.filter(order_user=request.session.get('user_id'))
+    order=Order.objects.get(id=request.session.get('order_id'))
     order.order_state='pay_cancle'
     order.save()
-    return render(request, 'payCancel.html')
+
+    request.session['pay_state']='pay_cancle'
+
+    return redirect('order:order_check')
 
 def view_myOrder(request):
     cart_count=context_processors.counter(request)
@@ -181,13 +197,17 @@ def view_myOrder(request):
 
     user_id=request.session.get('user_id')
     orders=Order.objects.filter(order_user=user_id)
+
+    paginator=Paginator(orders, 5)
+    page=request.GET.get('page')
+    posts=paginator.get_page(page)
     
     for order in orders:
         if order.order_state == 'order_continue':
             order.order_state='order_cancle'
             order.save()
 
-    return render(request, 'my_order.html', {'orders':orders, 'count':count})
+    return render(request, 'my_order.html', {'count':count, 'posts':posts})
 
 def order_detail(request, order_id):
     cart_count=context_processors.counter(request)
@@ -196,6 +216,7 @@ def order_detail(request, order_id):
 
     orders=Order.objects.get(id=order_id)
     order_items=OrderItem.objects.filter(order=orders)
+    
     return render(request, 'order_detail.html', {'orders':orders, 'order_items':order_items, 'count':count})
 
 @csrf_exempt

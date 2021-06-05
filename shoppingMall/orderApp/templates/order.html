@@ -13,6 +13,11 @@
             </p>
         </div>
     {% else %}
+        {% if order_cancle is True %}
+            <script>
+                showAlert()
+            </script>
+        {% endif %}
         <div>
             <br>
             <h1>Order List</h1>
@@ -64,4 +69,9 @@
             {% endif %}
         <br><br><br><br>
     </section>
+    <script>
+        function showAlert(){
+            alert('결제가 취소되었습니다. 다시 결제해주세요.')
+        }
+    </script>
 {% endblock %}

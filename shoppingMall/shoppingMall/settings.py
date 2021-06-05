@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'cartApp',
     'orderApp',
     'questionApp',
-    'chartApp'
+    'chartApp',
+    'rangefilter',
 #    'cartApp.context_processors.counter',
 ]
 
