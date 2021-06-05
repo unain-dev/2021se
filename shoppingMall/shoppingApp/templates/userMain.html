@@ -51,7 +51,7 @@
         welcome! {{user.username}}
         <div class='mypage'>
         
-            <a href="{% url 'myPage' %}">마이페이지</a> |<a href="{% url 'create' %}">배송지관리</a> | <a href="{% url 'cart:cart_detail'%}">장바구니</a> | <a href="{% url 'logout'%}">로그아웃</a>|<a href="{% url 'question:postquestion_view' %}">고객문의</a>|
+            <a href="{% url 'myPage' %}">마이페이지</a> | <a href="{% url 'cart:cart_detail'%}">장바구니</a> | <a href="{% url 'logout'%}">로그아웃</a>
 
         </div>
         {% else %}

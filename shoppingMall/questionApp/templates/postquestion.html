@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
 {% block content%}
 <section>
-    this is question.html
+    
     <br>
 <div class="container">
     <form action="{% url 'question:postquestion_save' %}" method="POST">
         {%csrf_token%}
   
 	<h4>고객문의</h4>
-	<br><br>
+  <br><br>
+   
+   <div class="col-md-3">
+    <label for="inputEmail4" class="form-label">상품명</label>
+    <input
+    type="text"
+    class="form-control"
+    name="product_name"
+    id="product_name"
+    placeholder="문의하시는 상품명을 그대로 적어주세요"
+  
+  />
+  </div>
+  
 
     type
     <div>

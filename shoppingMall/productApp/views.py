@@ -23,9 +23,6 @@ def product_detail(request,product_id):
    
 
    
-   
-   
-   
 
    return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
 

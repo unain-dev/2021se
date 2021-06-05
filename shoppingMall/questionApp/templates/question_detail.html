@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content%}
+<section>
+    this is q_detail.html
+{%for question in d_question_get%}
+      
+    <br>
+<div class="container">
+    
+        
+  
+	<h4>고객문의</h4>
+  <br><br>
+   
+  
+  상품명:{{question.product_name}}
+    <br>
+
+    type:
+    {{question.q_category}}<br>
+    title:
+    {{question.title}}
+
+    
+  <br>
+
+     문의내용
+    <div class="form-floating">
+        <label for="content"></label>
+        <textarea class="form-control"  id="content" name="content" style="height: 100px ">{{question.content}}</textarea>
+
+      </div>
+    답변내용
+      <div class="form-floating">
+        <label for="content"></label>
+        <textarea class="form-control"  id="content" name="content" style="height: 100px ">{{question.answer}}</textarea>
+
+      </div>
+      {%endfor%}
+      <a href="{% url 'question:postquestion_view' %}">추가문의</a>
+</section>
+{% endblock %}

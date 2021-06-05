@@ -15,15 +15,20 @@ def postquestion_save(request):
     cart_count=int(cart_count)
     count={'cart_count':cart_count}
 
+
     if request.method == 'POST' :
      uid=request.session.get('user_id')
+     
      new_question=question()
+     new_question.product_name=request.POST.get("product_name")
      new_question.q_category=request.POST.get("q_category")
      new_question.title=request.POST['title']
      new_question.content=request.POST['content']
      new_question.q_user_id=uid
      new_question.save()
-    return render(request,"question_list.html", {'count':count})
+    uid=request.session.get('user_id')
+    get_questions = question.objects.all().filter(q_user_id=uid)
+    return render(request,"question_list.html", {'get_questions':get_questions,'count':count})
 
 def question_list_view(request):
     cart_count=context_processors.counter(request)
@@ -31,7 +36,16 @@ def question_list_view(request):
     count={'cart_count':cart_count}
 
     uid=request.session.get('user_id')
-    get_questions = question.objects.get(q_user_id=uid)
+    get_questions = question.objects.all().filter(q_user_id=uid)
     
 
     return render(request,"question_list.html",{'get_questions':get_questions, 'count':count})
+
+def question_detail_view(request,pk):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    
+    d_question_get=question.objects.filter(pk=pk)
+    return render(request,"question_detail.html",{'count':count,'d_question_get': d_question_get})

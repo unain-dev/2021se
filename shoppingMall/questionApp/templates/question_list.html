@@ -1,28 +1,40 @@
 {% extends 'base.html' %}
 {% block content%}
 <section>
-    this is question_list.htm ldd
-    <table class="table">dd
+    
+    <a href="{% url 'question:postquestion_view' %}">고객문의</a>
+    <br>
+    <table class="table">
         <thead>
           <tr>
+            <th scope="col">상품명</th>
             <th scope="col">type</th>
             <th scope="col">title</th>
             <th scope="col">content</th>
+            <th scope="col">답변여부</th>
            
     
           </tr>
         </thead>
-     
+        
         {% for question in get_questions %}
+         
         <tbody>
           <tr>
-            <th scope="col">{{question.q_category}}</th>
+            <th scope="col"><a href="{% url 'question:question_detail_view' question.pk%}">{{question.product_name}}</a></th>
+            <td>{{question.q_category}}</td>
             <td>{{question.title}}</td>
             <td>{{question.content}}</td>
+            {%if question.is_checked%}  
+            <td>등록</td>
+            {%else%}
+            <td>미등록</td>
+            {%endif%}
+               
             </tr>
         </tbody>
         {% endfor %}
-          </table>
+        </table>
           
 </section>
 {% endblock %}
