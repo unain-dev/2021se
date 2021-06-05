@@ -4,6 +4,15 @@
     function showAlert(){
         alert('결제가 취소되었습니다. 다시 결제해주세요.')
     }
+    function under_condition(){
+        alert('쿠폰 최소 사용 조건에 맞지 않아 적용이 불가능합니다.')
+    }
+    function no_duplicated(){
+        alert('이미 쿠폰이 사용되었습니다.')
+    }
+    function limit_coupon(){
+        alert('사용기간이 만료되었거나 존재하지 않는 쿠폰입니다.')
+    }
 </script>
 <section>
     {% if not order_items %}
@@ -22,6 +31,18 @@
             <script>
                 showAlert()
             </script>
+        {% elif coupon_error == 'under_condition' %}
+            <script>
+                under_condition()
+            </script>
+        {% elif coupon_error == 'no_duplicated' %}
+            <script>
+                no_duplicated()
+            </script>
+        {% elif coupon_error == 'limit_coupon' %}
+            <script>
+                limit_coupon()
+            </script>
         {% endif %}
         <div>
             <br>
@@ -29,13 +50,8 @@
         </div>
         <div>
             <h3>주문번호 : {{order_id}}</h3>
-            {% if coupon_price %}
-            <br>원래 가격 : {{real_price}}
-            <br>쿠폰 할인 가격 : {{coupon_price}}
-            {% elif coupon_per %}
-            <br>원래 가격 : {{real_price}}
-            <br>쿠폰 할인 가격 : {{coupon_per}}
-            {% endif %}
+            <br>원래 가격 : {{order.before_discount}}
+            <br>쿠폰 할인 가격 : {{order.discount_price}}
         </div>
         <div>
             <table>
@@ -55,6 +71,7 @@
                             <br>가격 : {{order_item.price}}
                             <br>수량 : {{order_item.quantity}}
                             <br>상품 총액 : {{order_item.sub_total}}
+                            <br>상품 배송비 : {{order_item.shipping_fee}}
                         </td>
                     </tr>
                     {% endfor %}

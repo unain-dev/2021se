@@ -58,7 +58,9 @@ def order_check(request, total=0, counter=0, cart_items=None):
         total_price=total,
         total_quantity=counter,
         order_state='order_continue',
-        total_shipping_fee=cart.total_shipping_fee
+        total_shipping_fee=cart.total_shipping_fee,
+        discount_price=0,
+        before_discount=total
     )
     order.save()
     request.session['order_id']=order.id
@@ -85,10 +87,12 @@ def order_check(request, total=0, counter=0, cart_items=None):
 
     if request.session.get('pay_state')=='pay_cancle':
         request.session['pay_state']=''
-        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=True))
+        order_cancle=True
+    else :
+        order_cancle=False
 
 
-    return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
+    return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=order_cancle))
 
 def cancle_order(request):
     return render(request, '')
@@ -246,9 +250,6 @@ def coupon_check(request):
             coupon.activation=False
             coupon.save()
 
-    coupon_id=request.POST['coupon']
-    coupon_list=Coupon.objects.get(activation=True, coupon_id=coupon_id)
-
     order_id=request.session.get('order_id')
     order=Order.objects.get(id=order_id)
     order_items=OrderItem.objects.filter(order=order)
@@ -263,33 +264,81 @@ def coupon_check(request):
     count={'cart_count':cart_count}
     real_price=order.total_price
 
-    if coupon_list :
-        #if order.coupon_id is None : 
-        if order.coupon_id=='':
-            if coupon_list.type == 'price' and order.total_price>=coupon_list.min_price:
-                order.coupon_id=coupon_id
-                order.total_price-=coupon_list.discount_price
-                order.save()
-                return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_price=coupon_list.discount_price, coupon_per=coupon_list.discount_percentage, real_price=real_price))
+    coupon_id=request.POST['coupon']
+    try:
+        coupon_list=Coupon.objects.get(activation=True, coupon_id=coupon_id)
+    except:
+        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_error='limit_coupon'))
 
-            elif order.coupon_id=='' and coupon_list.type == 'percentage':
-                for item in order_items:
-                    if item.category == coupon_list.discount_category:
-                        order.coupon_id=coupon_id
-                        cal_dis=order.total/coupon_list.discount_percentage
-                        order.total-=cal_dis
-                        order.save()
-                        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
-            else :
-                msg='쿠폰 조건 미달'
-                return render(request, 'payFail.html', {'msg':msg})
-        else:
-            msg='쿠폰 중복 적용 금지'
-            return render(request, 'payFail.html', {'msg':msg})
-    else :
-        msg='coupon 번호가 다름'
-        return render(request, 'payFail.html', {'msg':msg})
-    return render(request, 'payFail.html')
+    if order.coupon_id=='':
+        if coupon_list.type == 'price' and order.total_price>=coupon_list.min_price:
+            order.coupon_id=coupon_id
+            order.discount_price=coupon_list.discount_price
+            order.total_price-=coupon_list.discount_price
+            order.save()
+            return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_price=coupon_list.discount_price, coupon_per=coupon_list.discount_percentage, real_price=real_price))
+
+        elif coupon_list.type == 'percentage':
+            for item in order_items:
+                if item.category == coupon_list.discount_category:
+                    order.coupon_id=coupon_id
+                    cal_dis=order.total_price/coupon_list.discount_percentage
+                    order.discount_price=round(cal_dis)
+                    order.total_price-=round(cal_dis)
+                    order.save()
+            return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_price=coupon_list.discount_price, coupon_per=coupon_list.discount_percentage, real_price=real_price))
+        else :
+            msg='쿠폰 조건 미달'
+            return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_error='under_condition'))
+    else:
+        msg='쿠폰 중복 적용 금지'
+        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_error='no_duplicated'))
+    return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id))
 
 def view_after_coupon(request):
     return render(request, 'payFail.html')
+
+@csrf_exempt
+def direct_pay(request, product_id):
+    product_get=product.objects.get(product_id=product_id)
+    order=Order.objects.create(
+        order_user=request.session.get('user_id'),
+        total_price=product_get.price,
+        total_quantity=request.POST['detail_quantity'],
+        order_state='order_continue',
+        total_shipping_fee=product_get.shipping_fee,
+        discount_price=0,
+        before_discount=product_get.price
+    )
+    order.save()
+    request.session['order_id']=order.id
+
+    order_items=OrderItem.objects.create(
+        order=order,
+        product_id=product_id,
+        product_title=product_get.name,
+        quantity=request.POST['detail_quantity'],
+        price=product_get.price,
+        shipping_fee=product_get.shipping_fee,
+        category=product_get.category
+    )
+    order_items.save()
+
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
+    uid=request.session.get('user_id')
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    shippings = address.objects.filter(accounts__in=get_user)
+
+    if request.session.get('pay_state')=='pay_cancle':
+        request.session['pay_state']=''
+        order_cancle=True
+    else :
+        order_cancle=False
+
+    order_items=OrderItem.objects.filter(order=order)
+    
+    return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=order_cancle))

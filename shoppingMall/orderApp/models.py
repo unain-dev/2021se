@@ -21,6 +21,8 @@ class Order(models.Model):
     total_shipping_fee=models.IntegerField()
     shipping_address=models.CharField(max_length=1000)
     coupon_id=models.CharField(max_length=1000)
+    discount_price=models.IntegerField()
+    before_discount=models.IntegerField()
 
     class Meta:
         db_table='Order'

@@ -21,7 +21,10 @@
                                     수량 : <input type="text" name="detail_quantity">
                                     <button onclick="button1_click();">장바구니 담기</button>
                                 </form>
-                                <br><a>바로구매</a>
+                                <form action="{% url 'order:direct_pay' product.product_id%}" method="POST">
+                                    수량 : <input type="text" name="detail_quantity">
+                                    <button>바로 구매</button>
+                                </form>
                                 
                                 <br><a href="{% url 'create_default' %}">배송지선택</a>
                                 <br><a href="{% url 'products:review_board'  product.product_id%}">review</a>

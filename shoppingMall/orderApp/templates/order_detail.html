@@ -3,19 +3,22 @@
     <section>
         <h2>나의 주문내역</h2>
         <div>
-
-            <div sytle="margin:30px; border:solid">
+            <div sytle="margin:30px; border:solid;">
+                
                 {% for order_item in order_items %}
+                <div style="border:solid; width:50%; padding:20px;">
                     {{order_item.product_title}}
                     <br>가격 : {{order_item.price}}
                     <br>수량 : {{order_item.quantity}}
                     <br>상품 총액 : {{order_item.sub_total}}
                     <br><br><br>
                     <p><strong><a href="{% url 'products:review_post' order_item.id %}">상품평쓰기</a></strong></p>
-                    
+                </div>
                 {% endfor %}
+
                 <br> 배송지 : {{orders.shipping_address}}
                     <br>전체 배송비 : {{orders.total_shipping_fee}}
+                    <br>쿠폰 할인 금액 : {{orders.discount_price}}
                     <br>총 결제금액 : <strong>{{orders.total_price}}</strong>
             <br><br><br>
             </div>

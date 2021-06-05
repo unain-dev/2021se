@@ -18,7 +18,7 @@
         <div>
             {% for order in posts%}
                 <br>
-                <div sytle="margin:30px; border:solid">
+                <div style="border:solid; width:50%; padding:20px;">
                     <p><strong><a href="{% url 'order:order_detail' order.id %}">주문 번호 : {{order.id}}</a></strong></p>
                     <p>수량 : {{order.total_quantity}}</p>
                     <p>총액 : {{order.total_price}}</p>
