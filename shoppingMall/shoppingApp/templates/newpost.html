@@ -7,7 +7,7 @@
         {%csrf_token%}
   
 	<h6>배송지 별칭 </h6>
-	<input type="text" name="title" id='title'>
+	<input type="text" name="title" id='title' required>
 
 
     <div class="col-md-3">
@@ -18,7 +18,8 @@
       name="post_num"
       id="postcode"
       placeholder="우편번호"
-    
+      required
+      readonly
     />
     </div>
     <div class="col-md-3 postcode-btn">
@@ -33,6 +34,8 @@
       name="road_address"
       id="address"
       placeholder="도로명 주소"
+      required
+      readonly
    
     />
     </div>
