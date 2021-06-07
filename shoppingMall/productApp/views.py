@@ -5,6 +5,8 @@ from cartApp import context_processors
 from orderApp.models import Order,OrderItem
 from django.utils import timezone
 from django.db.models import Avg
+from django.core.paginator  import Paginator
+
 # Create your views here.
 
 def move_category(request, category):
@@ -120,10 +122,22 @@ def review_view(request,product_id):
 
     review_all=product.objects.all()
     review_set=review_all.filter(product_id=product_id)
+    my_reviews=review.objects
     review_get=review.objects.filter(r_product__in=review_set)
     p_avg_score=review_get.aggregate(Avg('total_score'))
     review_set.avg_score=p_avg_score
+
+  
+    
+
+   
+    
+    
+    paginator=Paginator(review_get,5)
+    page=request.GET.get('page')
+    r_posts=paginator.get_page(page)
+   
     
    
-    return render(request,"review_board.html", {'p_avg_score':p_avg_score,'product_get':product_get,'count':count,'review_get':review_get})
+    return render(request,"review_board.html", {'my_reviews':my_reviews,'r_posts':r_posts,'p_avg_score':p_avg_score,'product_get':product_get,'count':count,'review_get':review_get})
 

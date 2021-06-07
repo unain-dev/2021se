@@ -21,16 +21,16 @@
           </tr>
         </thead>
        
-        {% for review in review_get %}
+        {% for my_reviews in r_posts %}
          
         <tbody>
           <tr>
-            <th scope="row">{{review.r_stage}}</th>
-            <td>{{review.shipping_score}}</td>
-            <td>{{review.r_content}}</td>
-            <td>{{review.r_user_id|truncatechars:3}}</td>
-            <td>{{review.total_score}}</td>
-            <td>{{review.update_at}}</td>
+            <th scope="row">{{my_reviews.r_stage}}</th>
+            <td>{{my_reviews.shipping_score}}</td>
+            <td>{{my_reviews.r_content}}</td>
+            <td>{{my_reviews.r_user_id|truncatechars:3}}</td>
+            <td>{{rmy_reviews.total_score}}</td>
+            <td>{{my_reviews.update_at}}</td>
             {%  endfor %}
            
           
@@ -40,6 +40,21 @@
        
         {%  endfor %}
     </table>
+
+    <div class="col-12">
+      <nav>
+        {% if r_posts.has_previous %}
+        <a href="?page={{r_posts.previous_page_number}}">previous</a>
+        <a href="?page=1">1</a>
+        {% endif %}
+        <span>{{r_posts.number}}</span>
+        {% if r_posts.has_next %}
+        <a href="?page={{r_posts.paginator.num_pages}}">{{r_posts.paginator.num_pages}}</a>
+        <a href="?page={{r_posts.next_page_number}}">next</a>
+        {% endif %}
+          </ul>
+      </nav>
+  </div>
 </div>
 <br><br><br><br>
 </section>
