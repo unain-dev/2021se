@@ -83,7 +83,7 @@ def order_check(request, total=0, counter=0, cart_items=None):
     count={'cart_count':cart_count}
 
     order_items=OrderItem.objects.filter(order=order)
-    
+    request.session['cart_pay']=False
 
     if request.session.get('pay_state')=='pay_cancle':
         request.session['pay_state']=''
@@ -143,9 +143,10 @@ def paySuccess(request):
     order=Order.objects.get(id=order_id)
     order.order_state='pay_complete'
     order.save()
-
-    cart=Cart.objects.get(cart_id = request.session.get('user_id'))
-    cart.delete()
+    
+    if request.session.get('cart_pay')==True:
+        cart=Cart.objects.get(cart_id = request.session.get('user_id'))
+        cart.delete()
 
     URL = 'https://kapi.kakao.com/v1/payment/approve'
     headers = {
@@ -235,9 +236,14 @@ def search_order(request):
     if request.method == 'POST':
         minDate=request.POST['minDate']
         maxDate=request.POST['maxDate']
-        orders=Order.objects.filter(order_user=user_id)&Order.objects.filter(date_added__range=[minDate, maxDate])
+        orders=Order.objects.filter(order_user=user_id, date_added__range=[minDate, maxDate])
+    
+    paginator=Paginator(orders, 5)
+    page=request.GET.get('page')
+    posts=paginator.get_page(page)
 
-    return render(request, 'my_order.html', {'orders':orders, 'minDate':minDate, 'maxDate':maxDate, 'count':count})
+    return render(request, 'my_order.html', {'posts':posts, 'minDate':minDate, 'maxDate':maxDate, 'count':count})
+
 
 def coupon_check(request):
     coupon_get=Coupon.objects.filter(activation=True)
@@ -270,7 +276,7 @@ def coupon_check(request):
     except:
         return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, coupon_error='limit_coupon'))
 
-    if order.coupon_id=='':
+    if order.coupon_id is None:
         if coupon_list.type == 'price' and order.total_price>=coupon_list.min_price:
             order.coupon_id=coupon_id
             order.discount_price=coupon_list.discount_price
@@ -301,44 +307,58 @@ def view_after_coupon(request):
 @csrf_exempt
 def direct_pay(request, product_id):
     product_get=product.objects.get(product_id=product_id)
-    order=Order.objects.create(
-        order_user=request.session.get('user_id'),
-        total_price=product_get.price,
-        total_quantity=request.POST['detail_quantity'],
-        order_state='order_continue',
-        total_shipping_fee=product_get.shipping_fee,
-        discount_price=0,
-        before_discount=product_get.price
-    )
+    total_direct=(product_get.price*int(request.POST['detail_quantity']))+product_get.shipping_fee
+    get_product=product.objects.get(product_id=product_id)
+    if get_product.stock>=int(request.POST['detail_quantity']):
+        order=Order.objects.create(
+            order_user=request.session.get('user_id'),
+            total_price=total_direct,
+            total_quantity=request.POST['detail_quantity'],
+            order_state='order_continue',
+            total_shipping_fee=product_get.shipping_fee,
+            discount_price=0,
+            before_discount=total_direct
+        )
+        order.save()
+        request.session['order_id']=order.id
+
+        
+        order_items=OrderItem.objects.create(
+            order=order,
+            product_id=product_id,
+            product_title=product_get.name,
+            quantity=request.POST['detail_quantity'],
+            price=product_get.price,
+            shipping_fee=product_get.shipping_fee,
+            category=product_get.category
+        )
+        order_items.save()
+
+        cart_count=context_processors.counter(request)
+        cart_count=int(cart_count)
+        count={'cart_count':cart_count}
+
+        uid=request.session.get('user_id')
+        get_all=UserAccounts.objects.all()
+        get_user=get_all.filter(user_id=uid)
+        shippings = address.objects.filter(accounts__in=get_user)
+
+        if request.session.get('pay_state')=='pay_cancle':
+            request.session['pay_state']=''
+            order_cancle=True
+        else :
+            order_cancle=False
+
+        order_items=OrderItem.objects.filter(order=order)
+        
+        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=order_cancle))
+    else:
+        errorMsg = "입력한 수량만큼의 재고가 남아있지 않습니다."
+        return render(request, "error.html", {'errorMsg' : errorMsg})
+        
+
+def user_complete_order(request, order_id):
+    order=Order.objects.get(id=order_id)
+    order.order_state='order_complete'
     order.save()
-    request.session['order_id']=order.id
-
-    order_items=OrderItem.objects.create(
-        order=order,
-        product_id=product_id,
-        product_title=product_get.name,
-        quantity=request.POST['detail_quantity'],
-        price=product_get.price,
-        shipping_fee=product_get.shipping_fee,
-        category=product_get.category
-    )
-    order_items.save()
-
-    cart_count=context_processors.counter(request)
-    cart_count=int(cart_count)
-    count={'cart_count':cart_count}
-
-    uid=request.session.get('user_id')
-    get_all=UserAccounts.objects.all()
-    get_user=get_all.filter(user_id=uid)
-    shippings = address.objects.filter(accounts__in=get_user)
-
-    if request.session.get('pay_state')=='pay_cancle':
-        request.session['pay_state']=''
-        order_cancle=True
-    else :
-        order_cancle=False
-
-    order_items=OrderItem.objects.filter(order=order)
-    
-    return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=order_cancle))
+    return redirect('order:view_myOrder')

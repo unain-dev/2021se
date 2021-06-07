@@ -14,12 +14,14 @@ from datetime import datetime
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from cartApp import context_processors
+from django.views.decorators.csrf import csrf_exempt
 
 from cartApp.models import Cart, CartItem
 
 
 
 # Create your views here.
+@csrf_exempt
 def login_view(request) :
     products_recent = product.objects.filter(published=True).order_by('-pubDate')[:3]
     products_popular = product.objects.filter(published=True).order_by('-salesamount')[:3]
@@ -77,7 +79,7 @@ def register_view(request):
     new_userAccounts=UserAccounts()
     if request.method == 'POST' :
 
-        if request.POST['new_user_id']=="" or request.POST['new_user_pw'] =="" or request.POST['new_user_name']=="" or request.POST['new_user_address']=="" or request.POST['new_user_email']=="" or request.POST['new_user_phone']=="":
+        if request.POST['new_user_id']=="" or request.POST['new_user_pw'] =="" or request.POST['new_user_name']=="" or request.POST['new_user_email']=="" or request.POST['new_user_phone']=="":
             errorMsg = "빈 항목이 있습니다. 다시 회원가입해주세요"
             return render(request, "error.html", {'errorMsg' : errorMsg})
 
@@ -101,7 +103,6 @@ def register_view(request):
             new_userAccounts.user_id = request.POST['new_user_id']
             new_userAccounts.user_pw = request.POST['new_user_pw']
             new_userAccounts.user_name = request.POST['new_user_name']
-            new_userAccounts.user_address = request.POST['new_user_address']
             new_userAccounts.user_email = request.POST['new_user_email']
             new_userAccounts.user_phone = request.POST['new_user_phone']
             new_userAccounts.save()

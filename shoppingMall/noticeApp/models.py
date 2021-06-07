@@ -7,6 +7,5 @@ class Notice_Event(models.Model):
     contents = models.TextField()
     images = models.ImageField(blank=True, upload_to="notice/", null=True)
     on_off = models.BooleanField()
-    activation = models.CharField(choices=on_off.choices, max_length=10)
     dueDate = models.DateTimeField()
     

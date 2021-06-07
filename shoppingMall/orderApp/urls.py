@@ -14,4 +14,5 @@ urlpatterns=[
     path('couponCheck/', order_views.coupon_check, name="coupon_check"),
     path('viewOrderCheck/', order_views.view_after_coupon, name="view_after_coupon"),
     path('directPay/<int:product_id>', order_views.direct_pay, name="direct_pay"),
+    path('user_complete_order/<int:order_id>', order_views.user_complete_order, name="user_complete_order"),
 ]

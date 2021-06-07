@@ -14,7 +14,6 @@ class Coupon(models.Model):
     )
 
     coupon_id = models.CharField(max_length=100)
-    quantity = models.CharField(max_length=100)
     pub_date = models.DateField(auto_now_add=True)
     dueDate = models.DateTimeField()
     activation = models.BooleanField()

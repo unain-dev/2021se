@@ -32,9 +32,9 @@
                     {% elif order.order_state == 'shipping' %}
                         <button>문의하기</button>
                     {% elif order.order_state == 'shipping_complete' %}
-                        <button>구매확정</button>
+                        <button><a href="{% url 'order:user_complete_order' order.id %}">구매확정</a></button>
                     {% elif order.order_state == 'order_complete' %}
-                        <button>상품평</button>
+                        <button><a href="{% url 'order:order_detail' order.id %}">상품 별로 상품평 달기</a></button>
                     {% endif %}
                 </div>
                 <br>

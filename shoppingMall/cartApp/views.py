@@ -70,7 +70,10 @@ def add_cart(request, product_id):
         cart_item = CartItem.objects.get(product=product, cart=cart)
         if cart_item.quantity < cart_item.product.stock:
             cart_item.quantity+=1
-        cart_item.save()
+            cart_item.save()
+        else:
+            errorMsg = "수량이 부족합니다."
+            return render(request, "error.html", {'errorMsg' : errorMsg})
     except CartItem.DoesNotExist:
         cart_item=CartItem.objects.create(
             product=product,
@@ -87,15 +90,12 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
         return render(request, "error.html", {'errorMsg' : errorMsg})
     try:
         user_id=request.session.get('user_id')
-
         cart=Cart.objects.get(cart_id=user_id)
         cart_items=CartItem.objects.filter(cart=cart)
-        #cart_get=CartItem.objects.get(cart=cart)
-        cart_get=cart_items
         for cart_item in cart_items:
             total+=(cart_item.product.price * cart_item.quantity)
             counter += cart_item.quantity
-        if cart_get is not None:
+        if CartItem.objects.filter(cart=cart) :
             max_shipping=CartItem.objects.filter(cart=cart)
             max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
             max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee

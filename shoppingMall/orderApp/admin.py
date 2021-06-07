@@ -12,6 +12,8 @@ class OrderAdmin(admin.ModelAdmin):
     inlines=[
         ItemAdmin
     ]
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 # Register your models here.
 admin.site.register(Order, OrderAdmin)

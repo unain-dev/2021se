@@ -20,7 +20,7 @@ class Order(models.Model):
     order_state=models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     total_shipping_fee=models.IntegerField()
     shipping_address=models.CharField(max_length=1000)
-    coupon_id=models.CharField(max_length=1000)
+    coupon_id=models.CharField(max_length=1000, null=True, blank=True)
     discount_price=models.IntegerField()
     before_discount=models.IntegerField()
 

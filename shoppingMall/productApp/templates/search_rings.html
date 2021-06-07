@@ -10,9 +10,10 @@
         </form>
         <div id="product_num1">
             {{msg}}<br>
+            검색 카테고리 : {{category}}<br>
             검색어 : {{search_name}}<br>
-            최소 가격 : <br>
-            최대 가격 : <br>
+            최소 가격 : {{min}}<br>
+            최대 가격 : {{max}}<br>
             {%for product in products %}
             <div class="row">
                 <div class="col-4">

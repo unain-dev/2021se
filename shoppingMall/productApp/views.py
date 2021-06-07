@@ -14,7 +14,20 @@ def move_category(request, category):
    cart_count=context_processors.counter(request)
    cart_count=int(cart_count)
    count={'cart_count':cart_count}
-   return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category })
+   if request.method == 'POST':
+      select_order=request.POST.get('select_order')
+      if select_order == 'by_name':
+         products_category =product.objects.all().filter(category=category).order_by('name')
+      elif select_order == 'by_high_price':
+         products_category =product.objects.all().filter(category=category).order_by('price')
+      elif select_order == 'by_low_price':
+         products_category =product.objects.all().filter(category=category).order_by('-price')
+      elif select_order == 'by_recent':
+         products_category =product.objects.all().filter(category=category).order_by('pubDate')
+      return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category, 'select_order':select_order})
+
+   return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category})
+
 
 def product_detail(request,product_id):
    product_get=product.objects.filter(product_id=product_id)
