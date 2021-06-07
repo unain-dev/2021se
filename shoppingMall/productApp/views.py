@@ -110,9 +110,18 @@ def review_save(request):
 
      new_review.save()
     
-    
+     review_all=product.objects.all()
+     review_set=review_all.filter(product_id=p_id)
+     my_reviews=review.objects
+     review_get=review.objects.filter(r_product__in=review_set)
+     p_avg_score=review_get.aggregate(Avg('total_score'))
+     
+     paginator=Paginator(review_get,5)
+     page=request.GET.get('page')
+     r_posts=paginator.get_page(page)
 
-     return render(request,"review_board.html", {'product_get':product_get,'count':count})
+
+     return render(request,"review_board.html", {'my_reviews':my_reviews,'r_posts':r_posts,'review_get':review_get,'p_avg_score':p_avg_score,'product_get':product_get,'count':count})
 
 def review_view(request,product_id):
     product_get=product.objects.filter(product_id=product_id)
@@ -125,12 +134,6 @@ def review_view(request,product_id):
     my_reviews=review.objects
     review_get=review.objects.filter(r_product__in=review_set)
     p_avg_score=review_get.aggregate(Avg('total_score'))
-    review_set.avg_score=p_avg_score
-
-  
-    
-
-   
     
     
     paginator=Paginator(review_get,5)

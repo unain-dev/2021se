@@ -18,14 +18,14 @@
      
     product
     <div>
-    <label for="r_stage"><input type = "radio" name ="r_stage" value="적극추천">적극추천</label>
+    <label for="r_stage"><input type = "radio" name ="r_stage" value="적극추천" required>적극추천</label>
     <label for="r_stage"><input type = "radio" name ="r_stage" value="추천">추천</label>
     <label for="r_stage"><input type = "radio" name ="r_stage" value="비추천">비추천<label>
     </div>
     <div>
         shipping
         <br>
-        <label for="r_stage"><input type = "radio" name ="shipping_score" value="빠름">빠름</label>
+        <label for="r_stage"><input type = "radio" name ="shipping_score" value="빠름" required>빠름</label>
         <label for="r_stage"><input type = "radio" name ="shipping_score" value="보통">보통</label>
         <label for="r_stage"><input type = "radio" name ="shipping_score" value="느림">느림<label>
         </div>
@@ -36,12 +36,12 @@
      Contents
     <div class="form-floating">
         <label for="content"></label>
-        <textarea class="form-control" maxlength='100' placeholder="Leave a review here" id="content" name="content" style="height: 100px "></textarea>
+        <textarea class="form-control" maxlength='100' placeholder="Leave a review here" id="content" name="content" style="height: 100px " required></textarea>
 
       </div>
       <div>
           총점
-        <label for="total_score"><input type = "radio" name ="total_score" value="1">1</label>
+        <label for="total_score"><input type = "radio" name ="total_score" value="1" required>1</label>
         <label for="total_score"><input type = "radio" name ="total_score" value="2">2</label>
         <label for="total_score"><input type = "radio" name ="total_score" value="3">3<label>
         <label for="total_score"><input type = "radio" name ="total_score" value="4">4<label>
