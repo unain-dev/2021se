@@ -72,15 +72,14 @@ def search(request):
          return render(request, 'search_rings.html', {'msg':msg, 'count':count, 'category':search_cateogry})
 
 
-def review_post(request,order_id):
-
+def review_post(request,pk):
 
     cart_count=context_processors.counter(request)
     cart_count=int(cart_count)
     count={'cart_count':cart_count}
-    orders=Order.objects.get(id=order_id)
-    order_items=OrderItem.objects.filter(order=orders)
-    return render(request,"review_post.html", {'orders':orders,'count':count,'order_items':order_items})
+    
+    order_items=OrderItem.objects.filter(pk=pk)
+    return render(request,"review_post.html", {'count':count,'order_items':order_items})
 
 
 def review_save(request):
@@ -105,7 +104,7 @@ def review_save(request):
      new_review.r_content=request.POST['content']
      new_review.total_score=request.POST.get("total_score")
      new_review.r_user_id=uid
-     new_review.update_at=timezone.localtime()
+     
      new_review.save()
      return render(request,"review_board.html", {'count':count})
 

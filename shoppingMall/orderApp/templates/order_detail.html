@@ -12,7 +12,8 @@
                     <br>수량 : {{order_item.quantity}}
                     <br>상품 총액 : {{order_item.sub_total}}
                     <br><br><br>
-                    <p><strong><a href="{% url 'products:review_post' order_item.id %}">상품평쓰기</a></strong></p>
+                    
+                    <p><strong><a href="{% url 'products:review_post' order_item.pk %}">상품평쓰기</a></strong></p>
                 </div>
                 {% endfor %}
 
