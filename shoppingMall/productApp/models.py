@@ -61,21 +61,17 @@ class review(models.Model):
         ('보통','보통'),
         ('느림', '느림'),
     )
-    CATEGORY_CHOICES3=(
-        ('5', '5'),
-        ('4','4'),
-        ('3', '3'),
-        ('2', '2'),
-        ('1', '1'),
+   
+    num_choices = zip( range(1,6), range(1,6) ) 
 
-    )
 
     r_product= models.ForeignKey(product, on_delete=models.CASCADE, null=True,default='')
     r_stage=models.CharField(max_length=20, choices=CATEGORY_CHOICES1, default='')
     shipping_score=models.CharField(max_length=20, choices=CATEGORY_CHOICES2, default='')
     r_content=models.TextField(null=True)
-    total_score=models.CharField( max_length=5,choices=CATEGORY_CHOICES3)
     r_user_id=models.CharField(max_length=50,null=True)
+    update_at=models.DateTimeField(auto_now_add=True)
+    total_score= models.IntegerField(choices=num_choices, blank=True)
    
     
 

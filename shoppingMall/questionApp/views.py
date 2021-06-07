@@ -3,6 +3,7 @@ from .models import question
 from cartApp import context_processors
 from shoppingApp.models import UserAccounts
 from django.contrib.auth.models import User
+from django.core.paginator  import Paginator
 # Create your views here.
 def postquestion_view(request):
     cart_count=context_processors.counter(request)
@@ -27,8 +28,14 @@ def postquestion_save(request):
      new_question.q_user_id=uid
      new_question.save()
     uid=request.session.get('user_id')
+    
+    my_questions=question.objects
     get_questions = question.objects.all().filter(q_user_id=uid)
-    return render(request,"question_list.html", {'get_questions':get_questions,'count':count})
+    
+    paginator=Paginator(get_questions,5)
+    page=request.GET.get('page')
+    posts=paginator.get_page(page)
+    return render(request,"question_list.html", {'posts':posts,'my_questions':my_questions,'get_questions':get_questions,'count':count})
 
 def question_list_view(request):
     cart_count=context_processors.counter(request)
@@ -36,15 +43,20 @@ def question_list_view(request):
     count={'cart_count':cart_count}
 
     uid=request.session.get('user_id')
+    my_questions=question.objects
     get_questions = question.objects.all().filter(q_user_id=uid)
     
-
-    return render(request,"question_list.html",{'get_questions':get_questions, 'count':count})
+    paginator=Paginator(get_questions,5)
+    page=request.GET.get('page')
+    posts=paginator.get_page(page)
+   
+    return render(request,"question_list.html",{'posts':posts,'my_questions':my_questions, 'count':count})
 
 def question_detail_view(request,pk):
     cart_count=context_processors.counter(request)
     cart_count=int(cart_count)
     count={'cart_count':cart_count}
+
 
     
     d_question_get=question.objects.filter(pk=pk)

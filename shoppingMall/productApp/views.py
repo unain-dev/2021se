@@ -1,7 +1,9 @@
+from datetime import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import product,Photo,review
 from cartApp import context_processors
 from orderApp.models import Order,OrderItem
+from django.utils import timezone
 # Create your views here.
 
 def move_category(request, category):
@@ -103,6 +105,7 @@ def review_save(request):
      new_review.r_content=request.POST['content']
      new_review.total_score=request.POST.get("total_score")
      new_review.r_user_id=uid
+     new_review.update_at=timezone.localtime()
      new_review.save()
      return render(request,"review_board.html", {'count':count})
 

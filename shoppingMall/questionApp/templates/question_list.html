@@ -17,15 +17,15 @@
           </tr>
         </thead>
         
-        {% for question in get_questions %}
+        {% for my_questions in posts %}
          
         <tbody>
           <tr>
-            <th scope="col"><a href="{% url 'question:question_detail_view' question.pk%}">{{question.product_name}}</a></th>
-            <td>{{question.q_category}}</td>
-            <td>{{question.title}}</td>
-            <td>{{question.content}}</td>
-            {%if question.is_checked%}  
+            <th scope="col"><a href="{% url 'question:question_detail_view' my_questions.pk%}">{{my_questions.product_name}}</a></th>
+            <td>{{my_questions.q_category}}</td>
+            <td>{{my_questions.title}}</td>
+            <td>{{my_questions.content}}</td>
+            {%if my_questions.is_checked%}  
             <td>등록</td>
             {%else%}
             <td>미등록</td>
@@ -35,6 +35,21 @@
         </tbody>
         {% endfor %}
         </table>
-          
+        <div class="row mt-2">
+          <div class="col-12">
+              <nav>
+                {% if posts.has_previous %}
+                <a href="?page={{posts.previous_page_number}}">previous</a>
+                <a href="?page=1">1</a>
+                {% endif %}
+                <span>{{posts.number}}</span>
+                {% if posts.has_next %}
+                <a href="?page={{posts.paginator.num_pages}}">{{posts.paginator.num_pages}}</a>
+                <a href="?page={{posts.next_page_number}}">next</a>
+                {% endif %}
+                  </ul>
+              </nav>
+          </div>
+      </div>
 </section>
 {% endblock %}
