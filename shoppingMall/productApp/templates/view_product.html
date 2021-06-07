@@ -23,14 +23,14 @@
                 </form>
                 <br>정렬 : {{select_order}}<br>
                 <div id="product_num1">
-                    {%for product in products_category %}
+                    {%for my_products in p_posts %}
                     <div class="row">
                         <div class="col-4">
                             <div class="card">
-                                <img class="card-img-top" src="{{product.thumbnail.url}}" alt="Product Image">
+                                <img class="card-img-top" src="{{my_products.thumbnail.url}}" alt="Product Image">
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="{%url 'products:detail' product.product_id%}">{{product.name}}</a></h5>
-                                    <p class="card-text">가격 : {{product.price}}</p>
+                                    <h5 class="card-title"><a href="{%url 'products:detail' my_products.product_id%}">{{my_products.name}}</a></h5>
+                                    <p class="card-text">가격 : {{my_products.price}}</p>
                                 </div>
                             </div>
                         </div> 
@@ -40,6 +40,22 @@
                     {% endfor %}   
                     </div>
                 </div> 
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <nav>
+                          {% if p_posts.has_previous %}
+                          <a href="?page={{p_posts.previous_page_number}}">previous</a>
+                          <a href="?page=1">1</a>
+                          {% endif %}
+                          <span>{{p_posts.number}}</span>
+                          {% if p_posts.has_next %}
+                          <a href="?page={{p_posts.paginator.num_pages}}">{{p_posts.paginator.num_pages}}</a>
+                          <a href="?page={{p_posts.next_page_number}}">next</a>
+                          {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
                 <br><br><br>
             <br><br><br>
 

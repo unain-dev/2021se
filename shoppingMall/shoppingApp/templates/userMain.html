@@ -24,7 +24,7 @@
                     <tr>
                         {% for products_recent in products_recent %}
                         <td>
-                            <div style="width: 300px; display: inline; float: left;">
+                            <div style="width: 300px;  display: inline; float: left;">
                                 <img class="card-img-top" src="{{products_recent.thumbnail.url}}" alt="Product Image" sytle="width:33%;">
                                 <a href="{% url 'products:detail' products_recent.product_id %}">{{products_recent.name}}</a>
                                 <br>{{products_recent.price}}

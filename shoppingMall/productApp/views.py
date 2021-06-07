@@ -10,10 +10,20 @@ from django.core.paginator  import Paginator
 # Create your views here.
 
 def move_category(request, category):
+   my_products=product.objects
    products_category =product.objects.all().filter(category=category)
    cart_count=context_processors.counter(request)
    cart_count=int(cart_count)
    count={'cart_count':cart_count}
+
+    
+   paginator=Paginator(products_category,3)
+   page=request.GET.get('page')
+   p_posts=paginator.get_page(page)
+
+
+
+
    if request.method == 'POST':
       select_order=request.POST.get('select_order')
       if select_order == 'by_name':
@@ -26,7 +36,7 @@ def move_category(request, category):
          products_category =product.objects.all().filter(category=category).order_by('pubDate')
       return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category, 'select_order':select_order})
 
-   return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category})
+   return render(request,'view_product.html',{'my_products':my_products,'p_posts':p_posts,'products_category':products_category, 'count':count, 'category':category})
 
 
 def product_detail(request,product_id):
