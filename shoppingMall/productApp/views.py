@@ -4,6 +4,7 @@ from .models import product,Photo,review
 from cartApp import context_processors
 from orderApp.models import Order,OrderItem
 from django.utils import timezone
+from django.db.models import Avg
 # Create your views here.
 
 def move_category(request, category):
@@ -104,9 +105,14 @@ def review_save(request):
      new_review.r_content=request.POST['content']
      new_review.total_score=request.POST.get("total_score")
      new_review.r_user_id=uid
-     
+
      new_review.save()
-     return render(request,"review_board.html", {'count':count})
+    
+   
+    
+     
+
+     return render(request,"review_board.html", {'product_get':product_get,'count':count})
 
 def review_view(request,product_id):
     product_get=product.objects.filter(product_id=product_id)
@@ -117,6 +123,7 @@ def review_view(request,product_id):
     review_all=product.objects.all()
     review_set=review_all.filter(product_id=product_id)
     review_get=review.objects.filter(r_product__in=review_set)
+    p_avg_score=review_get.aggregate(Avg('total_score'))
    
-    return render(request,"review_board.html", {'product_get':product_get,'count':count,'review_get':review_get})
+    return render(request,"review_board.html", {'p_avg_score':p_avg_score,'product_get':product_get,'count':count,'review_get':review_get})
 

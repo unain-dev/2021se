@@ -39,6 +39,11 @@ class product(models.Model):
         choices=P_range.CHOICES,
         default=P_range.OPTION_0
     )
+    avg_score=models.IntegerField(default='0')
+
+    
+
+
 
 
 
