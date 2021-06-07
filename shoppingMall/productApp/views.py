@@ -108,9 +108,7 @@ def review_save(request):
 
      new_review.save()
     
-   
     
-     
 
      return render(request,"review_board.html", {'product_get':product_get,'count':count})
 
@@ -124,6 +122,8 @@ def review_view(request,product_id):
     review_set=review_all.filter(product_id=product_id)
     review_get=review.objects.filter(r_product__in=review_set)
     p_avg_score=review_get.aggregate(Avg('total_score'))
+    review_set.avg_score=p_avg_score
+    
    
     return render(request,"review_board.html", {'p_avg_score':p_avg_score,'product_get':product_get,'count':count,'review_get':review_get})
 

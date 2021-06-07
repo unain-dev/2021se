@@ -39,7 +39,7 @@ class product(models.Model):
         choices=P_range.CHOICES,
         default=P_range.OPTION_0
     )
-    avg_score=models.IntegerField(default='0')
+   
 
     
 
@@ -77,6 +77,8 @@ class review(models.Model):
     r_user_id=models.CharField(max_length=50,null=True)
     update_at=models.DateTimeField(auto_now_add=True)
     total_score= models.IntegerField(choices=num_choices, blank=True)
+
+ 
    
     
 
