@@ -18,7 +18,7 @@
 
       </tr>
     </thead>
-    <form action="{% url 'create_defaultsave' %}" method="POST">
+    <form action="{% url 'create_default_save' %}" method="POST">
       {%csrf_token%}
     {% for address in shippings %}
     <tbody>

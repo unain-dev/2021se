@@ -24,7 +24,7 @@ class product(models.Model):
 
     product_id=models.IntegerField(primary_key=True)
     name=models.CharField(max_length=50)
-    thumbnail=models.ImageField(upload_to='thumbnail/', blank=True, null=True)
+    thumbnail=models.ImageField(upload_to='thumbnail/')
    
     price=models.IntegerField()
     description=models.TextField()
@@ -70,13 +70,13 @@ class review(models.Model):
     num_choices = zip( range(1,6), range(1,6) ) 
 
 
-    r_product= models.ForeignKey(product, on_delete=models.CASCADE, null=True,default='')
-    r_stage=models.CharField(max_length=20, choices=CATEGORY_CHOICES1, default='')
-    shipping_score=models.CharField(max_length=20, choices=CATEGORY_CHOICES2, default='')
-    r_content=models.TextField(null=True)
-    r_user_id=models.CharField(max_length=50,null=True)
+    r_product= models.ForeignKey(product, on_delete=models.CASCADE,null=True)
+    r_stage=models.CharField(max_length=20, choices=CATEGORY_CHOICES1)
+    shipping_score=models.CharField(max_length=20, choices=CATEGORY_CHOICES2)
+    r_content=models.TextField(max_length=100)
+    r_user_id=models.CharField(max_length=50)
     update_at=models.DateTimeField(auto_now_add=True)
-    total_score= models.IntegerField(choices=num_choices, blank=True)
+    total_score= models.IntegerField(choices=num_choices)
 
  
    

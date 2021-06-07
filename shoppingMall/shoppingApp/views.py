@@ -15,6 +15,7 @@ from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from cartApp import context_processors
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
 
 from cartApp.models import Cart, CartItem
 
@@ -140,26 +141,27 @@ def create_view(request):
 
     return render(request, 'create.html', {'shippings':  shippings, 'count':count})
     
-def create_defaultsave(request):
+def create_default_save(request):
     
     if request.method == 'POST' :
         uid=request.session.get('user_id')
         get_all=UserAccounts.objects.all()
         get_user=get_all.filter(user_id=uid)
         shippings = address.objects.filter(accounts__in=get_user)
-        
+
         old_address=shippings.get(is_default='True')
+     
         if old_address is not None:
             old_address.is_default='False'
             old_address.save()
 
         n_pk = request.POST.get('is_default') 
         n_address=shippings.get(pk=n_pk)
-        n_address.is_default=True
+        n_address.is_default='True'
         n_address.save()
     
       
-    return render(request,'create.html',{'shippings':  shippings})
+        return render(request,'create.html',{'shippings':  shippings})
 
 def create_default(request):
     cart_count=context_processors.counter(request)
@@ -186,10 +188,16 @@ def postaddress(request):
     new_address.detail_address=request.POST['detail_address']
     new_address.post_name=request.POST['post_name']
     new_address.post_phonenum=request.POST['post_phonenum']
-
-  
     new_address.save()
-    return redirect("create")
+    get_all=UserAccounts.objects.all()
+    get_user=get_all.filter(user_id=uid)
+    shippings = address.objects.filter(accounts__in=get_user)
+    ad_num=shippings.count()
+    if(ad_num==1):
+        new_address.is_default='True'
+    new_address.save()
+    
+    return render(request,'create.html',{'shippings':  shippings,})
     
 
 def delete(request,pk):
