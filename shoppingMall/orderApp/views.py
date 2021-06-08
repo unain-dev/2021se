@@ -94,9 +94,6 @@ def order_check(request, total=0, counter=0, cart_items=None):
 
     return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=order_cancle))
 
-def cancle_order(request):
-    return render(request, '')
-
 def pay(request):
     order_id=request.session.get('order_id')
     order=Order.objects.get(id=order_id)
@@ -201,9 +198,69 @@ def payCancel(request):
     for item in order_item:
         item_count+=1
     if item_count==1:
-        return redirect('order:direct_pay')
+        return redirect('order:direct_pay_cancle')
     else :
         return redirect('order:order_check')
+
+def direct_pay_cancle(request):
+    product_id=request.session.get('product_id')
+    product_get=product.objects.get(product_id=product_id)
+    before_order_id=request.session.get('order_id')
+    before_order=Order.objects.get(id=before_order_id)
+    total_direct=(product_get.price*int(before_order.total_quantity))+product_get.shipping_fee
+    get_product=product.objects.get(product_id=product_id)
+    if request.session.get('user_id') is None:
+        errorMsg = "로그인 해주세요"
+        return render(request, "error.html", {'errorMsg' : errorMsg})
+
+    elif get_product.stock>=int(request.POST['detail_quantity']):
+        order=Order.objects.create(
+            order_user=request.session.get('user_id'),
+            total_price=total_direct,
+            total_quantity=request.POST['detail_quantity'],
+            order_state='order_continue',
+            total_shipping_fee=product_get.shipping_fee,
+            discount_price=0,
+            before_discount=total_direct
+        )
+        order.save()
+        request.session['order_id']=order.id
+
+        
+        order_items=OrderItem.objects.create(
+            order=order,
+            product_id=product_id,
+            product_title=product_get.name,
+            quantity=before_order.total_quantity,
+            price=product_get.price,
+            shipping_fee=product_get.shipping_fee,
+            category=product_get.category
+        )
+        order_items.save()
+
+        cart_count=context_processors.counter(request)
+        cart_count=int(cart_count)
+        count={'cart_count':cart_count}
+
+        uid=request.session.get('user_id')
+        get_all=UserAccounts.objects.all()
+        get_user=get_all.filter(user_id=uid)
+        shippings = address.objects.filter(accounts__in=get_user)
+
+        if request.session.get('pay_state')=='pay_cancle':
+            request.session['pay_state']=''
+            order_cancle=True
+        else :
+            order_cancle=False
+
+        order_items=OrderItem.objects.filter(order=order)
+        
+        return render(request, 'order.html', dict(order=order, order_items=order_items, count=count, cart_count=cart_count, shippings=shippings, order_id=order.id, order_cancle=order_cancle))
+    else:
+        errorMsg = "입력한 수량만큼의 재고가 남아있지 않습니다."
+        return render(request, "error.html", {'errorMsg' : errorMsg})
+ 
+    return 
 
 def view_myOrder(request):
     cart_count=context_processors.counter(request)
