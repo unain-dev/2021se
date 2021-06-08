@@ -25,8 +25,6 @@ def move_category(request, category):
    p_posts=paginator.get_page(page)
 
 
-
-
    if request.method == 'POST':
       select_order=request.POST.get('select_order')
       if select_order == 'by_name':
@@ -37,7 +35,11 @@ def move_category(request, category):
          products_category =product.objects.all().filter(category=category).order_by('-price')
       elif select_order == 'by_recent':
          products_category =product.objects.all().filter(category=category).order_by('pubDate')
-      return render(request,'view_product.html',{'products_category':products_category, 'count':count, 'category':category, 'select_order':select_order})
+      
+      paginator=Paginator(products_category,3)
+      page=request.GET.get('page')
+      p_posts=paginator.get_page(page)
+      return render(request,'view_product.html',{'products_category':products_category,'p_posts':p_posts, 'count':count, 'category':category, 'select_order':select_order})
 
    return render(request,'view_product.html',{'my_products':my_products,'p_posts':p_posts,'products_category':products_category, 'count':count, 'category':category})
 
@@ -75,7 +77,7 @@ def product_detail(request,product_id):
 
    return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
 
-
+'''
 def product_detail_get_review(request):
    product_id=request.session.get('product_id')
    product_get=product.objects.filter(product_id=product_id)
@@ -134,6 +136,7 @@ def product_detail_get_review(request):
          return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'reviews':reviews, 'p_avg_score':p_avg_score})
       else:
          return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
+'''
 
 def search(request):
    cart_count=context_processors.counter(request)
