@@ -213,11 +213,11 @@ def direct_pay_cancle(request):
         errorMsg = "로그인 해주세요"
         return render(request, "error.html", {'errorMsg' : errorMsg})
 
-    elif get_product.stock>=int(request.POST['detail_quantity']):
+    elif get_product.stock>=int(before_order.total_quantity):
         order=Order.objects.create(
             order_user=request.session.get('user_id'),
             total_price=total_direct,
-            total_quantity=request.POST['detail_quantity'],
+            total_quantity=before_order.total_quantity,
             order_state='order_continue',
             total_shipping_fee=product_get.shipping_fee,
             discount_price=0,
