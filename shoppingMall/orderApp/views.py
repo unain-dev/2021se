@@ -45,7 +45,8 @@ def order_check(request, total=0, counter=0, cart_items=None):
             counter += cart_item.quantity
         max_shipping=CartItem.objects.filter(cart=cart)
         max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
-        max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
+        if max_shipping:
+            max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
         total+=int(max_shipping)
     
     uid=request.session.get('user_id')
