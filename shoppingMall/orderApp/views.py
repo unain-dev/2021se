@@ -113,7 +113,6 @@ def pay(request):
     for item in order_items:
         item_name+=str(item.product_title)
 
-    current_site = request.build_absolute_uri()[:-10]
     if request.method == "POST":
         URL = 'https://kapi.kakao.com/v1/payment/ready'
         headers = {
@@ -137,13 +136,14 @@ def pay(request):
         _result=res.json()
         request.session['tid'] = _result['tid']      # 결제 승인시 사용할 tid를 세션에 저장
         next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
-        
+        '''
         if next_url.find('paySuccess'):
             return redirect('order:paySuccess')
         elif next_url.find('payCancle'):
             return redirect('order:payCancle')
         elif next_url.find('payFail'):
             return redirect('order:payFail')
+        '''
         return redirect(next_url)
 
 def paySuccess(request):
