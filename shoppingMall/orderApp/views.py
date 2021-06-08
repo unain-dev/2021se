@@ -136,8 +136,8 @@ def pay(request):
         _result=res.json()
         request.session['tid'] = _result['tid']      # 결제 승인시 사용할 tid를 세션에 저장
         next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
-        next=next_url[21:]
-        next_url_get='order:'+next
+        next=str(next_url)[21:]
+        next_url_get='order:'+str(next)
         return redirect(next_url_get)
 
 def paySuccess(request):
