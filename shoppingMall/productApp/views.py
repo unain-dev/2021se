@@ -6,6 +6,8 @@ from orderApp.models import Order,OrderItem
 from django.utils import timezone
 from django.db.models import Avg
 from django.core.paginator  import Paginator
+from shoppingApp.models import UserAccounts
+from shoppingApp.models import address as Address
 
 # Create your views here.
 
@@ -49,10 +51,28 @@ def product_detail(request,product_id):
    photo_set=photo_all.filter(product_id=product_id)
    photo_get=Photo.objects.filter(product__in=photo_set)
    
+   user=request.session.get('user_id')
+   account=UserAccounts.objects.get(user_id=user)
+   address=Address.objects.get(accounts=account, is_default=True)
 
-   
+   product_set=product.objects.get(product_id=product_id)
+   reviews=review.objects.filter(r_product=product_set)
 
-   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
+   for re in reviews:
+      re.r_user_id=re.r_user_id[:2]
+
+   request.session['product_id']=product_id
+   avg_score=reviews.aggregate(Avg('total_score'))
+   for k, v in avg_score.items():
+      p_avg_score=v
+   p_avg_score=round(p_avg_score, 1)
+
+   paginator=Paginator(reviews,5)
+   page=request.GET.get('page')
+   reviews=paginator.get_page(page)
+
+
+   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'address':address, 'reviews':reviews, 'p_avg_score':p_avg_score})
 
 def search(request):
    cart_count=context_processors.counter(request)
@@ -167,3 +187,24 @@ def review_view(request,product_id):
    
     return render(request,"review_board.html", {'my_reviews':my_reviews,'r_posts':r_posts,'p_avg_score':p_avg_score,'product_get':product_get,'count':count,'review_get':review_get})
 
+def address_after_detail(request):
+   product_id=request.session.get('product_id')
+   product_get=product.objects.filter(product_id=product_id)
+   cart_count=context_processors.counter(request)
+   cart_count=int(cart_count)
+   count={'cart_count':cart_count}
+
+   photo_all=product.objects.all()
+   photo_set=photo_all.filter(product_id=product_id)
+   photo_get=Photo.objects.filter(product__in=photo_set)
+   
+   user=request.session.get('user_id')
+   account=UserAccounts.objects.get(user_id=user)
+   address=Address.objects.get(accounts=account, is_default=True)
+
+   product_set=product.objects.get(product_id=product_id)
+   reviews=review.objects.filter(r_product=product_set)
+
+   p_avg_score=reviews.aggregate(Avg('total_score'))
+
+   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'address':address, 'reviews':reviews, 'p_avg_score':p_avg_score})

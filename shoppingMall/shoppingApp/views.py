@@ -159,9 +159,10 @@ def create_default_save(request):
         n_address=shippings.get(pk=n_pk)
         n_address.is_default='True'
         n_address.save()
-    
-      
-        return render(request,'create.html',{'shippings':  shippings})
+
+        product_id=request.session.get('product_id')
+        return redirect('products:address_after_detail')
+        #return render(request,'create.html',{'shippings':  shippings})
 
 def create_default(request):
     cart_count=context_processors.counter(request)

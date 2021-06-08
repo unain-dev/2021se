@@ -1,5 +1,5 @@
 from django.urls import path
-from productApp import views
+from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 app_name='products'
@@ -11,6 +11,7 @@ urlpatterns = [
     path('review_post/<int:pk>', views.review_post, name="review_post"),
     path('review_save/', views.review_save, name="review_save"),
     path('review_board/<int:product_id>', views.review_view, name="review_board"),
+    path('detail/', views.address_after_detail, name="address_after_detail")
    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

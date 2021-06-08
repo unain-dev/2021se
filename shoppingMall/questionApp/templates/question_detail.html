@@ -27,13 +27,13 @@
      문의내용
     <div class="form-floating">
         <label for="content"></label>
-        <textarea class="form-control"  id="content" name="content" style="height: 100px ">{{question.content}}</textarea>
+        <textarea class="form-control"  id="content" name="content" style="height: 100px " readonly>{{question.content}}</textarea>
 
       </div>
     답변내용
       <div class="form-floating">
         <label for="content"></label>
-        <textarea class="form-control"  id="content" name="content" style="height: 100px ">{{question.answer}}</textarea>
+        <textarea class="form-control"  id="content" name="content" style="height: 100px " readonly>{{question.answer}}</textarea>
 
       </div>
       {%endfor%}

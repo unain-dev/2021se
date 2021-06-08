@@ -40,13 +40,6 @@ class product(models.Model):
         default=P_range.OPTION_0
     )
    
-
-    
-
-
-
-
-
     
 class Photo(models.Model):
     product = models.ForeignKey(product, on_delete=models.CASCADE, null=True)
