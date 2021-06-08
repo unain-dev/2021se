@@ -127,9 +127,9 @@ def pay(request):
             "quantity": order.total_quantity,                # 구매 물품 수량
             "total_amount": order.total_price,        # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세
-            "approval_url": "http://15.165.62.51/order/paySuccess",
-            "cancel_url": "http://15.165.62.51/order/payCancel",
-            "fail_url": "http://15.165.62.51/order/payFail",
+            "approval_url": "http://15.165.62.51/order/paySuccess/",
+            "cancel_url": "http://15.165.62.51/order/payCancel/",
+            "fail_url": "http://15.165.62.51/order/payFail/",
         }
 
         res = requests.post(URL, headers=headers, params=params)
