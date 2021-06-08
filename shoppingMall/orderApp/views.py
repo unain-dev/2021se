@@ -45,8 +45,7 @@ def order_check(request, total=0, counter=0, cart_items=None):
             counter += cart_item.quantity
         max_shipping=CartItem.objects.filter(cart=cart)
         max_shipping.aggregate(shipping_fee=Max('shipping_fee'))
-        if max_shipping:
-            max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
+        max_shipping=max_shipping.order_by('-shipping_fee')[0].shipping_fee
         total+=int(max_shipping)
     
     uid=request.session.get('user_id')
@@ -197,8 +196,14 @@ def payCancel(request):
     order.save()
 
     request.session['pay_state']='pay_cancle'
-
-    return redirect('order:order_check')
+    order_item=OrderItem.objects.filter(order=order)
+    item_count=0
+    for item in order_item:
+        item_count+=1
+    if item_count==1:
+        return redirect('order:direct_pay')
+    else :
+        return redirect('order:order_check')
 
 def view_myOrder(request):
     cart_count=context_processors.counter(request)
