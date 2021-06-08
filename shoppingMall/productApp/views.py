@@ -1,4 +1,5 @@
 from datetime import timezone
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import product,Photo,review
 from cartApp import context_processors
@@ -40,8 +41,43 @@ def move_category(request, category):
 
    return render(request,'view_product.html',{'my_products':my_products,'p_posts':p_posts,'products_category':products_category, 'count':count, 'category':category})
 
-
 def product_detail(request,product_id):
+   request.session['product_id']=product_id
+   product_get=product.objects.filter(product_id=product_id)
+   cart_count=context_processors.counter(request)
+   cart_count=int(cart_count)
+   count={'cart_count':cart_count}
+
+   photo_all=product.objects.all()
+   photo_set=photo_all.filter(product_id=product_id)
+   photo_get=Photo.objects.filter(product__in=photo_set)
+#리뷰 있을 때
+   try:
+      product_set=product.objects.get(product_id=product_id)
+      reviews=review.objects.filter(r_product=product_set)
+      for re in reviews:
+         re.r_user_id=re.r_user_id[:2]
+
+      request.session['product_id']=product_id
+      avg_score=reviews.aggregate(Avg('total_score'))
+      for k, v in avg_score.items():
+         p_avg_score=v
+      p_avg_score=round(p_avg_score, 1)
+
+      paginator=Paginator(reviews,5)
+      page=request.GET.get('page')
+      reviews=paginator.get_page(page)
+      return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'reviews':reviews, 'p_avg_score':p_avg_score})
+      #리뷰, 주소 없을 때
+   #리뷰 없을 때
+   except:
+      pass
+
+   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
+
+
+def product_detail_get_review(request):
+   product_id=request.session.get('product_id')
    product_get=product.objects.filter(product_id=product_id)
    cart_count=context_processors.counter(request)
    cart_count=int(cart_count)
@@ -52,27 +88,52 @@ def product_detail(request,product_id):
    photo_get=Photo.objects.filter(product__in=photo_set)
    
    user=request.session.get('user_id')
-   account=UserAccounts.objects.get(user_id=user)
-   address=Address.objects.get(accounts=account, is_default=True)
 
-   product_set=product.objects.get(product_id=product_id)
-   reviews=review.objects.filter(r_product=product_set)
+   if user:
+      account=UserAccounts.objects.get(user_id=user)
+      product_set=product.objects.get(product_id=product_id)
 
-   for re in reviews:
-      re.r_user_id=re.r_user_id[:2]
+   try:
+      address=Address.objects.get(accounts=account, is_default=True)
 
-   request.session['product_id']=product_id
-   avg_score=reviews.aggregate(Avg('total_score'))
-   for k, v in avg_score.items():
-      p_avg_score=v
-   p_avg_score=round(p_avg_score, 1)
+      if review.objects.filter(r_product=product_set):
+         reviews=review.objects.filter(r_product=product_set)
 
-   paginator=Paginator(reviews,5)
-   page=request.GET.get('page')
-   reviews=paginator.get_page(page)
+         for re in reviews:
+            re.r_user_id=re.r_user_id[:2]
 
+         request.session['product_id']=product_id
+         avg_score=reviews.aggregate(Avg('total_score'))
+         for k, v in avg_score.items():
+            p_avg_score=v
+         p_avg_score=round(p_avg_score, 1)
 
-   return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'address':address, 'reviews':reviews, 'p_avg_score':p_avg_score})
+         paginator=Paginator(reviews,5)
+         page=request.GET.get('page')
+         reviews=paginator.get_page(page)
+         return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'address':address, 'reviews':reviews, 'p_avg_score':p_avg_score})
+      else:
+         return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'address':address})
+
+   except ObjectDoesNotExist:
+      if review.objects.filter(r_product=product_set):
+         reviews=review.objects.filter(r_product=product_set)
+
+         for re in reviews:
+            re.r_user_id=re.r_user_id[:2]
+
+         request.session['product_id']=product_id
+         avg_score=reviews.aggregate(Avg('total_score'))
+         for k, v in avg_score.items():
+            p_avg_score=v
+         p_avg_score=round(p_avg_score, 1)
+
+         paginator=Paginator(reviews,5)
+         page=request.GET.get('page')
+         reviews=paginator.get_page(page)
+         return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get, 'reviews':reviews, 'p_avg_score':p_avg_score})
+      else:
+         return render(request, 'detail.html',{'product_get':product_get, 'count':count, 'photo_get':photo_get})
 
 def search(request):
    cart_count=context_processors.counter(request)

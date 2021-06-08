@@ -111,7 +111,7 @@ def register_view(request):
             username=request.POST['new_user_id']
             email = request.POST['new_user_email']
             password = request.POST['new_user_pw']
-            new_user = User.objects.create_user(username, email, password)
+            User.objects.create_user(username, email, password)
 
             user = authenticate(request=request, username=username, password=password)
             login(request, user)

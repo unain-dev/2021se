@@ -85,6 +85,10 @@ def add_cart(request, product_id):
     return redirect('cart:cart_detail')
 
 def cart_detail(request, total=0, counter=0, cart_items=None):
+    cart_count=context_processors.counter(request)
+    cart_count=int(cart_count)
+    count={'cart_count':cart_count}
+
     if request.session.get('user_id') is None:
         errorMsg = "로그인 해주세요"
         return render(request, "error.html", {'errorMsg' : errorMsg})
@@ -103,12 +107,12 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
             cart.total_shipping_fee=max_shipping
             cart.save()
 
-    except ObjectDoesNotExist:
-        pass
-    
-    cart_count=context_processors.counter(request)
-    cart_count=int(cart_count)
-    count={'cart_count':cart_count}
+    except Cart.DoesNotExist:
+        cart= Cart.objects.create(
+            cart_id=request.session.get('user_id')
+        )
+        cart.save()
+   
     return render(request, 'cart.html', dict(cart=cart, cart_items=cart_items, total=total, count=count, cart_count=cart_count))
 
 def minus_cart_product(request, product_id):
