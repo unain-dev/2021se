@@ -171,11 +171,11 @@ def paySuccess(request):
     }
 
     res = requests.post(URL, headers=headers, params=params)
-    amount = res.json()['amount']['total']
+    #amount = res.json()['amount']['total']
     res = res.json()
     context = {
         'res': res,
-        'amount': amount,
+        #'amount': amount,
     }
 
     order_items=OrderItem.objects.filter(order=order)
