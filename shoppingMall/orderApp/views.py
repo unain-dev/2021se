@@ -128,16 +128,22 @@ def pay(request):
             "quantity": order.total_quantity,                # 구매 물품 수량
             "total_amount": order.total_price,        # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세
-            "approval_url": paySuccess,
-            "cancel_url": payCancel,
-            "fail_url": payFail,
+            "approval_url": "http://127.0.0.1:8000/order/paySuccess",
+            "cancel_url": "http://127.0.0.1:8000/order/payCancel",
+            "fail_url": "http://127.0.0.1:8000/order/payFail",
         }
 
         res = requests.post(URL, headers=headers, params=params)
         _result=res.json()
         request.session['tid'] = _result['tid']      # 결제 승인시 사용할 tid를 세션에 저장
         next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
-                
+        
+        if next_url.find('paySuccess'):
+            return redirect('order:paySuccess')
+        elif next_url.find('payCancle'):
+            return redirect('order:payCancle')
+        elif next_url.find('payFail'):
+            return redirect('order:payFail')
         return redirect(next_url)
 
 def paySuccess(request):
