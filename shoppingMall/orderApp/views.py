@@ -127,13 +127,14 @@ def pay(request):
             "quantity": order.total_quantity,                # 구매 물품 수량
             "total_amount": order.total_price,        # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세
-            "approval_url": "http://127.0.0.1:8000/order/paySuccess",
-            "cancel_url": "http://127.0.0.1:8000/order/payCancel",
-            "fail_url": "http://127.0.0.1:8000/order/payFail",
+            "approval_url": "http://15.165.62.51/order/paySuccess",
+            "cancel_url": "http://15.165.62.51/order/payCancel",
+            "fail_url": "http://15.165.62.51/order/payFail",
         }
 
         res = requests.post(URL, headers=headers, params=params)
-        request.session['tid'] = res.json()['tid']      # 결제 승인시 사용할 tid를 세션에 저장
+        _result=res.json()
+        request.session['tid'] = _result['tid']      # 결제 승인시 사용할 tid를 세션에 저장
         next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
         return redirect(next_url)
 
@@ -309,7 +310,11 @@ def direct_pay(request, product_id):
     product_get=product.objects.get(product_id=product_id)
     total_direct=(product_get.price*int(request.POST['detail_quantity']))+product_get.shipping_fee
     get_product=product.objects.get(product_id=product_id)
-    if get_product.stock>=int(request.POST['detail_quantity']):
+    if request.session.get('user_id') is None:
+        errorMsg = "로그인 해주세요"
+        return render(request, "error.html", {'errorMsg' : errorMsg})
+
+    elif get_product.stock>=int(request.POST['detail_quantity']):
         order=Order.objects.create(
             order_user=request.session.get('user_id'),
             total_price=total_direct,
